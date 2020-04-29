@@ -176,6 +176,124 @@
             
 
   
+    <article id="post-Swift-5-1-高帧率朋友圈实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2020/04/29/Swift-5-1-%E9%AB%98%E5%B8%A7%E7%8E%87%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%AE%9E%E7%8E%B0/">Swift 5.1 高帧率朋友圈实现</a>
+	
+    </h1>
+  
+
+
+  
+  
+<a href="/2020/04/29/Swift-5-1-%E9%AB%98%E5%B8%A7%E7%8E%87%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+        <time datetime="2020-04-29T11:48:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-29</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <blockquote>
+<p>本文基于<strong><a href="https://github.com/Instagram/IGListKit" target="_blank" rel="noopener">IGListKit 4.0</a></strong>实现列表的高帧率滑动效果，项目地址见<a href="https://github.com/jeromexiong/cover-moments" target="_blank" rel="noopener">GitHub</a></p>
+</blockquote>
+<h2 id="话不多说，上图"><a href="#话不多说，上图" class="headerlink" title="话不多说，上图"></a>话不多说，上图</h2><p><img src="/images/moments.webp" alt="moments.webp.gif"></p>
+<h2 id="创建基类控制器"><a href="#创建基类控制器" class="headerlink" title="创建基类控制器"></a>创建基类控制器</h2><p>所有<code>IGListKit</code>的视图控制器都应该继承此类，减少复用</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseListVC</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> objects: [<span class="type">ListDiffable</span>] = [<span class="type">ListDiffable</span>]()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> collectionView: <span class="type">UICollectionView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> flow = <span class="type">UICollectionViewFlowLayout</span>()</span><br><span class="line">        <span class="keyword">let</span> collectionView = <span class="type">UICollectionView</span>(frame: <span class="type">CGRect</span>.zero, collectionViewLayout: flow)</span><br><span class="line">        <span class="keyword">if</span> #available(iOS <span class="number">11.0</span>, *) &#123;</span><br><span class="line">            collectionView.contentInsetAdjustmentBehavior = .never</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            automaticallyAdjustsScrollViewInsets = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        collectionView.backgroundColor = <span class="type">UIColor</span>.groupTableViewBackground</span><br><span class="line">        <span class="keyword">return</span> collectionView</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> adapter: <span class="type">ListAdapter</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> adapter = <span class="type">ListAdapter</span>(updater: <span class="type">ListAdapterUpdater</span>(), viewController: <span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">return</span> adapter</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        view.addSubview(collectionView)</span><br><span class="line">        adapter.collectionView = collectionView</span><br><span class="line">        adapter.dataSource = <span class="keyword">self</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLayoutSubviews</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLayoutSubviews()</span><br><span class="line">        collectionView.frame = view.bounds</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">BaseListVC</span> : <span class="title">ListAdapterDataSource</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">objects</span><span class="params">(<span class="keyword">for</span> listAdapter: ListAdapter)</span></span> -&gt; [<span class="type">ListDiffable</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> objects</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">listAdapter</span><span class="params">(<span class="number">_</span> listAdapter: ListAdapter, sectionControllerFor object: <span class="keyword">Any</span>)</span></span> -&gt; <span class="type">ListSectionController</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">ListSectionController</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">emptyView</span><span class="params">(<span class="keyword">for</span> listAdapter: ListAdapter)</span></span> -&gt; <span class="type">UIView?</span> &#123;</span><br><span class="line">        <span class="comment">// 无数据时collectionView的展示</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建MomentInfo模型"><a href="#创建MomentInfo模型" class="headerlink" title="创建MomentInfo模型"></a>创建<code>MomentInfo</code>模型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class MomentInfo &#123;</span><br><span class="line">    var id: Int &#x3D; 0</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">extension MomentInfo: ListDiffable &#123;</span><br><span class="line">    func diffIdentifier() -&gt; NSObjectProtocol &#123;</span><br><span class="line">        &#x2F;&#x2F; 区分是否为同一对象，可多属性叠加</span><br><span class="line">        return id as NSObjectProtocol</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 判断对象是否相同，不同(false)则刷新</span><br><span class="line">    func isEqual(toDiffableObject object: ListDiffable?) -&gt; Bool &#123;</span><br><span class="line">        guard self &#x3D;&#x3D;&#x3D; object else &#123; return true &#125;</span><br><span class="line">        guard let object &#x3D; object as? MomentInfo else &#123; return false &#125;</span><br><span class="line">        return id &#x3D;&#x3D; object.id</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension MomentInfo: Equatable &#123;</span><br><span class="line">    static func &#x3D;&#x3D; (lhs: MomentInfo, rhs: MomentInfo) -&gt; Bool &#123;</span><br><span class="line">        return lhs.isEqual(toDiffableObject: rhs)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="子类复写"><a href="#子类复写" class="headerlink" title="子类复写"></a>子类复写</h2><ol>
+<li>更新数据<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//info -&gt; MomentInfo的对象</span></span><br><span class="line"><span class="keyword">self</span>.objects.append(info)</span><br><span class="line"><span class="comment">// 数据添加完成后更新</span></span><br><span class="line"><span class="keyword">self</span>.adapter.performUpdates(animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure></li>
+<li>复写绑定Section<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">override func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -&gt; ListSectionController &#123;</span><br><span class="line">    &#x2F;&#x2F; 此object的类型就是更新的self.objects的item类型</span><br><span class="line">    switch object &#123;</span><br><span class="line">    case is MomentInfo:</span><br><span class="line">        &#x2F;&#x2F; MomentBindingSection 继承自 ListBindingSectionController</span><br><span class="line">        let section &#x3D; MomentBindingSection()</span><br><span class="line">        return section</span><br><span class="line">    default:</span><br><span class="line">        fatalError()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用ListBindingSectionController绑定多个cell"><a href="#使用ListBindingSectionController绑定多个cell" class="headerlink" title="使用ListBindingSectionController绑定多个cell"></a>使用<code>ListBindingSectionController</code>绑定多个cell</h2></li>
+<li>创建<code>UICollectionViewCell</code>⚠️<strong>只能有一种样式布局，不同样式需要不同的cell</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class MomentTopCell: UICollectionViewCell &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">extension MomentTopCell: ListBindable &#123;</span><br><span class="line">    func bindViewModel(_ viewModel: Any) &#123;</span><br><span class="line">        guard let viewModel &#x3D; viewModel as? MomentInfo else &#123; return &#125;</span><br><span class="line">        &#x2F;&#x2F; 更新cell数据</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>获取cell对象<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func momentTopCell(at index: Int) -&gt; MomentTopCell &#123;</span><br><span class="line">&#x2F;&#x2F;  guard let cell &#x3D; collectionContext?.dequeueReusableCell(withNibName: MomentTopCell.jx_className, bundle: nil, for: self, at: index) as? MomentTopCell else &#123; fatalError() &#125;</span><br><span class="line">    guard let cell &#x3D; collectionContext?.dequeueReusableCell(of: MomentTopCell.self, for: self, at: index) as? MomentTopCell else &#123; fatalError() &#125;</span><br><span class="line">    &#x2F;&#x2F; 传入cell数据</span><br><span class="line">    cell.bindViewModel(object!)</span><br><span class="line">    return cell</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>绑定视图模型(ViewModel)，可使用枚举替代<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">enum ViewModelEnum: String &#123;</span><br><span class="line">    case top, header, image_single, location, bottom</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;&#x2F; 绑定viewmodels，用以区分不同cell</span><br><span class="line">func sectionController(_ sectionController: ListBindingSectionController&lt;ListDiffable&gt;, viewModelsFor object: Any) -&gt; [ListDiffable] &#123;</span><br><span class="line">    guard let object &#x3D; object as? MomentInfo else &#123; return [] &#125;</span><br><span class="line">    var results: [ListDiffable] &#x3D; []</span><br><span class="line">    if object.userInfo !&#x3D; nil &#123;</span><br><span class="line">        results.append(ViewModelEnum.top.rawValue as ListDiffable)</span><br><span class="line">    &#125;</span><br><span class="line">    if object.images.count &#x3D;&#x3D; 1 &#123;</span><br><span class="line">        results.append(ViewModelEnum.image_single.rawValue as ListDiffable)</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        results.append(ViewModelEnum.header.rawValue as ListDiffable)</span><br><span class="line">    &#125;</span><br><span class="line">    if !object.location.isEmpty &#123;</span><br><span class="line">        results.append(ViewModelEnum.location.rawValue as ListDiffable)</span><br><span class="line">    &#125;</span><br><span class="line">    results.append(ViewModelEnum.bottom.rawValue as ListDiffable)</span><br><span class="line">    return results</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F; 不同viewmodel对应的cell</span><br><span class="line">func sectionController(_ sectionController: ListBindingSectionController&lt;ListDiffable&gt;, cellForViewModel viewModel: Any, at index: Int) -&gt; UICollectionViewCell &amp; ListBindable &#123;</span><br><span class="line">    let viewModel &#x3D; ViewModelEnum(rawValue: viewModel as! String)!</span><br><span class="line">    switch viewModel &#123;</span><br><span class="line">    case .top:</span><br><span class="line">        return momentTopCell(at: index)</span><br><span class="line">    case .image_single:</span><br><span class="line">        return momentHeaderImageCell(at: index)</span><br><span class="line">    case .header:</span><br><span class="line">        return momentHeaderCell(at: index)</span><br><span class="line">    case .location:</span><br><span class="line">        return momentLocationCell(at: index)</span><br><span class="line">    case .bottom:</span><br><span class="line">        return momentBottomCell(at: index)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;&#x2F; 不同cell对应的size</span><br><span class="line">func sectionController(_ sectionController: ListBindingSectionController&lt;ListDiffable&gt;, sizeForViewModel viewModel: Any, at index: Int) -&gt; CGSize &#123;</span><br><span class="line">    guard let object &#x3D; object as? MomentInfo else &#123; fatalError() &#125;</span><br><span class="line">    let viewModel &#x3D; ViewModelEnum(rawValue: viewModel as! String)!</span><br><span class="line">    let width: CGFloat &#x3D; collectionContext!.containerSize(for: self).width</span><br><span class="line">    switch viewModel &#123;</span><br><span class="line">    case .top:</span><br><span class="line">        return CGSize(width: width, height: 400)</span><br><span class="line">    case .header, .image_single:</span><br><span class="line">        return CGSize(width: width, height: object.cellHeight)</span><br><span class="line">    case .location:</span><br><span class="line">        return CGSize(width: width, height: 30)</span><br><span class="line">    case .bottom:</span><br><span class="line">        return CGSize(width: width, height: 30)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Swift</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/dev//" class="article-tag-list-link color4">dev</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS//" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2020/04/29/Swift-5-1-%E9%AB%98%E5%B8%A7%E7%8E%87%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-杂记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -668,15 +786,15 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">other</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Flutter</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Swift</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">other</a>
               </li>
             
             <div class="clearfix"></div>
