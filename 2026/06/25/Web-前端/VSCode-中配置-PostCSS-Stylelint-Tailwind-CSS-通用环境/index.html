@@ -1,0 +1,481 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境 | Jerome Xiong</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="完整配置 VSCode 下的 PostCSS、Stylelint 和 Tailwind CSS 开发环境，解决语法高亮、智能提示和保存时自动处理的三大核心问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">
+<meta property="og:url" content="https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="完整配置 VSCode 下的 PostCSS、Stylelint 和 Tailwind CSS 开发环境，解决语法高亮、智能提示和保存时自动处理的三大核心问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-%E5%B7%A5%E5%85%B7%E9%93%BE-06B6D4?logo=tailwindcss&logoColor=white">
+<meta property="article:published_time" content="2026-06-25T14:30:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T10:35:49.506Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="PostCSS">
+<meta property="article:tag" content="Stylelint">
+<meta property="article:tag" content="Tailwind CSS">
+<meta property="article:tag" content="VSCode">
+<meta property="article:tag" content="前端工程化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-%E5%B7%A5%E5%85%B7%E9%93%BE-06B6D4?logo=tailwindcss&logoColor=white"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境",
+  "url": "https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/",
+  "image": "https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&logoColor=white",
+  "datePublished": "2026-06-25T14:30:00.000Z",
+  "dateModified": "2026-07-01T10:35:49.506Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jerome Xiong",
+      "url": "https://jeromexiong.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a><a class="nav-page-title" href="/"><span class="site-name">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon fas fa-history"></i><span class="post-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Web-%E5%89%8D%E7%AB%AF/">Web-前端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Web-%E5%89%8D%E7%AB%AF/%E5%B7%A5%E5%85%B7%E9%93%BE/">工具链</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在 VSCode 中使用 Tailwind CSS 开发时，常见几个痛点：</p>
+<ul>
+<li><code>@apply</code>、<code>@layer</code> 等 PostCSS 指令被标红</li>
+<li>Tailwind 类名没有智能补全</li>
+<li>保存时 Autoprefixer 不自动加前缀，Stylelint 也不修复</li>
+</ul>
+<p>这些问题源自 <strong>VSCode 默认将 <code>.css</code> 文件当作标准 CSS 处理</strong>，不认识 PostCSS 的自定义语法。以下是从插件安装到工作区配置的完整方案，一次配置，全项目受益。</p>
+<hr>
+<h2 id="必备插件安装">必备插件安装</h2>
+<p>在 VSCode 扩展市场安装以下插件：</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PostCSS Language Support</strong></td>
+<td><code>csstools.postcss</code></td>
+<td>识别 <code>@apply</code>、<code>@layer</code> 等 PostCSS 规则，避免标红</td>
+</tr>
+<tr>
+<td><strong>Tailwind CSS IntelliSense</strong></td>
+<td><code>bradlc.vscode-tailwindcss</code></td>
+<td>类名智能提示、悬停预览 CSS 值、错误校验</td>
+</tr>
+<tr>
+<td><strong>Stylelint</strong></td>
+<td><code>stylelint.vscode-stylelint</code></td>
+<td>CSS/PostCSS 代码规范检查与自动修复</td>
+</tr>
+<tr>
+<td><strong>Prettier - Code formatter</strong></td>
+<td><code>esbenp.prettier-vscode</code></td>
+<td>基础代码格式化（可选，Stylelint 若已涵盖可忽略）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如果是 Vue 项目，还需安装 <strong>Vue - Official</strong> (<code>vue.volar</code>)，以支持 <code>.vue</code> 文件中 <code>&lt;style&gt;</code> 块的样式解析。</p>
+</blockquote>
+<hr>
+<h2 id="项目依赖安装">项目依赖安装</h2>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -D postcss autoprefixer stylelint stylelint-config-standard stylelint-order tailwindcss @tailwindcss/postcss</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="版本说明">版本说明</h3>
+<table>
+<thead>
+<tr>
+<th>包</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@tailwindcss/postcss</code></td>
+<td>Tailwind CSS v4+ 推荐的 PostCSS 插件</td>
+</tr>
+<tr>
+<td><code>tailwindcss</code></td>
+<td>v3 使用 <code>tailwindcss</code>，v4 配套 <code>@tailwindcss/postcss</code></td>
+</tr>
+<tr>
+<td><code>stylelint-order</code></td>
+<td>可选，用于 CSS 属性排序</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 Tailwind CSS v4 于 2025 年发布，推荐新项目直接使用。若你仍在使用 v3，将 <code>@tailwindcss/postcss</code> 替换为 <code>tailwindcss</code> 即可。</p>
+</blockquote>
+<hr>
+<h2 id="配置文件">配置文件</h2>
+<h3 id="A-PostCSS-配置-—-postcss-config-js">A. PostCSS 配置 — <code>postcss.config.js</code></h3>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File: postcss.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = {</span><br><span class="line">  <span class="attr">plugins</span>: {</span><br><span class="line">    <span class="string">'@tailwindcss/postcss'</span>: {}, <span class="comment">// Tailwind v4 插件</span></span><br><span class="line">    <span class="comment">// 'tailwindcss/nesting': {}, // v3 下如需嵌套支持</span></span><br><span class="line">    <span class="attr">autoprefixer</span>: {},           <span class="comment">// 自动添加浏览器前缀</span></span><br><span class="line">  },</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>⚠️ <strong><code>postcss.config.js</code> 必须放在 VSCode 工作区根目录</strong>（即 <code>.vscode/</code> 所在的目录），否则 <code>codeActionsOnSave</code> 找不到它。</p>
+</blockquote>
+<h3 id="B-Stylelint-配置-—-stylelintrc-json">B. Stylelint 配置 — <code>.stylelintrc.json</code></h3>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"extends"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"stylelint-config-standard"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"plugins"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"stylelint-order"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"rules"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"at-rule-no-unknown"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"ignoreAtRules"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"tailwind"</span><span class="punctuation">,</span> <span class="string">"apply"</span><span class="punctuation">,</span> <span class="string">"layer"</span><span class="punctuation">,</span> <span class="string">"config"</span><span class="punctuation">,</span> <span class="string">"plugin"</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"property-no-unknown"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"ignoreProperties"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"/^--/"</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"order/properties-alphabetical-order"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<p><strong>规则说明</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>at-rule-no-unknown</code></td>
+<td>避免把 <code>@apply</code>、<code>@layer</code> 等 Tailwind 指令标记为语法错误</td>
+</tr>
+<tr>
+<td><code>property-no-unknown</code></td>
+<td>允许 CSS 自定义属性（<code>--color-primary</code> 等）</td>
+</tr>
+<tr>
+<td><code>order/properties-alphabetical-order</code></td>
+<td>强制 CSS 属性按字母序排列，保持统一风格（如不需要可移除）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="C-Tailwind-配置-—-tailwind-config-js">C. Tailwind 配置 — <code>tailwind.config.js</code></h3>
+<p><code>content</code> 字段必须覆盖所有包含类名的文件路径，否则智能提示失效：</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File: tailwind.config.js</span></span><br><span class="line"><span class="comment">/** <span class="doctag">@type</span> {<span class="type">import('tailwindcss').Config</span>} */</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = {</span><br><span class="line">  <span class="attr">content</span>: [</span><br><span class="line">    <span class="string">"./index.html"</span>,</span><br><span class="line">    <span class="string">"./src/**/*.{vue,js,ts,jsx,tsx}"</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">theme</span>: {</span><br><span class="line">    <span class="attr">extend</span>: {},</span><br><span class="line">  },</span><br><span class="line">  <span class="attr">plugins</span>: [],</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>✅ 确保 VSCode 打开的<strong>是项目根目录</strong>（包含 <code>tailwind.config.js</code> 的文件夹），而不是子文件夹。IntelliSense 通过查找配置文件来确定启用范围。</p>
+</blockquote>
+<hr>
+<h2 id="VSCode-工作区设置-—-vscode-settings-json">VSCode 工作区设置 — <code>.vscode/settings.json</code></h2>
+<p>这是最关键的一步。创建或更新项目根目录下的 <code>.vscode/settings.json</code>：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="comment">// 1. 文件关联：告知 VSCode .css 和 .pcss 使用 PostCSS 语法</span></span><br><span class="line">  <span class="attr">"files.associations"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"*.css"</span><span class="punctuation">:</span> <span class="string">"postcss"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"*.pcss"</span><span class="punctuation">:</span> <span class="string">"postcss"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. Tailwind CSS 智能提示增强</span></span><br><span class="line">  <span class="attr">"tailwindCSS.emmetCompletions"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"tailwindCSS.includeLanguages"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"plaintext"</span><span class="punctuation">:</span> <span class="string">"html"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"vue"</span><span class="punctuation">:</span> <span class="string">"html"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"javascript"</span><span class="punctuation">:</span> <span class="string">"javascript"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"typescript"</span><span class="punctuation">:</span> <span class="string">"typescript"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="comment">// 在字符串中也能获得类名提示（例如 Vue template 中的 class 属性）</span></span><br><span class="line">  <span class="attr">"editor.quickSuggestions"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"strings"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 保存时自动修复与格式化</span></span><br><span class="line">  <span class="comment">// 关闭通用的 formatOnSave（避免与 Stylelint 冲突）</span></span><br><span class="line">  <span class="attr">"editor.formatOnSave"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 通过 codeActionsOnSave 触发 PostCSS 和 Stylelint 修复</span></span><br><span class="line">  <span class="attr">"editor.codeActionsOnSave"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"source.fixAll.stylelint"</span><span class="punctuation">:</span> <span class="string">"explicit"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"source.fixAll.postcss"</span><span class="punctuation">:</span> <span class="string">"explicit"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 4. Stylelint 验证范围</span></span><br><span class="line">  <span class="attr">"stylelint.validate"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">"css"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"postcss"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"vue"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"html"</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 5. Vue 专属设置（如果使用 Vue）</span></span><br><span class="line">  <span class="attr">"[vue]"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"editor.defaultFormatter"</span><span class="punctuation">:</span> <span class="string">"esbenp.prettier-vscode"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"editor.formatOnSave"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="为什么关闭-editor-formatOnSave-再用-codeActionsOnSave？">为什么关闭 <code>editor.formatOnSave</code> 再用 <code>codeActionsOnSave</code>？</h3>
+<ul>
+<li><code>editor.formatOnSave</code> 调用的是 Prettier 或默认格式化器，对 PostCSS 文件它只能做基础格式化，不会触发 Autoprefixer 和 Stylelint 修复。</li>
+<li><code>codeActionsOnSave</code> 中的 <code>source.fixAll.postcss</code> 会触发 PostCSS 的 Autoprefixer 等插件运行，<code>source.fixAll.stylelint</code> 则触发 Stylelint 自动修复。</li>
+<li>两者互不冲突，但需要<strong>统一入口</strong>——通过 <code>codeActionsOnSave</code> 控制，而不是依赖 <code>formatOnSave</code>。</li>
+</ul>
+<blockquote>
+<p>💡 <code>"explicit"</code> 是 VSCode 1.88+ 的新语法，替代旧的 <code>true</code>。如果使用的是旧版本 VSCode，可以换成 <code>true</code>。</p>
+</blockquote>
+<hr>
+<h2 id="工作流程一览">工作流程一览</h2>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">编辑器中写 CSS/PostCSS</span><br><span class="line">  → Ctrl+S（或 Cmd+S）</span><br><span class="line">    → PostCSS 运行 Autoprefixer 自动添加前缀</span><br><span class="line">    → Stylelint 检查并修复格式问题</span><br><span class="line">    → Tailwind IntelliSense 持续提供类名补全</span><br><span class="line">  → 无红色波浪线，类名有提示，保存即处理</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="常见踩坑与解决方案">常见踩坑与解决方案</h2>
+<h3 id="❌-apply-被标红或没有语法提示">❌ <code>@apply</code> 被标红或没有语法提示</h3>
+<p><strong>原因</strong>：VSCode 默认将 <code>.css</code> 文件识别为标准 CSS，不认识 PostCSS 的 <code>@apply</code> 指令。</p>
+<p><strong>解决</strong>：</p>
+<ol>
+<li>安装 <code>csstools.postcss</code> 插件</li>
+<li>在 <code>.vscode/settings.json</code> 中设置 <code>"files.associations": { "*.css": "postcss" }</code></li>
+<li>如果仍无效，手动点击 VSCode 右下角语言模式 → 选择 <strong>“PostCSS”</strong></li>
+</ol>
+<blockquote>
+<p>很多教程只提第 1 步，但第 2 步才是关键——VSCode 不会自动关联文件类型，需要显式声明。两者缺一不可。</p>
+</blockquote>
+<h3 id="❌-Tailwind-类名无补全提示">❌ Tailwind 类名无补全提示</h3>
+<p><strong>原因</strong>：<code>tailwind.config.js</code> 未被找到，或 <code>content</code> 路径未覆盖当前编辑的文件。</p>
+<p><strong>排查步骤</strong>：</p>
+<ol>
+<li><strong>确认工作区根目录</strong> — VSCode 打开的文件夹必须包含 <code>tailwind.config.js</code></li>
+<li><strong>检查 <code>content</code> 路径</strong> — 例如编辑 <code>src/components/Button.vue</code> 时，<code>content</code> 中需包含 <code>"./src/**/*.vue"</code> 或更具体的路径</li>
+<li><strong>重启 Tailwind IntelliSense</strong> — 命令面板 → <code>&gt;Tailwind CSS: Show Output</code> 查看诊断信息</li>
+</ol>
+<p>最常见的错误：在 monorepo 中打开了子包目录，而 <code>tailwind.config.js</code> 在根目录。这时 IntelliSense 找不到配置，自然没有提示。</p>
+<h3 id="❌-保存时不自动加前缀或不格式化">❌ 保存时不自动加前缀或不格式化</h3>
+<p><strong>原因</strong>：仅安装了插件但未配置 <code>codeActionsOnSave</code>，或者 <code>postcss.config.js</code> 位置不对。</p>
+<p><strong>验证方法</strong>：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 确认 postcss.config.js 在工作区根目录</span></span><br><span class="line"><span class="built_in">ls</span> -la $(<span class="built_in">pwd</span>)/postcss.config.js</span><br><span class="line"></span><br><span class="line"><span class="comment"># 手动测试 PostCSS 是否正常工作</span></span><br><span class="line">npx postcss src/style.css --use autoprefixer -o /dev/null</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>关键规则</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>必须位置</th>
+<th>检查方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postcss.config.js</code></td>
+<td>VSCode 工作区根目录</td>
+<td><code>.vscode/settings.json</code> 同目录</td>
+</tr>
+<tr>
+<td><code>.stylelintrc.json</code></td>
+<td>任意上级目录（自动向上查找）</td>
+<td><code>npx stylelint --print-config</code></td>
+</tr>
+<tr>
+<td><code>tailwind.config.js</code></td>
+<td>VSCode 工作区根目录</td>
+<td>IntelliSense 以此定位</td>
+</tr>
+</tbody>
+</table>
+<h3 id="❌-Vue-文件中-style-块报错">❌ Vue 文件中 <code>&lt;style&gt;</code> 块报错</h3>
+<p><strong>原因</strong>：Stylelint 或 PostCSS 插件未配置对 Vue 文件的支持。</p>
+<p><strong>解决</strong>：</p>
+<ol>
+<li>安装 <code>vue.volar</code>（Vue - Official）插件</li>
+<li>在 <code>settings.json</code> 的 <code>stylelint.validate</code> 数组中添加 <code>"vue"</code></li>
+<li>在 <code>tailwindCSS.includeLanguages</code> 中添加 <code>"vue": "html"</code></li>
+</ol>
+<p>完整配置见上文的 <code>.vscode/settings.json</code> 示例。</p>
+<h3 id="❌-Stylelint-报告-Unknown-rule-order-properties-alphabetical-order">❌ Stylelint 报告 <code>Unknown rule: order/properties-alphabetical-order</code></h3>
+<p><strong>原因</strong>：没有安装 <code>stylelint-order</code> 插件。</p>
+<p><strong>解决</strong>：确保安装了 <code>stylelint-order</code> 并在配置的 <code>plugins</code> 数组中注册了它。如不需要属性排序，直接删除该规则即可。</p>
+<h3 id="❌-两个插件同时保存时产生冲突">❌ 两个插件同时保存时产生冲突</h3>
+<p><code>editor.formatOnSave: false</code> + <code>source.fixAll.stylelint</code> + <code>source.fixAll.postcss</code> 三者配合不会冲突——它们各自处理不同的事情：</p>
+<table>
+<thead>
+<tr>
+<th>修复源</th>
+<th>做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source.fixAll.stylelint</code></td>
+<td>修正缩进、空格、分号等代码风格问题</td>
+</tr>
+<tr>
+<td><code>source.fixAll.postcss</code></td>
+<td>运行 PostCSS 插件（Autoprefixer 等）进行编译转换</td>
+</tr>
+</tbody>
+</table>
+<p>两者不是竞争关系，而是流水线关系：Stylelint 保证代码风格统一，PostCSS 保证语法兼容。如果要用 Prettier 做基础格式化，可以为 <code>[vue]</code>、<code>[javascript]</code> 等语言单独启用 <code>formatOnSave</code>，它们作用域不同。</p>
+<hr>
+<h2 id="VS-Code-设置优先级（用于排查）">VS Code 设置优先级（用于排查）</h2>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">默认设置 &lt; 用户设置 &lt; 工作区设置 &lt; 文件夹设置</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>用户设置</strong> 在 <code>~/Library/Application Support/Code/User/settings.json</code>（macOS），<strong>会覆盖项目设置</strong>中同名的配置。如果设置了全局 <code>"editor.formatOnSave": false</code> 或全局 <code>"editor.codeActionsOnSave"</code>，项目级的 settings.json 同样会被覆盖。</p>
+<blockquote>
+<p>✅ 推荐做法：用户设置只放个人偏好（主题、字体、键绑定），项目设置放工具链配置。如果用户设置中有覆盖项，注释掉它们。</p>
+</blockquote>
+<hr>
+<h2 id="总结">总结</h2>
+<p>通过以上配置，你可以实现：</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>实现方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ 实时错误检查</td>
+<td>Stylelint 即时反馈代码规范问题</td>
+</tr>
+<tr>
+<td>✅ 智能补全</td>
+<td>Tailwind 类名、CSS 属性、Emmet 缩写全面支持</td>
+</tr>
+<tr>
+<td>✅ 自动格式化</td>
+<td>保存时自动应用 PostCSS 转换（Autoprefixer）和 Stylelint 修复</td>
+</tr>
+<tr>
+<td>✅ 无冲突</td>
+<td>关闭 <code>formatOnSave</code>，统一由 <code>codeActionsOnSave</code> 驱动</td>
+</tr>
+<tr>
+<td>✅ Vue 支持</td>
+<td>与 <code>vue.volar</code> 配合，<code>.vue</code> 中 <code>&lt;style&gt;</code> 块完美支持</td>
+</tr>
+</tbody>
+</table>
+<p>一次配置，全项目受益。提交到 Git 后所有成员都能获得一致的开发体验——这就是 <code>.vscode/settings.json</code> 放到版本控制中的价值。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io">Jerome Xiong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/">https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://jeromexiong.github.io" target="_blank">Jerome Xiong</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a><a class="post-meta__tags" href="/tags/PostCSS/">PostCSS</a><a class="post-meta__tags" href="/tags/Stylelint/">Stylelint</a><a class="post-meta__tags" href="/tags/Tailwind-CSS/">Tailwind CSS</a><a class="post-meta__tags" href="/tags/VSCode/">VSCode</a></div><div class="post-share"><div class="social-share" data-image="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img class="cover" src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</div></div><div class="info-2"><div class="info-item-1"> 从零开始搭建 Flutter 开发环境，用 FlyEnv 替代手动配置 SDK，Android Studio 作为主力 IDE，FVM 管理多项目 Flutter 版本——一套省心又不折腾的方案。  背景 Flutter 环境搭建对新手来说一直是个门槛：下载 SDK、配 PATH、装 Android Studio、装插件、还要管理多版本……步骤多且容易出错。 FlyEnv（原 PHPStudy）是一款 macOS 开发环境管理工具，内置 Flutter/Dart 等 SDK 的一键安装和版本切换。配合 Android Studio 和 FVM，可以快速搭出一套整洁、可维护的开发环境。   一、FlyEnv 安装 Flutter &amp; Dart 1.1 安装 FlyEnv 1brew install --cask flyenv 安装后在 应用程序 中找到 FlyEnv 并打开。  FlyEnv 会自己管理 SDK 安装路径，不需要手动配置 PATH，它会自动把 SDK 加到 shell 环境中。  1.2 安装 Flutter/Dart 打开 FlyEnv → 左侧 环境 ...</div></div></div></a><a class="pagination-related" href="/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" title="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例"><img class="cover" src="https://img.shields.io/badge/Prettier-ESLint%20集成-F7B93E?logo=prettier&amp;logoColor=white" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</div></div><div class="info-2"><div class="info-item-1">背景 在一个 Vue3 + Vite 项目中，同时使用 ESLint（代码质量检查）和 Prettier（代码格式化）时，两者的规则可能冲突。最典型的就是 ESLint 要求最大行长 80 字符，而 Prettier 默认也是 80——看起来一致，但一旦自定义其中一个就可能打架。 解决方案：用 ESLint 驱动 Prettier。通过 eslint-plugin-prettier 将 Prettier 的格式化规则作为 ESLint 的一条规则运行，再通过 eslint-config-prettier 关闭所有与 Prettier 冲突的 ESLint 原生风格规则。 本文以 qiyun_admin 项目的实际配置为例，完整说明集成方式和关键细节。  依赖安装 1npm install -D prettier eslint-plugin-prettier eslint-config-prettier 三个包的分工：    包 作用     prettier 格式化引擎   eslint-plugin-prettier 将 Prettier 作为 ESLint 的一条 rule ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" title="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例"><img class="cover" src="https://img.shields.io/badge/Prettier-ESLint%20集成-F7B93E?logo=prettier&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</div></div><div class="info-2"><div class="info-item-1">背景 在一个 Vue3 + Vite 项目中，同时使用 ESLint（代码质量检查）和 Prettier（代码格式化）时，两者的规则可能冲突。最典型的就是 ESLint 要求最大行长 80 字符，而 Prettier 默认也是 80——看起来一致，但一旦自定义其中一个就可能打架。 解决方案：用 ESLint 驱动 Prettier。通过 eslint-plugin-prettier 将 Prettier 的格式化规则作为 ESLint 的一条规则运行，再通过 eslint-config-prettier 关闭所有与 Prettier 冲突的 ESLint 原生风格规则。 本文以 qiyun_admin 项目的实际配置为例，完整说明集成方式和关键细节。  依赖安装 1npm install -D prettier eslint-plugin-prettier eslint-config-prettier 三个包的分工：    包 作用     prettier 格式化引擎   eslint-plugin-prettier 将 Prettier 作为 ESLint 的一条 rule ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%85%E5%A4%87%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">必备插件安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">项目依赖安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="toc-number">2.1.</span> <span class="toc-text">版本说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-PostCSS-%E9%85%8D%E7%BD%AE-%E2%80%94-postcss-config-js"><span class="toc-number">3.1.</span> <span class="toc-text">A. PostCSS 配置 — postcss.config.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Stylelint-%E9%85%8D%E7%BD%AE-%E2%80%94-stylelintrc-json"><span class="toc-number">3.2.</span> <span class="toc-text">B. Stylelint 配置 — .stylelintrc.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-Tailwind-%E9%85%8D%E7%BD%AE-%E2%80%94-tailwind-config-js"><span class="toc-number">3.3.</span> <span class="toc-text">C. Tailwind 配置 — tailwind.config.js</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VSCode-%E5%B7%A5%E4%BD%9C%E5%8C%BA%E8%AE%BE%E7%BD%AE-%E2%80%94-vscode-settings-json"><span class="toc-number">4.</span> <span class="toc-text">VSCode 工作区设置 — .vscode&#x2F;settings.json</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%B3%E9%97%AD-editor-formatOnSave-%E5%86%8D%E7%94%A8-codeActionsOnSave%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">为什么关闭 editor.formatOnSave 再用 codeActionsOnSave？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%80%E8%A7%88"><span class="toc-number">5.</span> <span class="toc-text">工作流程一览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%B8%A9%E5%9D%91%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">6.</span> <span class="toc-text">常见踩坑与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%8C-apply-%E8%A2%AB%E6%A0%87%E7%BA%A2%E6%88%96%E6%B2%A1%E6%9C%89%E8%AF%AD%E6%B3%95%E6%8F%90%E7%A4%BA"><span class="toc-number">6.1.</span> <span class="toc-text">❌ @apply 被标红或没有语法提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%8C-Tailwind-%E7%B1%BB%E5%90%8D%E6%97%A0%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA"><span class="toc-number">6.2.</span> <span class="toc-text">❌ Tailwind 类名无补全提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%8C-%E4%BF%9D%E5%AD%98%E6%97%B6%E4%B8%8D%E8%87%AA%E5%8A%A8%E5%8A%A0%E5%89%8D%E7%BC%80%E6%88%96%E4%B8%8D%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">6.3.</span> <span class="toc-text">❌ 保存时不自动加前缀或不格式化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%8C-Vue-%E6%96%87%E4%BB%B6%E4%B8%AD-style-%E5%9D%97%E6%8A%A5%E9%94%99"><span class="toc-number">6.4.</span> <span class="toc-text">❌ Vue 文件中 &lt;style&gt; 块报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%8C-Stylelint-%E6%8A%A5%E5%91%8A-Unknown-rule-order-properties-alphabetical-order"><span class="toc-number">6.5.</span> <span class="toc-text">❌ Stylelint 报告 Unknown rule: order&#x2F;properties-alphabetical-order</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9D%8C-%E4%B8%A4%E4%B8%AA%E6%8F%92%E4%BB%B6%E5%90%8C%E6%97%B6%E4%BF%9D%E5%AD%98%E6%97%B6%E4%BA%A7%E7%94%9F%E5%86%B2%E7%AA%81"><span class="toc-number">6.6.</span> <span class="toc-text">❌ 两个插件同时保存时产生冲突</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VS-Code-%E8%AE%BE%E7%BD%AE%E4%BC%98%E5%85%88%E7%BA%A7%EF%BC%88%E7%94%A8%E4%BA%8E%E6%8E%92%E6%9F%A5%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">VS Code 设置优先级（用于排查）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'ae8ab270574517163a19',
+      clientSecret: '1d7564ea5d344abe5afe6717d5dbfe282dd6930b',
+      repo: 'jeromexiong.github.io',
+      owner: 'jeromexiong',
+      admin: ['jeromexiong'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'bd5491069ec4fb2c43ebea0ef307b661'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

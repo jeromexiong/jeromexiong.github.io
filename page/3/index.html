@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Jerome Xiong - Jerome Xiong 的个人博客</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客，分享移动开发、跨平台技术、编程心得与实用工具">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jerome Xiong">
+<meta property="og:url" content="https://jeromexiong.github.io/page/3/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客，分享移动开发、跨平台技术、编程心得与实用工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jeromexiong.github.io/images/avatar.png">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeromexiong.github.io/images/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/page/3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Jerome Xiong',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://img0.baidu.com/it/u=2537641398,3767872189&amp;fm=26&amp;fmt=auto);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Jerome Xiong</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2021/09/17/Mac/Mac%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/" title="Mac必装软件"><img class="post-bg" src="https://img.shields.io/badge/Mac-000000?logo=apple&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Mac必装软件"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/09/17/Mac/Mac%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/" title="Mac必装软件">Mac必装软件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/mac/">mac</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Mac/">Mac</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%90/">软件推荐</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/macOS/">macOS</a></span></div><div class="content">本文整理了 Mac 平台上一系列实用软件和开发工具，从系统配置到日常应用一应俱全，帮助你快速搭建高效的工作环境。 系统软件  homebrew mysql pyenv nvm redis 直接brew install redis即可  Mac必装软件  IINA 最好用的音视频播放软件（可播放任何地址 Typora 最好用的Markdown编辑工具 （➕PicGo实现图片自动上传 VsCode 最好用的代码编辑工具 Neat Download Manager 最快速的下载工具 Electerm 开源的跨平台Shell管理工具 FinalShell 最好用跨平台Shell管理工具，就是不开源 Tencent Lemon 类似于CleanMyMac，但是完全免费 xmind 思维导图 wps 好用的文档中心 V2ray mac 推荐v2rayu, win推荐v2rayn （免费订阅free 幽禁节点   可选软件  OBS 强大的推流工具 ishot 截图、长截图、贴图、标注、取色、录屏，样样优秀 PicGo 一个用于快速上传图片并获取图片 URL 链接的工具 Daisy Disk ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/09/17/%E5%B7%A5%E5%85%B7/Typora-GitHub-PicGo%E6%89%93%E9%80%A0%E4%B8%9D%E6%BB%91%E7%9A%84%E7%BC%96%E8%BE%91%E4%BD%93%E9%AA%8C/" title="Typora+GitHub+PicGo打造丝滑的编辑体验"><img class="post-bg" src="https://img.shields.io/badge/-Markdown-000000?logo=markdown&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typora+GitHub+PicGo打造丝滑的编辑体验"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/09/17/%E5%B7%A5%E5%85%B7/Typora-GitHub-PicGo%E6%89%93%E9%80%A0%E4%B8%9D%E6%BB%91%E7%9A%84%E7%BC%96%E8%BE%91%E4%BD%93%E9%AA%8C/" title="Typora+GitHub+PicGo打造丝滑的编辑体验">Typora+GitHub+PicGo打造丝滑的编辑体验</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Typora/">Typora</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/PicGo/">PicGo</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/GitHub/">GitHub</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Markdown/">Markdown</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%9B%BE%E5%BA%8A/">图床</a></span></div><div class="content">前文 很多时候我们都需要一个公共的资源地址来存储自己的文章等信息，作为一个coder，那当然是要用我们专属的语言来写日记了（markdown）。这里就给大家讲解一下如何使用typora + PicGo + github 打造专属的编辑&amp;存储方式。 准备 一、从上面的链接中下载并安装typora和PicGo 二、 登录github账号  创建公开资源库  生成新令牌    依次点击 右上角点用户头像 -&gt; Settings -&gt; Developer settings -&gt;  Personal access tokens）-&gt; Generate new token    设置令牌描述性名称，过期时间看自己情况选择，Select scopes只勾选：repo、 user    Generate token 生成令牌 ⚠️令牌只显示一次，一定要复制保存好   设置PicGo图床   打开picgo后在顶部菜单栏右击图标，选择打开详情窗口，选择PicGo设置并勾选GitHub图床；就会在图床设置处显示图床    配置GitHub图床    填写github账...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/06/01/iOS-Swift/Framework%E8%BD%AC%E6%8D%A2XCFramework%E4%B9%8B%E6%97%85/" title="Framework转换XCFramework之旅"><img class="post-bg" src="https://img.shields.io/badge/XCFramework-555555?style=flat-square&amp;logo=apple" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Framework转换XCFramework之旅"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/06/01/iOS-Swift/Framework%E8%BD%AC%E6%8D%A2XCFramework%E4%B9%8B%E6%97%85/" title="Framework转换XCFramework之旅">Framework转换XCFramework之旅</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/iOS/">iOS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/XCFramework/">XCFramework</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Framework/">Framework</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9E%B6%E6%9E%84%E5%90%88%E5%B9%B6/">架构合并</a></span></div><div class="content">XCFramework 是 Apple 推荐的 Framework 分发格式，支持多架构合并。本文详细介绍从 Framework 到 XCFramework 的转换流程。 先说一下XCFramework的好处吧：  多架构合并，模拟器，真机可以通用随便跑 上架AppStore，不需要将.xcframework中的真机架构分离，.framework还需要用脚本分离，这实在太棒了  Framework简单解析 拿腾讯IM的举例吧，其实.framework就是个文件夹里面装着封装好的文件。 123456789% cd path/ImSDK.framework # path 为 framework 路径ImSDK.framework % tree -L 1.├── Headers # 头文件夹├── ImSDK # 可执行文件├── Info.plist└── Modules # Modules 文件夹2 directories, 2 files 通过lipo -info查看.framework中的可执行文件中包含的架构： 12ImSDK.framework % lipo -info I...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/05/01/%E5%B7%A5%E5%85%B7/%E4%BB%8E%20nvm%20%E8%BF%81%E7%A7%BB%E5%88%B0%20Volta%20&amp;npm%E5%88%B0%20pnpm/" title="从 nvm 迁移到 Volta &amp;npm到 pnpm"><img class="post-bg" src="https://img.shields.io/badge/-Node.js-339933?logo=node.js&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从 nvm 迁移到 Volta &amp;npm到 pnpm"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/01/%E5%B7%A5%E5%85%B7/%E4%BB%8E%20nvm%20%E8%BF%81%E7%A7%BB%E5%88%B0%20Volta%20&amp;npm%E5%88%B0%20pnpm/" title="从 nvm 迁移到 Volta &amp;npm到 pnpm">从 nvm 迁移到 Volta &amp;npm到 pnpm</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Web/">Web</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Node-js/">Node.js</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Volta/">Volta</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/pnpm/">pnpm</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/nvm/">nvm</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/">版本管理</a></span></div><div class="content">Node.js 版本管理工具从 nvm 迁移到 Volta，包管理器从 npm 迁移到 pnpm，是提升前端开发效率的重要一步。Volta 相比 nvm 的优势在于自动版本切换和项目级配置，本文记录完整的迁移过程。 一、卸载 nvm（避免冲突）   ​卸载 nvm​： 在终端执行以下命令移除 nvm 及其配置： nvm unload                    # 卸载 nvm rm -rf "${NVM_DIR:-~/.nvm}"  # 删除安装目录    ​清理配置文件​： 编辑 shell 配置文件（如&nbsp;~/.zshrc或&nbsp;~/.bashrc），删除以下行： export NVM_DIR="$HOME/.nvm" [ -s "$NVM_DIR/nvm.sh" ] &amp;&amp; \. "$NVM_DIR/nvm.sh" [[ -r $NVM_DIR/bash_completion ]] &amp;&amp; \. $NVM_DIR/bash_completion  完成后运行&nbsp;source ~/.zshrc（或重启终端）。   ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/" title="mac 使用docker安装mysql，redis, nginx"><img class="post-bg" src="https://img.shields.io/badge/Linux-2496ED?style=flat-square&amp;logo=docker" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="mac 使用docker安装mysql，redis, nginx"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/" title="mac 使用docker安装mysql，redis, nginx">mac 使用docker安装mysql，redis, nginx</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Nginx/">Nginx</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MySQL/">MySQL</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Redis/">Redis</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Docker/">Docker</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/docker-compose/">docker-compose</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Mac/">Mac</a></span></div><div class="content">本文介绍在 Mac 上使用 Docker 和 docker-compose 一键部署 MySQL、Redis 和 Nginx 服务，涵盖镜像加速、数据持久化、容器链接等关键配置。 安装 首先去官网下载，因为国内网络问题，需要配置网络加速，可以使用：  http://hub-mirror.c.163.com 网易 https://registry.docker-cn.com 中国区官方 docker.mirrors.ustc.edu.cn 中国科技大学   {   "registry-mirrors": [     "https://docker.registry.cyou",     "https://docker-cf.registry.cyou",     "https://dockercf.jsdelivr.fyi",     "https://docker.jsdelivr.fyi",     "https://dockertest.jsdelivr.fyi",     "https://mirror.aliyuncs.com",     "https://dockerp...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/08/01/Linux-DevOps/%E5%AE%9D%E5%A1%94%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/" title="宝塔管理服务器部署"><img class="post-bg" src="https://img.shields.io/badge/Linux-009639?style=flat-square&amp;logo=nginx" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="宝塔管理服务器部署"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/01/Linux-DevOps/%E5%AE%9D%E5%A1%94%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/" title="宝塔管理服务器部署">宝塔管理服务器部署</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Nginx/">Nginx</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/SSL/">SSL</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%AE%9D%E5%A1%94/">宝塔</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%83%A8%E7%BD%B2/">部署</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%9D%A2%E6%9D%BF/">面板</a></span></div><div class="content">本教程详细介绍如何在宝塔面板中配置 Nginx 反向代理、静态资源服务，以及部署 Let’s Encrypt 免费 SSL 证书和自动续期功能。 在宝塔面板中配置您提供的 Nginx 反向代理和静态资源服务，可以按照以下步骤操作。下面的流程图汇总了核心配置步骤，帮助您快速了解整体流程： 1234567891011121314151617flowchart TD    A[开始配置] --&gt; B[登录宝塔面板&lt;br&gt;创建或选择站点]    B --&gt; C{配置目标}    C --&gt;|反向代理| D[配置反向代理]    C --&gt;|静态资源| E[配置静态资源]        D --&gt; D1[添加反向代理规则]    D1 --&gt; D2[自定义代理名称和目标URL]    D2 --&gt; D3[高级配置中添加&lt;br&gt;proxy_set_header等参数]        E --&gt; E1[修改网站根目录]    E1 --&gt; E2[设置默认文档]    E2 --&gt; E3[添加try_files指...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/07/01/Linux-DevOps/%E4%BD%BF%E7%94%A8LetsEncrypt%E8%8E%B7%E5%8F%96%E5%92%8C%E5%AE%89%E8%A3%85SSLTLS%E8%AF%81%E4%B9%A6%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/" title="使用LetsEncrypt获取和安装SSLTLS证书的完整指南"><img class="post-bg" src="https://img.shields.io/badge/Linux-009639?style=flat-square&amp;logo=nginx" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用LetsEncrypt获取和安装SSLTLS证书的完整指南"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/01/Linux-DevOps/%E4%BD%BF%E7%94%A8LetsEncrypt%E8%8E%B7%E5%8F%96%E5%92%8C%E5%AE%89%E8%A3%85SSLTLS%E8%AF%81%E4%B9%A6%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/" title="使用LetsEncrypt获取和安装SSLTLS证书的完整指南">使用LetsEncrypt获取和安装SSLTLS证书的完整指南</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Nginx/">Nginx</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/HTTPS/">HTTPS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/SSL/">SSL</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LetsEncrypt/">LetsEncrypt</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/TLS/">TLS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%AF%81%E4%B9%A6/">证书</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Certbot/">Certbot</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Apache/">Apache</a></span></div><div class="content">使用Let’s Encrypt获取和安装SSL/TLS证书的完整指南 Let’s Encrypt是一个免费、自动化的证书颁发机构(CA)，通过其官方工具Certbot可以简化SSL/TLS证书的获取和安装流程。以下是详细的步骤指南： 一、准备工作  域名准备：确保您拥有要申请证书的域名，并且该域名的DNS记录已正确解析到您的服务器IP地址 服务器要求：需要root或sudo权限，并确保服务器开放了80(HTTP)和443(HTTPS)端口 Web服务器：已安装Nginx或Apache等Web服务器软件  二、安装Certbot工具 Certbot是Let’s Encrypt官方推荐的客户端工具，安装方法因操作系统而异： Ubuntu/Debian系统 1234sudo apt updatesudo apt install certbot python3-certbot-nginx  # 用于Nginx# 或sudo apt install certbot python3-certbot-apache # 用于Apache CentOS/RHEL系统 12345678sudo yu...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/06/15/%E5%B7%A5%E5%85%B7/vscode%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE/" title="vscode用户设置"><img class="post-bg" src="https://img.shields.io/badge/-VS%20Code-007ACC?logo=visual-studio-code&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vscode用户设置"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/06/15/%E5%B7%A5%E5%85%B7/vscode%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE/" title="vscode用户设置">vscode用户设置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE/">配置</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/VS-Code/">VS Code</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%BC%96%E8%BE%91%E5%99%A8/">编辑器</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/">前端开发</a></span></div><div class="content">VS Code 是目前最流行的代码编辑器之一，合理的用户设置能大幅提升编码效率。以下是我的个人配置备份，涵盖编辑器外观、格式化、ESLint、Emmet 等常用选项，可直接复制使用。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485{  "update.channel": "none",  "extensions.autoUpdate": false,  "editor.renderLineHighlight": "none",  "editor.renderWhitespace": "none",  // "editor.fontFamily": "Consolas",  "editor.fontSize": 15,  "editor.cursorBlinking": "smooth",  "editor.m...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/06/01/Web-%E5%89%8D%E7%AB%AF/Vue%20%E7%AC%94%E8%AE%B0/" title="Vue 笔记"><img class="post-bg" src="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue 笔记"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/06/01/Web-%E5%89%8D%E7%AB%AF/Vue%20%E7%AC%94%E8%AE%B0/" title="Vue 笔记">Vue 笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Web/">Web</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Vue/">Vue</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">本文记录 Vue.js 开发中常见的几个实用技巧，包括通过 JS 动态设置 CSS 变量、理解 extends 与 mixins 的区别以及图片资源的动态导入方法，适合日常开发快速参考。 js动态设置css 123456this.$el.style.setProperty('--ar-round', this.radius);// 或者原生设置// document.documentElement.style.setProperty('--ar-round', this.radius);// 使用border-radius: var(--ar-round) extends 和 mixins 的区别 都是混入对象，但mixins是多继承，extends是单继承；可继承所有属性对象，并且后面覆盖前面 img动态设置地址 1234import test from "../asssets/test.png"// test 即为资源地址console.log(test)&lt;img :src="test"&gt; </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/05/01/Web-%E5%89%8D%E7%AB%AF/ES6%E7%9A%84NodeJS%20&amp;%20pm2%E5%90%AF%E5%8A%A8/" title="ES6的NodeJS &amp; pm2启动"><img class="post-bg" src="https://img.shields.io/badge/Node.js-339933?logo=node.js&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6的NodeJS &amp; pm2启动"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/05/01/Web-%E5%89%8D%E7%AB%AF/ES6%E7%9A%84NodeJS%20&amp;%20pm2%E5%90%AF%E5%8A%A8/" title="ES6的NodeJS &amp; pm2启动">ES6的NodeJS &amp; pm2启动</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Web/">Web</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Node-js/">Node.js</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%83%A8%E7%BD%B2/">部署</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/ES6/">ES6</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/pm2/">pm2</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Babel/">Babel</a></span></div><div class="content">本文详细讲解如何从零搭建支持ES6语法的Node.js项目，涵盖Babel转码配置、PM2集群部署以及forever进程管理，帮助你将Node.js应用高效部署到生产环境。 创建支持ES6的NodeJS项目   新建一个空的文件夹，在根目录执行：npm init -y。会生成一个package.json文件   安装依赖    安装express： npm install --save express   安装babel转码编译：npm install --save-dev babel-register babel-preset-env   在文件根目录创建.babelrc文件，内容如下：  123456789{	"presets": [		["env", {			"targets": {//只转码当前不支持语法			"node": "current"			}		}]	]}  新建一个src文件夹，并在文件内新建 main.js内容如下：  123456789import Express from 'express'let app = Express()app.get('/', ...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#content-inner">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#content-inner">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#content-inner">6</a><a class="extend next" rel="next" href="/page/4/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI/"><span class="card-category-list-name">AI</span><span class="card-category-list-count">7</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI/%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">工具</span><span class="card-category-list-count">7</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CI-CD/"><span class="card-category-list-name">CI/CD</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Flutter/"><span class="card-category-list-name">Flutter</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/"><span class="card-category-list-name">Linux</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Mac/"><span class="card-category-list-name">Mac</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Web/"><span class="card-category-list-name">Web</span><span class="card-category-list-count">7</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 1.15em; color: rgb(187, 120, 50);">杂记</a><a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 1.3em; color: rgb(195, 115, 160);">命令行</a><a href="/tags/%E4%BB%A3%E7%A0%81%E7%BB%9F%E8%AE%A1/" style="font-size: 1.15em; color: rgb(50, 163, 50);">代码统计</a><a href="/tags/Git/" style="font-size: 1.45em; color: rgb(86, 61, 133);">Git</a><a href="/tags/Flutter/" style="font-size: 1.45em; color: rgb(150, 81, 73);">Flutter</a><a href="/tags/Flutter-3-44/" style="font-size: 1.15em; color: rgb(182, 103, 67);">Flutter 3.44</a><a href="/tags/Dart-3-12/" style="font-size: 1.15em; color: rgb(157, 191, 50);">Dart 3.12</a><a href="/tags/Riverpod/" style="font-size: 1.15em; color: rgb(181, 50, 58);">Riverpod</a><a href="/tags/GoRouter/" style="font-size: 1.15em; color: rgb(57, 88, 50);">GoRouter</a><a href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" style="font-size: 1.15em; color: rgb(50, 122, 50);">开发规范</a><a href="/tags/AI-%E7%BC%96%E7%A8%8B/" style="font-size: 1.3em; color: rgb(169, 67, 165);">AI 编程</a><a href="/tags/Hermes/" style="font-size: 1.45em; color: rgb(50, 184, 50);">Hermes</a><a href="/tags/AI-Agent/" style="font-size: 1.3em; color: rgb(71, 123, 90);">AI Agent</a><a href="/tags/CLI/" style="font-size: 1.15em; color: rgb(170, 177, 172);">CLI</a><a href="/tags/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" style="font-size: 1.15em; color: rgb(119, 151, 50);">安装配置</a><a href="/tags/Skills/" style="font-size: 1.15em; color: rgb(182, 76, 53);">Skills</a><a href="/tags/MCP/" style="font-size: 1.3em; color: rgb(81, 181, 193);">MCP</a><a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 1.15em; color: rgb(50, 56, 198);">插件</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.15em; color: rgb(50, 50, 127);">微信</a><a href="/tags/%E7%BD%91%E5%85%B3/" style="font-size: 1.15em; color: rgb(65, 174, 81);">网关</a><a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" style="font-size: 1.15em; color: rgb(53, 130, 174);">定时任务</a><a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" style="font-size: 1.15em; color: rgb(173, 76, 50);">工作流</a><a href="/tags/DeepSeek/" style="font-size: 1.15em; color: rgb(50, 65, 97);">DeepSeek</a><a href="/tags/DeepSeek-V4/" style="font-size: 1.15em; color: rgb(157, 71, 50);">DeepSeek-V4</a><a href="/tags/IntelliJ-IDEA/" style="font-size: 1.15em; color: rgb(185, 50, 92);">IntelliJ IDEA</a><a href="/tags/Android-Studio/" style="font-size: 1.45em; color: rgb(65, 50, 181);">Android Studio</a><a href="/tags/Claude-Code/" style="font-size: 1.3em; color: rgb(50, 50, 60);">Claude Code</a><a href="/tags/%E7%BB%88%E7%AB%AF%E5%B7%A5%E5%85%B7/" style="font-size: 1.15em; color: rgb(50, 145, 192);">终端工具</a><a href="/tags/Vercel/" style="font-size: 1.15em; color: rgb(179, 93, 50);">Vercel</a><a href="/tags/eve/" style="font-size: 1.15em; color: rgb(91, 75, 171);">eve</a><a href="/tags/Agent%E6%A1%86%E6%9E%B6/" style="font-size: 1.15em; color: rgb(56, 50, 50);">Agent框架</a><a href="/tags/TypeScript/" style="font-size: 1.15em; color: rgb(71, 50, 97);">TypeScript</a><a href="/tags/%E5%BC%80%E6%BA%90/" style="font-size: 1.15em; color: rgb(131, 78, 168);">开源</a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" style="font-size: 1.15em; color: rgb(116, 151, 98);">自动化测试</a><a href="/tags/Playwright/" style="font-size: 1.15em; color: rgb(114, 192, 50);">Playwright</a><a href="/tags/Playwright-CLI/" style="font-size: 1.15em; color: rgb(126, 146, 50);">Playwright CLI</a><a href="/tags/Playwright-MCP/" style="font-size: 1.15em; color: rgb(172, 50, 50);">Playwright MCP</a><a href="/tags/Midscene/" style="font-size: 1.15em; color: rgb(137, 50, 50);">Midscene</a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 1.15em; color: rgb(96, 61, 185);">浏览器自动化</a><a href="/tags/E2E/" style="font-size: 1.15em; color: rgb(50, 83, 50);">E2E</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">13</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/01/">
+            <span class="card-archive-list-date">
+              一月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/10/">
+            <span class="card-archive-list-date">
+              十月 2021
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/09/">
+            <span class="card-archive-list-date">
+              九月 2021
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/06/">
+            <span class="card-archive-list-date">
+              六月 2021
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/05/">
+            <span class="card-archive-list-date">
+              五月 2021
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2020/09/">
+            <span class="card-archive-list-date">
+              九月 2020
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">56</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-07-01T10:36:11.557Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div><div class="card-widget user-map" id="user-map"><div class="item-headline"><i class="fas fa-heartbeat"></i><span>访客地图</span></div><div class="item-content"><script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=5V2tOKp8qAdRM-i8eu7ETTO9ugt5uKbbG-U7Yj8uMl8"></script></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = ["天无边，智无限。","The sky is boundless，wisdom is infinite."].slice()
+
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  typedJSFn.processSubtitle(["天无边，智无限。","The sky is boundless，wisdom is infinite."])
+}
+typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

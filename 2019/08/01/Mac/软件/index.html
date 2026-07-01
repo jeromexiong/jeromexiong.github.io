@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>软件 | Jerome Xiong</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Mac平台精选软件推荐合集，涵盖开发环境工具、日常应用、Chrome扩展及macOS常见问题解决技巧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件">
+<meta property="og:url" content="https://jeromexiong.github.io/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="Mac平台精选软件推荐合集，涵盖开发环境工具、日常应用、Chrome扩展及macOS常见问题解决技巧。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white">
+<meta property="article:published_time" content="2019-08-01T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T10:35:49.505Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="Mac">
+<meta property="article:tag" content="软件推荐">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "软件",
+  "url": "https://jeromexiong.github.io/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/",
+  "image": "https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white",
+  "datePublished": "2019-08-01T10:00:00.000Z",
+  "dateModified": "2026-07-01T10:35:49.505Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jerome Xiong",
+      "url": "https://jeromexiong.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '软件',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img.shields.io/badge/Mac-000000?logo=apple&amp;logoColor=white);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a><a class="nav-page-title" href="/"><span class="site-name">软件</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">软件</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon fas fa-history"></i><span class="post-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Mac/">Mac</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>精选 Mac 平台各类优质软件资源，从系统开发环境配置到日常效率工具均有覆盖，并附带 macOS 使用中常见问题的解决方法。</p>
+<h2 id="系统软件">系统软件</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b7b789a2ed2c">homebrew</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4fc53d7d7620">mysql</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pyenv/pyenv#homebrew-on-macos">pyenv</a></li>
+<li><a target="_blank" rel="noopener" href="https://pipx.pypa.io/stable/">pipx</a>在独立的隔离环境中安装这些工具，从而避免它们干扰其他项目的依赖。默认会依赖最新的<code>python</code>版本，类似于 nvm</li>
+<li><a target="_blank" rel="noopener" href="https://python-poetry.org/docs/">poetry</a> python 包管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/nvm-manager-node-versions.html">nvm</a></li>
+<li><a href="">redis</a> 直接<code>brew install redis</code>即可</li>
+</ol>
+<h2 id="Mac必装软件">Mac必装软件</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://iina.io/">IINA</a> 最好用的音视频播放软件（可播放任何地址</li>
+<li><a target="_blank" rel="noopener" href="https://www.typora.io/">Typora</a> 最好用的Markdown编辑工具 （➕<code>PicGo</code>实现图片自动上传</li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/">VsCode</a> 最好用的代码编辑工具</li>
+<li><a target="_blank" rel="noopener" href="http://www.neatdownloadmanager.com/index.php/en/">Neat Download Manager</a> 最快速的下载工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/electerm/electerm">Electerm</a> 开源的跨平台Shell管理工具</li>
+<li><a target="_blank" rel="noopener" href="http://www.hostbuf.com/">FinalShell</a> 最好用跨平台Shell管理工具，就是不开源</li>
+<li><a target="_blank" rel="noopener" href="https://lemon.qq.com/">Tencent Lemon</a> 类似于CleanMyMac，但是完全免费</li>
+<li><a target="_blank" rel="noopener" href="https://apps.apple.com/cn/app/xmind-2020-%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/id1327661892?mt=12">xmind</a> 思维导图</li>
+<li><a target="_blank" rel="noopener" href="https://apps.apple.com/cn/app/wps-office/id1443749478?mt=12">wps</a> 好用的文档中心</li>
+<li><a target="_blank" rel="noopener" href="https://tlanyan.me/v2ray-clients-download/">V2ray</a> mac 推荐<code>v2rayu</code>, win推荐<code>v2rayn</code> （免费订阅<a target="_blank" rel="noopener" href="https://github.com/freefq/free">free</a> <a target="_blank" rel="noopener" href="https://youjinnode.com/#/">幽禁节点</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.filezilla.cn/download/client">FileZilla</a>是一款方便高效的FTP客户端工具</li>
+</ol>
+<hr>
+<p>可选软件</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://obsproject.com/">OBS</a> 强大的推流工具</li>
+<li><a target="_blank" rel="noopener" href="https://apps.apple.com/cn/app/ishot-%E4%BC%98%E7%A7%80%E7%9A%84%E6%88%AA%E5%9B%BE%E5%BD%95%E5%B1%8F%E5%B7%A5%E5%85%B7/id1485844094?mt=12">ishot</a> 截图、长截图、贴图、标注、取色、录屏，样样优秀</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/">PicGo</a> 一个用于快速上传图片并获取图片 URL 链接的工具</li>
+<li><a target="_blank" rel="noopener" href="https://www.macwk.com/soft/daisydisk">Daisy Disk</a> 磁盘大小管理</li>
+<li><a target="_blank" rel="noopener" href="https://apps.apple.com/cn/app/pixeur-%E5%B1%8F%E5%B9%95%E6%8B%BE%E8%89%B2%E5%99%A8/id1507890049?mt=12">Pixeur - 屏幕拾色器</a> 取色器</li>
+<li><a target="_blank" rel="noopener" href="https://foxirj.com/parallels-desktop-trial#comments">Parallels Desktop</a> 虚拟机管理 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/HpHRrJrUh7PJRYAWhusk-g">big sur</a></li>
+<li><a target="_blank" rel="noopener" href="https://foxirj.com/navicat-premium-16#comments">Navicat Premium</a> 数据库管理</li>
+</ol>
+<p>MAC破解软件网址</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.macwk.com/">macwk</a></li>
+<li><a target="_blank" rel="noopener" href="https://mac.macsc.com/">macsc</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhinin.com/">知您网</a></li>
+<li><a target="_blank" rel="noopener" href="https://xclient.info/">XClient</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanman.net/?s=parallels">软曼网</a></li>
+<li><a target="_blank" rel="noopener" href="https://foxirj.com/ishot">佛系软件</a></li>
+</ol>
+<p>Chrome 插件</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D-%E8%81%9A%E5%90%88%E8%AF%8D%E5%85%B8%E5%88%92%E8%AF%8D%E7%BF%BB%E8%AF%91/cdonnmffkdaoajfknoeeecmchibpmkmg?utm_source=chrome-ntp-icon">沙拉查词</a> 划词翻译</li>
+<li><a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/infinity-new-tab-pro/nnnkddnnlpamobajfibfdgfnbcnkgngh?utm_source=chrome-ntp-icon">infinity pro</a> 新标签</li>
+</ol>
+<h2 id="Mac-常见问题">Mac 常见问题</h2>
+<h3 id="刷新DNS">刷新DNS</h3>
+<pre><code>sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+</code></pre>
+<h3 id="xxx-app已损坏-打不开-你应该将它移到废纸篓-已解决">xxx.app已损坏,打不开.你应该将它移到废纸篓-已解决</h3>
+<ol>
+<li>
+<p>系统偏好设置… -&gt; 安全性与隐私–&gt;修改为任何来源</p>
+</li>
+<li>
+<p>serria里面没有"任何来源"这一项，需要打开终端执行sudo spctl --master-disable，这个时候再去系统偏好设置… -&gt; 安全性与隐私 是不是发现有了"任何来源"这一项</p>
+<h1>允许任何来源的软件</h1>
+<p>sudo spctl --master-disable</p>
+<h1>关闭</h1>
+<p>sudo spctl --master-enable</p>
+</li>
+</ol>
+<h3 id="已经勾选-允许任何来源-，为啥还是提示-文件已损坏">已经勾选"允许任何来源"，为啥还是提示"文件已损坏"</h3>
+<p>打开终端，在终端中粘贴下面命令：【<code>sudo xattr -r -d com.apple.quarantine </code>】 ,然后输入个空格，再将应用程序目录中的软件拖拽到命令后面，按回车后输入密码执行。<br>
+比如：Sketch的命令是 sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app<br>
+亲测可行</p>
+<h3 id="MAC查看端口占用情况">MAC查看端口占用情况</h3>
+<ul>
+<li>lsof -i tcp:port  （port替换成端口号，比如6379）可以查看该端口被什么程序占用</li>
+<li>kill port 关闭端口</li>
+</ul>
+<h3 id="显示finder的所有文件，包括隐藏文件">显示finder的所有文件，包括隐藏文件</h3>
+<p><code>defaults write com.apple.Finder AppleShowAllFiles true</code><br>
+然后按住option+右击finder，重启finder<br>
+<code>Command shift .</code> 隐藏显示隐藏文件</p>
+<h3 id="Q-Can’t-chown-usr-local-in-High-Sierra">Q:Can’t chown /usr/local in High Sierra</h3>
+<p>A:sudo chown -R <code>$(whoami) $</code>(brew --prefix)/*</p>
+<h3 id="Xcode-支持库">Xcode 支持库</h3>
+<p>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1zXEFlt94bz3O1e3GdtG92w">https://pan.baidu.com/s/1zXEFlt94bz3O1e3GdtG92w</a> 密码: rc4k<br>
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io">Jerome Xiong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/">https://jeromexiong.github.io/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://jeromexiong.github.io" target="_blank">Jerome Xiong</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Mac/">Mac</a><a class="post-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%90/">软件推荐</a></div><div class="post-share"><div class="social-share" data-image="https://img.shields.io/badge/Mac-000000?logo=apple&amp;logoColor=white" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2019/09/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" title="Linux常用命令大全"><img class="cover" src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&amp;logo=linux" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Linux常用命令大全</div></div><div class="info-2"><div class="info-item-1">Linux常用命令大全 最近在弄服务器相关的知识，在这里记录一些常用的Linux命令  系统信息  关机 用户和群组 打包和压缩文件 磁盘空间 备份 光盘 网络   文件和目录  文件搜索 挂载文件系统 文件的权限 文件的特殊属性 文件系统分析 初始化一个文件系统 SWAP文件系统 字符设置和文件格式转换   安装包管理工具  RPM包 YUM软件包升级器 DEB包 APT软件工具   Other  查看文件内容 文本处理 GO TOP INDEX ^    系统信息 12345678910111213141516171819arch 显示机器的处理器架构(1) uname -m 显示机器的处理器架构(2) uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 cat /proc/cpuinfo 显示CPU info的信息 cat /proc/interrupts 显示中断 cat /p...</div></div></div></a><a class="pagination-related" href="/2019/06/01/%E5%B7%A5%E5%85%B7/GIT%E7%AE%80%E6%98%93%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="GIT简易的命令行入门教程"><img class="cover" src="https://img.shields.io/badge/-Git-F05032?logo=git&amp;logoColor=white" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">GIT简易的命令行入门教程</div></div><div class="info-2"><div class="info-item-1">Git 是当今最流行的分布式版本控制系统，掌握常用命令行操作是开发者的基本功。本文整理了从仓库初始化到日常提交流程、从分支管理到 submodule 的常用命令，适合作为速查手册。 Git 全局设置: 12git config --global user.name "jeromexiong"git config --global user.email "1540428743@qq.com" 创建 git 仓库: 12345678mkdir bookclubcd bookclubgit inittouch README.mdgit add README.mdgit commit -m "first commit"git remote add origin https://gitee.com/jeromexiong/bookclub.gitgit push -u origin master 已有仓库? 1234567cd existing_git_repogit remote add origin https://gitee.com/jeromexiong/bookclub.gitg...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2021/09/17/Mac/Mac%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/" title="Mac必装软件"><img class="cover" src="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Mac必装软件</div></div><div class="info-2"><div class="info-item-1">本文整理了 Mac 平台上一系列实用软件和开发工具，从系统配置到日常应用一应俱全，帮助你快速搭建高效的工作环境。 系统软件  homebrew mysql pyenv nvm redis 直接brew install redis即可  Mac必装软件  IINA 最好用的音视频播放软件（可播放任何地址 Typora 最好用的Markdown编辑工具 （➕PicGo实现图片自动上传 VsCode 最好用的代码编辑工具 Neat Download Manager 最快速的下载工具 Electerm 开源的跨平台Shell管理工具 FinalShell 最好用跨平台Shell管理工具，就是不开源 Tencent Lemon 类似于CleanMyMac，但是完全免费 xmind 思维导图 wps 好用的文档中心 V2ray mac 推荐v2rayu, win推荐v2rayn （免费订阅free 幽禁节点   可选软件  OBS 强大的推流工具 ishot 截图、长截图、贴图、标注、取色、录屏，样样优秀 PicGo 一个用于快速上传图片并获取图片 URL 链接的工具 Daisy Disk ...</div></div></div></a><a class="pagination-related" href="/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/" title="mac 使用docker安装mysql，redis, nginx"><img class="cover" src="https://img.shields.io/badge/Linux-2496ED?style=flat-square&logo=docker" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">mac 使用docker安装mysql，redis, nginx</div></div><div class="info-2"><div class="info-item-1">本文介绍在 Mac 上使用 Docker 和 docker-compose 一键部署 MySQL、Redis 和 Nginx 服务，涵盖镜像加速、数据持久化、容器链接等关键配置。 安装 首先去官网下载，因为国内网络问题，需要配置网络加速，可以使用：  http://hub-mirror.c.163.com 网易 https://registry.docker-cn.com 中国区官方 docker.mirrors.ustc.edu.cn 中国科技大学   {   "registry-mirrors": [     "https://docker.registry.cyou",     "https://docker-cf.registry.cyou",     "https://dockercf.jsdelivr.fyi",     "https://docker.jsdelivr.fyi",     "https://dockertest.jsdelivr.fyi",     "https://mirror.aliyuncs.com",     "https://dockerp...</div></div></div></a><a class="pagination-related" href="/2019/01/01/Mac/Mac%20x%2010.12.4%20%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85sshfs/" title="Mac x 10.12.4 如何安装sshfs"><img class="cover" src="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Mac x 10.12.4 如何安装sshfs</div></div><div class="info-2"><div class="info-item-1">SSHFS 允许你通过 SSH 协议远程挂载目录到本地，方便文件管理。本文详细介绍在 macOS 10.12.4 上安装和使用 SSHFS 的完整步骤。 下载安装包 mac安装SSHFS需要安装fuse和sshfs安装包，sshfs依赖于fuse   下载安装fuse for macOS 3.5.8。历史版本   下载sshfs 2.5。历史版本   挂载远程路径  $ sshfs -C -o reconnect @:&lt;remote_dir&gt; &lt;local_dir&gt; 更多 sshfs 的用法可以 sshfs -h 查看  卸载路径 挂载之后，可以通过 df -h 查看挂载情况  $ sudo umount -f &lt;local_dir&gt;   说明： -f 是强制退出的意思，谨慎操作，使用卸载命令前要关闭所有使用的程序，避免程序闪退造成不必要的麻烦。  如何卸载SSHFS 因为SSHFS没有卸载脚本，所以卸载只能手动安装文件了。 123$ sudo rm /usr/local/bin/sshfs$ sudo rm /usr/local/share/...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">系统软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">Mac必装软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">Mac 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B7%E6%96%B0DNS"><span class="toc-number">3.1.</span> <span class="toc-text">刷新DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xxx-app%E5%B7%B2%E6%8D%9F%E5%9D%8F-%E6%89%93%E4%B8%8D%E5%BC%80-%E4%BD%A0%E5%BA%94%E8%AF%A5%E5%B0%86%E5%AE%83%E7%A7%BB%E5%88%B0%E5%BA%9F%E7%BA%B8%E7%AF%93-%E5%B7%B2%E8%A7%A3%E5%86%B3"><span class="toc-number">3.2.</span> <span class="toc-text">xxx.app已损坏,打不开.你应该将它移到废纸篓-已解决</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">允许任何来源的软件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">关闭</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E7%BB%8F%E5%8B%BE%E9%80%89-%E5%85%81%E8%AE%B8%E4%BB%BB%E4%BD%95%E6%9D%A5%E6%BA%90-%EF%BC%8C%E4%B8%BA%E5%95%A5%E8%BF%98%E6%98%AF%E6%8F%90%E7%A4%BA-%E6%96%87%E4%BB%B6%E5%B7%B2%E6%8D%9F%E5%9D%8F"><span class="toc-number">5.1.</span> <span class="toc-text">已经勾选&quot;允许任何来源&quot;，为啥还是提示&quot;文件已损坏&quot;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MAC%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3%E5%8D%A0%E7%94%A8%E6%83%85%E5%86%B5"><span class="toc-number">5.2.</span> <span class="toc-text">MAC查看端口占用情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BAfinder%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%EF%BC%8C%E5%8C%85%E6%8B%AC%E9%9A%90%E8%97%8F%E6%96%87%E4%BB%B6"><span class="toc-number">5.3.</span> <span class="toc-text">显示finder的所有文件，包括隐藏文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Can%E2%80%99t-chown-usr-local-in-High-Sierra"><span class="toc-number">5.4.</span> <span class="toc-text">Q:Can’t chown &#x2F;usr&#x2F;local in High Sierra</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Xcode-%E6%94%AF%E6%8C%81%E5%BA%93"><span class="toc-number">5.5.</span> <span class="toc-text">Xcode 支持库</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'ae8ab270574517163a19',
+      clientSecret: '1d7564ea5d344abe5afe6717d5dbfe282dd6930b',
+      repo: 'jeromexiong.github.io',
+      owner: 'jeromexiong',
+      admin: ['jeromexiong'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '42574a6939d24c5e499996a79ecd5021'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

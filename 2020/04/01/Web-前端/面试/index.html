@@ -1,0 +1,318 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>面试 | Jerome Xiong</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前端面试知识点大全，涵盖JavaScript基础、Vue.js核心概念、DOM操作及跨域解决方案等高频面试题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试">
+<meta property="og:url" content="https://jeromexiong.github.io/2020/04/01/Web-%E5%89%8D%E7%AB%AF/%E9%9D%A2%E8%AF%95/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="前端面试知识点大全，涵盖JavaScript基础、Vue.js核心概念、DOM操作及跨域解决方案等高频面试题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&logoColor=white">
+<meta property="article:published_time" content="2020-04-01T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T10:35:49.506Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&logoColor=white"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "面试",
+  "url": "https://jeromexiong.github.io/2020/04/01/Web-%E5%89%8D%E7%AB%AF/%E9%9D%A2%E8%AF%95/",
+  "image": "https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&logoColor=white",
+  "datePublished": "2020-04-01T10:00:00.000Z",
+  "dateModified": "2026-07-01T10:35:49.506Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jerome Xiong",
+      "url": "https://jeromexiong.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/2020/04/01/Web-%E5%89%8D%E7%AB%AF/%E9%9D%A2%E8%AF%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '面试',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&amp;logoColor=white);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a><a class="nav-page-title" href="/"><span class="site-name">面试</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">面试</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon fas fa-history"></i><span class="post-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Web/">Web</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>本文汇总了前端开发岗位面试中的高频知识点，包括 JavaScript 核心机制、Vue.js 框架原理、DOM 操作与跨域处理等内容，帮助求职者系统复习和查漏补缺。</p>
+<h3 id="JS">JS</h3>
+<h4 id="如何理解-JS-中的this关键字？">如何理解 JS 中的this关键字？</h4>
+<ol>
+<li>this总是指向函数的直接调用者（而非间接调用者）</li>
+<li>如果有new关键字，this指向new出来的那个对象</li>
+<li>在事件中，this指向目标元素，特殊的是IE的attachEvent中的this总是指向全局对象window。</li>
+</ol>
+<h4 id="什么是window对象-什么是document对象">什么是window对象? 什么是document对象?</h4>
+<p>window对象代表浏览器中打开的一个窗口。document对象代表整个html文档。实际上，document对象是window对象的一个属性。</p>
+<h4 id="“1”-“2”-“3”-map-parseInt-答案是多少？">[“1”, “2”, “3”].map(parseInt) 答案是多少？</h4>
+<p>[1,NaN,NaN]</p>
+<h4 id="数组对象有哪些原生方法，列举一下">数组对象有哪些原生方法，列举一下</h4>
+<p>pop、push、shift、unshift、splice、reverse、sort、concat、join、slice、toString、indexOf、lastIndexOf、reduce、reduceRight<br>
+forEach、map、filter、every、some</p>
+<h4 id="DOM操作">DOM操作</h4>
+<p>（1）创建新节点<br>
+createDocumentFragment() //创建一个DOM片段<br>
+createElement() //创建一个具体的元素<br>
+createTextNode() //创建一个文本节点<br>
+（2）添加、移除、替换、插入<br>
+appendChild()<br>
+removeChild()<br>
+replaceChild()<br>
+insertBefore() //在已有的子节点前插入一个新的子节点<br>
+（3）查找<br>
+getElementsByTagName() //通过标签名称<br>
+getElementsByName() //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)<br>
+getElementById() //通过元素Id，唯一性</p>
+<h4 id="什么是跨域？">什么是跨域？</h4>
+<p>要明白什么是跨域之前，首先要明白什么是同源策略？</p>
+<p>同源策略就是用来限制从一个源加载的文档或脚本与来自另一个源的资源进行交互。那怎样判断是否是同源呢？</p>
+<p>如果协议，端口（如果指定了）和主机对于两个页面是相同的，则两个页面具有相同的源，也就是同源。也就是说，要同时满足以下3个条件，才能叫同源：</p>
+<ol>
+<li>协议相同</li>
+<li>端口相同</li>
+<li>主机相同</li>
+</ol>
+<p>举个例子就一目了然了：</p>
+<p>我们来看下面的页面是否与 <a target="_blank" rel="noopener" href="http://store.company.com/dir/index.html">http://store.company.com/dir/index.html</a> 是同源的？</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://store.company.com/dir/index2.html">http://store.company.com/dir/index2.html</a> 同源</li>
+<li><a target="_blank" rel="noopener" href="http://store.company.com/dir2/index3.html">http://store.company.com/dir2/index3.html</a> 同源 虽然在不同文件夹下</li>
+<li><a target="_blank" rel="noopener" href="https://store.company.com/secure.html">https://store.company.com/secure.html</a> 不同源 不同的协议(https)</li>
+<li><a target="_blank" rel="noopener" href="http://store.company.com:81/dir/index.html">http://store.company.com:81/dir/index.html</a> 不同源 不同的端口(81)</li>
+<li><a target="_blank" rel="noopener" href="http://news.company.com/dir/other.html">http://news.company.com/dir/other.html</a> 不同源 不同的主机(news)</li>
+</ol>
+<p>所以当面对跨域问题的时候，有什么解决方案呢？</p>
+<h4 id="简单介绍下flex布局">简单介绍下<code>flex</code>布局</h4>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/flex-grammar.html">Flex 布局语法教程</a></p>
+<h3 id="Vue">Vue</h3>
+<h4 id="你用哪个指令遍历对象的属性？">你用哪个指令遍历对象的属性？</h4>
+<p>要遍历对象或数组，可以使用 v-for</p>
+<h4 id="如何在输入框和数据属性之间实现双向数据绑定？">如何在输入框和数据属性之间实现双向数据绑定？</h4>
+<p>要实现双向数据绑定，可以使用 v-model 指令。 v-model 指令主要是语法糖：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type="text" :value="nameInput" @keyup="nameInput = $event.target.value"&gt;</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="你如何捕获元素上的点击事件？">你如何捕获元素上的点击事件？</h4>
+<p>可以使用 v-on:click 指令捕获 Click 事件。该指令也可以用缩写符号 @click 表示</p>
+<h4 id="什么是动态-prop？">什么是动态 prop？</h4>
+<p>当使用 v-bind 指令为 prop 分配值作为绑定到属性的函数时，被称为动态 prop。例如以下组件的 tweet 属性绑定到名为tweetText的数据属性。这与静态硬编码值相反。这种绑定始终是单向的，这意味着数据可以从父组件流到子组件，而绝不会反过来。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;TweetBox :tweet=”tweetText”&gt; </span><br></pre></td></tr></tbody></table></figure>
+<h4 id="v-show-指令的用途是什么？">v-show 指令的用途是什么？</h4>
+<p>v-show 指令允许有条件地显示元素。在下面的代码中，仅当 isDisplayed 数据属性为 true 时，才会显示该元素。</p>
+<p>使用 v-show 指令时，可使用 CSS 的 display 属性切换元素的可见性。</p>
+<h4 id="v-show-与-v-if-指令有何不同？">v-show 与 v-if 指令有何不同？</h4>
+<p>v-show 和 v-if 都用于有条件地显示元素，而后者提供了条件渲染的真正实现。 v-show 只需切换 CSS 的 display 属性即可显示或隐藏元素，而 v-if 指令可创建或销毁组件。每次显示状态更改时，代价通常会更大。</p>
+<p>另一方面，v-show 成本较低，因为它仅切换元素的CSS显示属性。所以如果必须经常切换元素，则 v-show 会提供比 v-if 更好，更优化的结果。</p>
+<p>就加载元素的初始渲染成本而言，v-if 不会渲染最初隐藏的元素的节点，而 v-show 会渲染其 CSS display 属性被设置为 none 的元素。</p>
+<h4 id="什么是过滤器？">什么是过滤器？</h4>
+<p>过滤器是在 Vue 程序中实现自定义文本格式的一种非常简单的方法。它们就像可以在表达式中通过管道传递（使用管道字符）以取得结果的运算符。下面是一个可以反转文本字符串的过滤器示例：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id="app"&gt;{{ title | reverseText }}&lt;/div&gt;</span><br><span class="line">App</span><br><span class="line">new Vue({</span><br><span class="line">    el: '#app',</span><br><span class="line">    data: {</span><br><span class="line">      title: 'This is a title'</span><br><span class="line">    },</span><br><span class="line">    filters: {</span><br><span class="line">      reverseText(text) {</span><br><span class="line">        return text.split('').reverse().join('');</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">});</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="Vue-js-中的指令是什么？">Vue.js 中的指令是什么？</h4>
+<p>指令是一系列特殊属性，你可以通过将其添加到模板 HTML 标记中来赋予它们特殊的响应功能。指令允许模板中的元素使用数据属性、方法、计算或监视的属性和内联表达式根据定义的逻辑对更改做出反应。例如以下代码使用 v-on 指令在组件上实现 click 事件侦听器。</p>
+<p>指令以 v- 开头来指示 Vue 特定的属性。此规则的例外是 v-on 和 v-bind 的简写形式。<code>@</code>,<code>:</code></p>
+<h4 id="如何确保在单文件组件中定义的-CSS-样式仅应用于该组件，而不被用于其他组件？">如何确保在单文件组件中定义的 CSS 样式仅应用于该组件，而不被用于其他组件？</h4>
+<p>这可以通过样式标签上的 scoped 属性来实现。在内部 Vue 使用 PostCSS 插件为所有样式元素分配唯一的数据属性，然后使样式针对这些唯一的元素。举个例子：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div class=”title”&gt;This is a title&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">    .title {</span><br><span class="line">        font-family: sans-serif;</span><br><span class="line">        font-size: 20px;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="什么是生命周期hook？列出一些生命周期hook。">什么是生命周期hook？列出一些生命周期hook。</h4>
+<p>Vue 实例（组件）从其初始化到销毁和删除都经历生命周期。在整个过程中，Vue 允许开发人员运行自定义函数的几个阶段。这些函数称为生命周期 hook。以下是一些生命周期 hook 的列表：</p>
+<ul>
+<li>created</li>
+<li>mounted</li>
+<li>updated</li>
+<li>destroyed</li>
+</ul>
+<h4 id="什么是插槽（slot）？">什么是插槽（slot）？</h4>
+<p>插槽允许你定义可以封装和接受子 DOM 元素的元素。组件模板中的 <slot> &lt;/ slot&gt; 元素作为通过组件标签捕获的所有DOM元素的出口。这是一个例子：</slot></p>
+<p>Post.vue |实现插槽的组件</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> &lt;div class="hello"&gt;</span><br><span class="line">   &lt;h3 class="title"&gt;{{title}}&lt;/h3&gt;</span><br><span class="line">   &lt;div class="content"&gt;</span><br><span class="line">     &lt;slot&gt;&lt;/slot&gt;</span><br><span class="line">   &lt;/div&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br></pre></td></tr></tbody></table></figure>
+<h4 id="如何从子组件发出自定义事件？">如何从子组件发出自定义事件？</h4>
+<p>可以用 $emit(‘event-name’, eventPayload)发出自定义事件。然后可以像其他事件一样，用 v-on 指令在父组件上拦截。</p>
+<h4 id="VueRouter-传递参数">VueRouter 传递参数</h4>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$route.push({name: 'name', query: {id: 1}})</span><br><span class="line">$route.push({name: 'name', params: {id: 1}})</span><br></pre></td></tr></tbody></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io">Jerome Xiong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io/2020/04/01/Web-%E5%89%8D%E7%AB%AF/%E9%9D%A2%E8%AF%95/">https://jeromexiong.github.io/2020/04/01/Web-%E5%89%8D%E7%AB%AF/%E9%9D%A2%E8%AF%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://jeromexiong.github.io" target="_blank">Jerome Xiong</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Vue/">Vue</a><a class="post-meta__tags" href="/tags/JavaScript/">JavaScript</a><a class="post-meta__tags" href="/tags/%E9%9D%A2%E8%AF%95/">面试</a></div><div class="post-share"><div class="social-share" data-image="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&amp;logoColor=white" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2020/04/29/%E5%B7%A5%E5%85%B7/Flutter%20%E7%AC%94%E8%AE%B0/" title="Flutter 笔记"><img class="cover" src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Flutter 笔记</div></div><div class="info-2"><div class="info-item-1">本文汇总了 Flutter 开发中跨平台（iOS/Android）的常见实用技巧，包括插件桥接 OC 库、签名与 ADB 操作、自动方向监听及物理返回按键拦截等，方便快速查阅。 iOS 插件swift 调用oc库  project.podspec文件添加库依赖 s.dependency 'name', 'version' 如需桥接文件  Pods/Development Pods/project/../ios/Classes/目录下创建桥接文件Flutter-Bridging-Header.h，并引用库头文件 在project-umbrella.h文件中添加#import "Flutter-Bridging-Header.h"(也可以全局搜索ProjectPlugin.h后添加在其下)⚠️Podfile必须有use_framework!属性才会生成umbrella文件   如需要添加其他资源文件，需要在project.podspec中配置  12345678search_paths = [    '${SDKROOT}/usr/include/libxml2']s.pod_tar...</div></div></div></a><a class="pagination-related" href="/2020/04/01/Linux-DevOps/nginx%20%E9%85%8D%E7%BD%AE/" title="nginx 配置"><img class="cover" src="https://img.shields.io/badge/Linux-009639?style=flat-square&amp;logo=nginx" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">nginx 配置</div></div><div class="info-2"><div class="info-item-1">本文汇总了 Nginx 的常用配置，包括 gzip 压缩、缓存策略、反向代理、HTTPS SSL 部署以及常见问题处理方案。 nginx 若修改了nginx的启动目录，则需要修改 user属性 #user nginx; user root;  gzip # 开启gzip功能 gzip                on; # 启用gzip压缩的最小文件，小于设置值的文件将不会压缩 gzip_min_length     1k; # 缓存空间大小 gzip_buffers        4 16k; # 设置gzip压缩针对的HTTP协议版本 gzip_http_version   1.1; # 压缩级别，1-9，数字越大压缩的越好，也越占用CPU时间 gzip_comp_level     4; gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpe...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2019/04/01/iOS-Swift/Swift%20%E9%9D%A2%E8%AF%95%E9%A2%98/" title="Swift 面试题"><img class="cover" src="https://img.shields.io/badge/%E9%9D%A2%E8%AF%95%E9%A2%98-orange?style=flat-square&logo=swift" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Swift 面试题</div></div><div class="info-2"><div class="info-item-1">本文整理了 Swift 开发面试中常见的问题与解答，帮助开发者巩固基础知识，顺利通过技术面试。 前提  git 使用 三方库使用 swift 调用oc 解决问题方式  frame 和 bounds 有什么不同？ 12frame指的是：该view在父view坐标系统中的位置和大小。(参照点是父view的坐标系统)bounds指的是：该view在本身坐标系统中的位置和大小。(参照点是屏幕坐标系统) ViewController生命周期 按照执行顺序排列：  initWithCoder：通过nib文件初始化时触发。 awakeFromNib：nib文件被加载的时候，会发生一个awakeFromNib的消息到nib文件中的每个对象。 loadView：开始加载视图控制器自带的view。 viewDidLoad：视图控制器的view被加载完成。 viewWillAppear：视图控制器的view将要显示在window上。 updateViewConstraints：视图控制器的view开始更新AutoLayout约束。 viewWillLayoutSubviews：视图控制器的view将要...</div></div></div></a><a class="pagination-related" href="/2020/01/01/Web-%E5%89%8D%E7%AB%AF/%E4%BA%8C%E4%BB%A3%E8%BA%AB%E4%BB%BD%E8%AF%81%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99/" title="二代身份证编码规则"><img class="cover" src="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">二代身份证编码规则</div></div><div class="info-2"><div class="info-item-1">中国第二代身份证号码为18位，每一位都有其特定含义。本文从前端开发角度深入解析身份证编码结构，并提供校验码计算方法和正则验证表达式。 1 编码格式 1999年我国颁发了第二代居民身份证号，公民身份号码为18位，且终身不变，一代居民身份证编号是15位，已经基本淘汰，本文不作讨论。 居民身份证格式如：ABCDEFYYYYMMDDXXXR 1.1 地址码（ABCDEF） 表示登记户口时所在地的行政区划代码（省、市、县），如果行政区划进行了重新划分，同一个地方进行户口登记的可能存在地址码不一致的情况。行政区划代码按GB/T2260的规定执行。 1.2 出生日期码（YYYYMMDD） 表示该居民的出生年月日，年4位数字，月和日分别用2位数字表示，如19491001，；出生日期码是按GB/T 7408的规定执行的。 1.3 顺序码（XXX） 表示同一地址码区域内，同年、同月、同日生的人所编订的顺序号，根据自己身份证的顺序码就可以知道：与我们同年同月同日生的同性至少有多少个，且在我们之前登记户籍的有多少人。身份证顺序码的奇数分配给男性，偶数分配给女性。这就是为什么倒数第二位奇数表示男生，偶数表...</div></div></div></a><a class="pagination-related" href="/2020/06/01/Web-%E5%89%8D%E7%AB%AF/Vue%20%E7%AC%94%E8%AE%B0/" title="Vue 笔记"><img class="cover" src="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Vue 笔记</div></div><div class="info-2"><div class="info-item-1">本文记录 Vue.js 开发中常见的几个实用技巧，包括通过 JS 动态设置 CSS 变量、理解 extends 与 mixins 的区别以及图片资源的动态导入方法，适合日常开发快速参考。 js动态设置css 123456this.$el.style.setProperty('--ar-round', this.radius);// 或者原生设置// document.documentElement.style.setProperty('--ar-round', this.radius);// 使用border-radius: var(--ar-round) extends 和 mixins 的区别 都是混入对象，但mixins是多继承，extends是单继承；可继承所有属性对象，并且后面覆盖前面 img动态设置地址 1234import test from "../asssets/test.png"// test 即为资源地址console.log(test)&lt;img :src="test"&gt; </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS"><span class="toc-number">1.</span> <span class="toc-text">JS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3-JS-%E4%B8%AD%E7%9A%84this%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">如何理解 JS 中的this关键字？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFwindow%E5%AF%B9%E8%B1%A1-%E4%BB%80%E4%B9%88%E6%98%AFdocument%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.</span> <span class="toc-text">什么是window对象? 什么是document对象?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%9C1%E2%80%9D-%E2%80%9C2%E2%80%9D-%E2%80%9C3%E2%80%9D-map-parseInt-%E7%AD%94%E6%A1%88%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">[“1”, “2”, “3”].map(parseInt) 答案是多少？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%AF%B9%E8%B1%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8E%9F%E7%94%9F%E6%96%B9%E6%B3%95%EF%BC%8C%E5%88%97%E4%B8%BE%E4%B8%80%E4%B8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">数组对象有哪些原生方法，列举一下</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM%E6%93%8D%E4%BD%9C"><span class="toc-number">1.5.</span> <span class="toc-text">DOM操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%B7%A8%E5%9F%9F%EF%BC%9F"><span class="toc-number">1.6.</span> <span class="toc-text">什么是跨域？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E4%B8%8Bflex%E5%B8%83%E5%B1%80"><span class="toc-number">1.7.</span> <span class="toc-text">简单介绍下flex布局</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue"><span class="toc-number">2.</span> <span class="toc-text">Vue</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%A0%E7%94%A8%E5%93%AA%E4%B8%AA%E6%8C%87%E4%BB%A4%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">你用哪个指令遍历对象的属性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E8%BE%93%E5%85%A5%E6%A1%86%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%9E%E6%80%A7%E4%B9%8B%E9%97%B4%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">如何在输入框和数据属性之间实现双向数据绑定？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%A0%E5%A6%82%E4%BD%95%E6%8D%95%E8%8E%B7%E5%85%83%E7%B4%A0%E4%B8%8A%E7%9A%84%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">你如何捕获元素上的点击事件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8A%A8%E6%80%81-prop%EF%BC%9F"><span class="toc-number">2.4.</span> <span class="toc-text">什么是动态 prop？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#v-show-%E6%8C%87%E4%BB%A4%E7%9A%84%E7%94%A8%E9%80%94%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.5.</span> <span class="toc-text">v-show 指令的用途是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#v-show-%E4%B8%8E-v-if-%E6%8C%87%E4%BB%A4%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">2.6.</span> <span class="toc-text">v-show 与 v-if 指令有何不同？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%9F"><span class="toc-number">2.7.</span> <span class="toc-text">什么是过滤器？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vue-js-%E4%B8%AD%E7%9A%84%E6%8C%87%E4%BB%A4%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.8.</span> <span class="toc-text">Vue.js 中的指令是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E5%9C%A8%E5%8D%95%E6%96%87%E4%BB%B6%E7%BB%84%E4%BB%B6%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84-CSS-%E6%A0%B7%E5%BC%8F%E4%BB%85%E5%BA%94%E7%94%A8%E4%BA%8E%E8%AF%A5%E7%BB%84%E4%BB%B6%EF%BC%8C%E8%80%8C%E4%B8%8D%E8%A2%AB%E7%94%A8%E4%BA%8E%E5%85%B6%E4%BB%96%E7%BB%84%E4%BB%B6%EF%BC%9F"><span class="toc-number">2.9.</span> <span class="toc-text">如何确保在单文件组件中定义的 CSS 样式仅应用于该组件，而不被用于其他组件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fhook%EF%BC%9F%E5%88%97%E5%87%BA%E4%B8%80%E4%BA%9B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fhook%E3%80%82"><span class="toc-number">2.10.</span> <span class="toc-text">什么是生命周期hook？列出一些生命周期hook。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%8F%92%E6%A7%BD%EF%BC%88slot%EF%BC%89%EF%BC%9F"><span class="toc-number">2.11.</span> <span class="toc-text">什么是插槽（slot）？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BB%8E%E5%AD%90%E7%BB%84%E4%BB%B6%E5%8F%91%E5%87%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6%EF%BC%9F"><span class="toc-number">2.12.</span> <span class="toc-text">如何从子组件发出自定义事件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VueRouter-%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="toc-number">2.13.</span> <span class="toc-text">VueRouter 传递参数</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'ae8ab270574517163a19',
+      clientSecret: '1d7564ea5d344abe5afe6717d5dbfe282dd6930b',
+      repo: 'jeromexiong.github.io',
+      owner: 'jeromexiong',
+      admin: ['jeromexiong'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '3a754d4cc07504598e37fe50c27d15cc'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

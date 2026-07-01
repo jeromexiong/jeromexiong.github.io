@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Jerome Xiong - Jerome Xiong 的个人博客</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客，分享移动开发、跨平台技术、编程心得与实用工具">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jerome Xiong">
+<meta property="og:url" content="https://jeromexiong.github.io/page/2/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客，分享移动开发、跨平台技术、编程心得与实用工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jeromexiong.github.io/images/avatar.png">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeromexiong.github.io/images/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/page/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Jerome Xiong',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://img0.baidu.com/it/u=2537641398,3767872189&amp;fm=26&amp;fmt=auto);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Jerome Xiong</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E4%B8%8E%E9%9B%86%E6%88%90/" title="Hermes Agent 日常使用与集成"><img class="post-bg" src="https://img.shields.io/badge/Daily-8B5CF6?logo=homeassistant&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hermes Agent 日常使用与集成"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E4%B8%8E%E9%9B%86%E6%88%90/" title="Hermes Agent 日常使用与集成">Hermes Agent 日常使用与集成</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.504Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AI/">AI</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AI/%E5%B7%A5%E5%85%B7/">工具</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Hermes/">Hermes</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%BE%AE%E4%BF%A1/">微信</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%BD%91%E5%85%B3/">网关</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">定时任务</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/">工作流</a></span></div><div class="content"> Hermes Agent 不仅是 CLI 工具，还支持网关模式、定时任务、多平台消息推送等生产级能力。  网关模式 网关模式让 Hermes 作为后台常驻服务运行，通过微信、Telegram、Discord 等平台交互。 启动网关 1hermes gateway WeChat 集成 通过 WeChat 网关，可以在微信中直接与 Hermes 对话：  发送消息 → Hermes 处理 → 返回结果 自动识别上下文，追踪对话线程 支持文件、图片等多模态输入  配置方式（config.yaml）： 12345# 网关相关配置gateway:  strict: false  trust_recent_files: true  trust_recent_files_seconds: 600 消息格式    内容类型 说明     文本 直接对话   图片 自动 OCR/视觉分析   文件 代码审查、文档处理   URL 网页摘要、内容分析    定时任务 (Cron) Hermes 内置定时任务调度器，支持： 123456789# 创建定时任务cronjob(action='creat...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" title="实战笔记：从零到一搭建 XXX"><img class="post-bg" src="https://img.shields.io/badge/Swift-5.9-orange?logo=swift" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="实战笔记：从零到一搭建 XXX"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" title="实战笔记：从零到一搭建 XXX">实战笔记：从零到一搭建 XXX</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/Swift/">Swift</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Swift/">Swift</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%AE%9E%E6%88%98/">实战</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/iOS%E5%BC%80%E5%8F%91/">iOS开发</a></span></div><div class="content"> TL;DR 本文从实际项目出发，详细记录了实现 XX 功能的完整过程，包含架构选型、关键代码、性能数据和踩坑记录。  背景 为什么要做这个功能？遇到了什么问题？ 最终效果  方案对比    方案 优点 缺点 适用场景     方案A 实现简单 扩展性差 快速验证   方案B 性能好 学习成本高 生产环境   方案C ✅ 平衡两者 需要额外库 大多数场景     最终选择了 方案C，原因是……  核心实现 1. 架构设计 123App层     → ViewController / View业务层    → Service / Manager数据层    → Repository / Cache 2. 关键代码 12345678910111213141516171819// File: Sources/Feature/Manager.swiftprotocol FeatureManagerProtocol {    func fetchData(completion: @escaping (Result&lt;[Model], Error&gt;) -&gt; Void)}fin...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E6%8A%80%E5%B7%A7%E5%90%88%E9%9B%86/" title="XXX 实用技巧合集"><img class="post-bg" src="https://img.shields.io/badge/tips-10+-brightgreen" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="XXX 实用技巧合集"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E6%8A%80%E5%B7%A7%E5%90%88%E9%9B%86/" title="XXX 实用技巧合集">XXX 实用技巧合集</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%95%88%E7%8E%87/">效率</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%8A%80%E5%B7%A7/">技巧</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%94%9F%E4%BA%A7%E5%8A%9B/">生产力</a></span></div><div class="content">把这些技巧挨个试一遍，总有几个让你惊呼"原来还能这样？" 🔥 技巧 1：标题即要点  场景：什么时候用这个技巧？ 操作：具体怎么做  1# 实际命令或代码 🔥 技巧 2：……    技巧 难度 频次     技巧1 ⭐ 每天   技巧2 ⭐⭐ 每周    总结清单  [ ] 技巧1 已掌握 [ ] 技巧2 已掌握 [ ] 技巧3 已掌握   觉得有用的话可以收藏，后续还会更新更多技巧。 </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="深入理解 XXX"><img class="post-bg" src="https://img.shields.io/badge/depth-deep-blue" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深入理解 XXX"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="深入理解 XXX">深入理解 XXX</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/Swift/">Swift</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/iOS/">iOS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a></span></div><div class="content">一句话概括  XXX 本质上就是一个 YYY，它通过 ZZZ 机制实现了…… 如果只记住一句，就这句。  它是干什么的？ 用一句话说清楚这个技术/工具解决什么问题。 源码走读 入口 1234567// 关键入口方法public func load() {    // 1. 检查缓存    // 2. 发起请求    // 3. 解析数据    // 4. 回调通知} 核心流程 123request → 拦截器链 → 缓存检查 → 网络请求 → 解析器 → 回调                    ↓               命中缓存→ 直接返回 设计亮点  💡 源码里最精彩的设计：  12345// 用协议 + 泛型实现了类型安全的回调protocol Handler&lt;T&gt; {    associatedtype T    func handle(_ data: T)} 对比其他方案  旧方案：XX 方式，问题是…… 新方案：YY 方式，优势在…… 本质区别：从 A 模式变成了 B 模式  最佳实践 12345// 推荐的用法let config = Conf...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98/" title="2026 Q2 开发日志：XX 项目复盘"><img class="post-bg" src="https://img.shields.io/badge/retro-Q2-yellow" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2026 Q2 开发日志：XX 项目复盘"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98/" title="2026 Q2 开发日志：XX 项目复盘">2026 Q2 开发日志：XX 项目复盘</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%A4%8D%E7%9B%98/">复盘</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">项目管理</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%80%BB%E7%BB%93/">总结</a></span></div><div class="content">📊 本期概览    维度 数据     完成功能 12 个   修复 Bug 47 个   代码提交 186 次   迭代周期 4 个 Sprint    ✅ 做对了 1. 架构先行 在功能开发前花了一周做架构评审，后期几乎没有大改。 2. 自动化测试 覆盖率从 30% 提升到 85%，回归 Bug 大幅减少。 ❌ 踩坑记录 1. 依赖升级过早  第三周升级了 XXX 库到 3.0，导致兼容性问题浪费 2 天。  教训：依赖升级应该安排在迭代末尾，且必须有完整测试覆盖。 2. 需求理解偏差  花了 3 天做的功能，实际上产品要的是另一种交互。  教训：开发前必须出交互原型确认，不能只看 PRD。 🎯 下期计划    优先级 事项 预期     P0 性能优化 首屏 &lt; 1s   P1 文档补全 API 文档 100%   P2 重构旧模块 消除技术债    💡 经验沉淀  每次复盘最有价值的不是记录做了什么，而是 总结出下次可以复用的判断标准。  </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/06/16/CI-CD/Hexo%E5%8D%9A%E5%AE%A2GitHub-Actions%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/" title="Hexo博客GitHub Actions自动部署指南"><img class="post-bg" src="https://img.shields.io/badge/-GitHub%20Actions-2088FF?logo=githubactions&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo博客GitHub Actions自动部署指南"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/06/16/CI-CD/Hexo%E5%8D%9A%E5%AE%A2GitHub-Actions%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/" title="Hexo博客GitHub Actions自动部署指南">Hexo博客GitHub Actions自动部署指南</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.504Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/CI-CD/">CI/CD</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Hexo/">Hexo</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/GitHub-Actions/">GitHub Actions</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/CI-CD/">CI/CD</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2/">自动化部署</a></span></div><div class="content">Hexo 生成的是静态文件，传统做法是本地 hexo g -d 推送到 Pages 仓库。有了 GitHub Actions 后，每次 git push 源码仓库就能自动构建部署，解放本地环境。 本文记录完整的配置流程。 整体思路 两个仓库分工：  源码仓库（jeromexiong/blog）— 存 Hexo 源码、文章、主题配置 Pages 仓库（jeromexiong/jeromexiong.github.io）— 存构建产物（public/ 目录），GitHub Pages 从这读取  CI/CD 要做的就是：源码仓库收到 push → 自动构建 → 推送到 Pages 仓库。 一、生成 SSH Deploy Key 为了让 GitHub Actions 有权限写入 Pages 仓库，需要一对 SSH 密钥。公钥给 Pages 仓库，私钥给源码仓库。 1ssh-keygen -t ed25519 -f ~/blog-deploy-key -N "" -C "deploy" 这会生成两个文件：  blog-deploy-key — 私钥 blog-deploy-key.pub...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/01/01/iOS-Swift/kilomind%E5%A4%8D%E7%9B%98/" title="kilomind复盘"><img class="post-bg" src="https://img.shields.io/badge/%E5%A4%8D%E7%9B%98-555555?style=flat-square&amp;logo=apple" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="kilomind复盘"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/01/01/iOS-Swift/kilomind%E5%A4%8D%E7%9B%98/" title="kilomind复盘">kilomind复盘</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%88%9B%E4%B8%9A/">创业</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%8D%83%E8%84%89/">千脉</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%A4%8D%E7%9B%98/">复盘</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/">技术栈</a></span></div><div class="content">本文对千脉(kilomind)科技创立以来的项目进行复盘总结，涵盖项目列表、技术栈选择与团队规范等方面。 创立初期至今的项目  千脉软件下载：https://share.weiyun.com/51ji0M2 密码：r3v1d7   [x] 星客漫游  服务端		PHP 公众号		PHP 移动端		Android Java 后台管理 	PHP   [x] 乐脉  服务端	 	PHP 小程序		官方语言 前台管理		Vue 后台管理		Vue   [x] 拍管家  服务端		PHP H5		Vue 后台管理		Vue   [x] 声动太空  服务端 		PHP H5		Vue 后台管理		Vue   [x] 艾宠星球  服务端	 	PHP 小程序		官方语言 后台管理		Vue   [x] 久翌  服务端 		PHP 后台管理		Vue 数据抓取插件 	Vue   [x] 智能跑道  服务端		NodeJS PC端		C++ 移动端		Android Java、iOS Swfit   [x] PC录像打点  PC端	C++   [x] 义虎演艺  服务端	 	PHP 小程序		官方语...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/10/15/iOS-Swift/iOS%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/" title="iOS数据持久化方式"><img class="post-bg" src="https://img.shields.io/badge/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-555555?style=flat-square&amp;logo=apple" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="iOS数据持久化方式"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/10/15/iOS-Swift/iOS%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/" title="iOS数据持久化方式">iOS数据持久化方式</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Swift/">Swift</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/objc/">objc</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/">数据持久化</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/SQLite/">SQLite</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/CoreData/">CoreData</a></span></div><div class="content">数据持久化是 iOS 开发中的基础技能。本文详细介绍 iOS 平台下五种主流的数据持久化方式及其使用场景。 一、iOS数据持久化方式  XML属性列表（plist）归档 Preference(偏好设置)，本质还是通过"plist"来存储数据, 但是使用更简单(无需关注文件、文件夹路径和名称) NSKeyedArchiver归档(NSCoding)，可以把任何对象, 直接保存为文件的方式。 SQLite3，当非常大量的数据存储时使用 Core Data，就是对SQLite的封装   关于bundle路径和sandbox沙河路径： （1）bundle路径：应用程序 (APP) 在手机里面的安装路径 （2）沙河路径：专门用来存储App自己数据的一个路径，iOS为每个app都分配了一个专门用来存储这个app自身的一些数据的路径   二、应用沙盒(应用程序的文件夹)  打印沙盒路径  1NSLog(@"%@",NSHomeDirectory());  使用Documents目录进行数据持久化的保存，我们平时操作数据主要使用Documents目录  Swiftobjc12345// 1let...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/10/14/iOS-Swift/Xcode%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="Xcode常见问题"><img class="post-bg" src="https://img.shields.io/badge/Xcode%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-1575F9?style=flat-square&amp;logo=xcode" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Xcode常见问题"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/10/14/iOS-Swift/Xcode%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="Xcode常见问题">Xcode常见问题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Swift/">Swift</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Xcode/">Xcode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/">离屏渲染</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%98%B4%E5%BD%B1%E4%BC%98%E5%8C%96/">阴影优化</a></span></div><div class="content">本文汇总了 Xcode 开发中遇到的一些常见问题及其解决方法，帮助开发者快速定位和修复问题。 Optimization Opportunities: The layer is using dynamic shadows which are expensive to render. If possible try setting shadowPath, or pre-rendering the shadow into an image and putting it under the layer.  这是因为没有设置shadowPath导致了离屏渲染 解决方法有两种：   通过明确地设置shadowPath来"引导"阴影渲染，例如  1view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath  缓存rasterization(珊格化)  12view.layer.shouldRasterize = trueview.layer.rasterizationScale = UIScreen.main.scale </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/10/09/%E5%B7%A5%E5%85%B7/iris-go%E5%90%8E%E5%8F%B0%E6%A8%A1%E7%89%88/" title="iris-go后台模版"><img class="post-bg" src="https://img.shields.io/badge/-Iris-00ADD8?logo=go&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="iris-go后台模版"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/10/09/%E5%B7%A5%E5%85%B7/iris-go%E5%90%8E%E5%8F%B0%E6%A8%A1%E7%89%88/" title="iris-go后台模版">iris-go后台模版</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Go/">Go</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Go/">Go</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Golang/">Golang</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Iris/">Iris</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Web%E6%A1%86%E6%9E%B6/">Web框架</a></span></div><div class="content">序 本文是基于iris 12 扩展编写的类似eggjs框架结构。这里就简单介绍一下什么是iris，iris主要侧重于Web开发，提供了Web开发的一系列功能组件，基于MVC开发模式。如果你想直接开始，请点击stencil-go。  因为我本人之前写nodejs比较多，所以在学习go的时候就找到iris这个框架，毕竟它的关于里面就有一句A true successor of expressjs and laravel😄。有了框架之后就得约束一下结构不是，不然大家都随心所欲的写就很混乱了，所以我就参照了eggjs的结构进行设计。（当然这只是我个人的想法，毕竟这也才是我的入门项目，多有不足，还请指教( ´▽｀) 基础功能 目录结构 这里就简单介绍下目录约定规范 123456789101112131415161718192021222324252627stencil-go├── README.md├── app│   ├── bindata│   ├── controller│   ├── core│   ├── extend（可选）│   ├── middleware（可选）│   ...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#content-inner">6</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI/"><span class="card-category-list-name">AI</span><span class="card-category-list-count">7</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI/%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">工具</span><span class="card-category-list-count">7</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CI-CD/"><span class="card-category-list-name">CI/CD</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Flutter/"><span class="card-category-list-name">Flutter</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/"><span class="card-category-list-name">Linux</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Mac/"><span class="card-category-list-name">Mac</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Web/"><span class="card-category-list-name">Web</span><span class="card-category-list-count">7</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 1.15em; color: rgb(187, 120, 50);">杂记</a><a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 1.3em; color: rgb(195, 115, 160);">命令行</a><a href="/tags/%E4%BB%A3%E7%A0%81%E7%BB%9F%E8%AE%A1/" style="font-size: 1.15em; color: rgb(50, 163, 50);">代码统计</a><a href="/tags/Git/" style="font-size: 1.45em; color: rgb(86, 61, 133);">Git</a><a href="/tags/Flutter/" style="font-size: 1.45em; color: rgb(150, 81, 73);">Flutter</a><a href="/tags/Flutter-3-44/" style="font-size: 1.15em; color: rgb(182, 103, 67);">Flutter 3.44</a><a href="/tags/Dart-3-12/" style="font-size: 1.15em; color: rgb(157, 191, 50);">Dart 3.12</a><a href="/tags/Riverpod/" style="font-size: 1.15em; color: rgb(181, 50, 58);">Riverpod</a><a href="/tags/GoRouter/" style="font-size: 1.15em; color: rgb(57, 88, 50);">GoRouter</a><a href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" style="font-size: 1.15em; color: rgb(50, 122, 50);">开发规范</a><a href="/tags/AI-%E7%BC%96%E7%A8%8B/" style="font-size: 1.3em; color: rgb(169, 67, 165);">AI 编程</a><a href="/tags/Hermes/" style="font-size: 1.45em; color: rgb(50, 184, 50);">Hermes</a><a href="/tags/AI-Agent/" style="font-size: 1.3em; color: rgb(71, 123, 90);">AI Agent</a><a href="/tags/CLI/" style="font-size: 1.15em; color: rgb(170, 177, 172);">CLI</a><a href="/tags/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" style="font-size: 1.15em; color: rgb(119, 151, 50);">安装配置</a><a href="/tags/Skills/" style="font-size: 1.15em; color: rgb(182, 76, 53);">Skills</a><a href="/tags/MCP/" style="font-size: 1.3em; color: rgb(81, 181, 193);">MCP</a><a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 1.15em; color: rgb(50, 56, 198);">插件</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.15em; color: rgb(50, 50, 127);">微信</a><a href="/tags/%E7%BD%91%E5%85%B3/" style="font-size: 1.15em; color: rgb(65, 174, 81);">网关</a><a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" style="font-size: 1.15em; color: rgb(53, 130, 174);">定时任务</a><a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" style="font-size: 1.15em; color: rgb(173, 76, 50);">工作流</a><a href="/tags/DeepSeek/" style="font-size: 1.15em; color: rgb(50, 65, 97);">DeepSeek</a><a href="/tags/DeepSeek-V4/" style="font-size: 1.15em; color: rgb(157, 71, 50);">DeepSeek-V4</a><a href="/tags/IntelliJ-IDEA/" style="font-size: 1.15em; color: rgb(185, 50, 92);">IntelliJ IDEA</a><a href="/tags/Android-Studio/" style="font-size: 1.45em; color: rgb(65, 50, 181);">Android Studio</a><a href="/tags/Claude-Code/" style="font-size: 1.3em; color: rgb(50, 50, 60);">Claude Code</a><a href="/tags/%E7%BB%88%E7%AB%AF%E5%B7%A5%E5%85%B7/" style="font-size: 1.15em; color: rgb(50, 145, 192);">终端工具</a><a href="/tags/Vercel/" style="font-size: 1.15em; color: rgb(179, 93, 50);">Vercel</a><a href="/tags/eve/" style="font-size: 1.15em; color: rgb(91, 75, 171);">eve</a><a href="/tags/Agent%E6%A1%86%E6%9E%B6/" style="font-size: 1.15em; color: rgb(56, 50, 50);">Agent框架</a><a href="/tags/TypeScript/" style="font-size: 1.15em; color: rgb(71, 50, 97);">TypeScript</a><a href="/tags/%E5%BC%80%E6%BA%90/" style="font-size: 1.15em; color: rgb(131, 78, 168);">开源</a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" style="font-size: 1.15em; color: rgb(116, 151, 98);">自动化测试</a><a href="/tags/Playwright/" style="font-size: 1.15em; color: rgb(114, 192, 50);">Playwright</a><a href="/tags/Playwright-CLI/" style="font-size: 1.15em; color: rgb(126, 146, 50);">Playwright CLI</a><a href="/tags/Playwright-MCP/" style="font-size: 1.15em; color: rgb(172, 50, 50);">Playwright MCP</a><a href="/tags/Midscene/" style="font-size: 1.15em; color: rgb(137, 50, 50);">Midscene</a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 1.15em; color: rgb(96, 61, 185);">浏览器自动化</a><a href="/tags/E2E/" style="font-size: 1.15em; color: rgb(50, 83, 50);">E2E</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">13</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/01/">
+            <span class="card-archive-list-date">
+              一月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/10/">
+            <span class="card-archive-list-date">
+              十月 2021
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/09/">
+            <span class="card-archive-list-date">
+              九月 2021
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/06/">
+            <span class="card-archive-list-date">
+              六月 2021
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/05/">
+            <span class="card-archive-list-date">
+              五月 2021
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2020/09/">
+            <span class="card-archive-list-date">
+              九月 2020
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">56</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-07-01T10:36:11.557Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div><div class="card-widget user-map" id="user-map"><div class="item-headline"><i class="fas fa-heartbeat"></i><span>访客地图</span></div><div class="item-content"><script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=5V2tOKp8qAdRM-i8eu7ETTO9ugt5uKbbG-U7Yj8uMl8"></script></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = ["天无边，智无限。","The sky is boundless，wisdom is infinite."].slice()
+
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  typedJSFn.processSubtitle(["天无边，智无限。","The sky is boundless，wisdom is infinite."])
+}
+typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

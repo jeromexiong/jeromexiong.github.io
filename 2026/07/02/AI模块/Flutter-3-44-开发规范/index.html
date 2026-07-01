@@ -1,0 +1,646 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板 | Jerome Xiong</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于 Flutter 3.44.4 &#x2F; Dart 3.12.2 的 AI 辅助开发规范体系，覆盖技能分级（flutter&#x2F;skills）、项目结构、代码规范、依赖管理和 AGENTS.md 配置模板。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">
+<meta property="og:url" content="https://jeromexiong.github.io/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="基于 Flutter 3.44.4 &#x2F; Dart 3.12.2 的 AI 辅助开发规范体系，覆盖技能分级（flutter&#x2F;skills）、项目结构、代码规范、依赖管理和 AGENTS.md 配置模板。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.shields.io/badge/Flutter%203.44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83-02569B?logo=flutter&logoColor=white">
+<meta property="article:published_time" content="2026-07-02T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T10:35:49.504Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="AI 编程">
+<meta property="article:tag" content="Dart 3.12">
+<meta property="article:tag" content="Flutter">
+<meta property="article:tag" content="Flutter 3.44">
+<meta property="article:tag" content="GoRouter">
+<meta property="article:tag" content="Riverpod">
+<meta property="article:tag" content="开发规范">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.shields.io/badge/Flutter%203.44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83-02569B?logo=flutter&logoColor=white"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板",
+  "url": "https://jeromexiong.github.io/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/",
+  "image": "https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&logoColor=white",
+  "datePublished": "2026-07-02T04:00:00.000Z",
+  "dateModified": "2026-07-01T10:35:49.504Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jerome Xiong",
+      "url": "https://jeromexiong.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a><a class="nav-page-title" href="/"><span class="site-name">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon fas fa-history"></i><span class="post-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.504Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/%E5%B7%A5%E5%85%B7/">工具</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Flutter/">Flutter</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>Flutter 3.44 配合 Dart 3.12 引入了多项重要变更——<code>withValues</code> 替代 <code>withOpacity</code>、Swift Package Manager 成为 iOS 默认、AGP 9.0 + Kotlin 2.3 等。本文整理一套可落地的开发规范体系，涵盖技能分级、项目模板、代码约束和 AI 辅助配置，适用于团队协作项目。</p>
+</blockquote>
+<hr>
+<h2 id="一、Flutter-3-44-环境概览">一、Flutter 3.44 环境概览</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flutter</td>
+<td>3.44.4</td>
+</tr>
+<tr>
+<td>Dart</td>
+<td>3.12.2</td>
+</tr>
+<tr>
+<td>AGP</td>
+<td>9.0.1</td>
+</tr>
+<tr>
+<td>Kotlin</td>
+<td>2.3.20</td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td>9.1.0</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>17</td>
+</tr>
+<tr>
+<td>iOS 最低版本</td>
+<td>12.0</td>
+</tr>
+<tr>
+<td>AndroidX</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td>iOS 依赖管理</td>
+<td>Swift Package Manager（无 Podfile）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 从 Flutter 3.22+ 开始，新项目默认使用 <strong>Swift Package Manager</strong> 而非 CocoaPods 管理 iOS 依赖。<code>Podfile</code> 和 <code>ios/Pods/</code> 不再需要，<code>.gitignore</code> 中对应条目仍然保留用于旧项目迁移兼容。</p>
+</blockquote>
+<hr>
+<h2 id="二、技能分级体系（Skills）">二、技能分级体系（Skills）</h2>
+<p>基于 <a target="_blank" rel="noopener" href="https://github.com/flutter/skills">flutter/skills</a> 官方仓库，建立三级技能体系，统一 AI 辅助开发标准：</p>
+<h3 id="层级总览">层级总览</h3>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">L1 通用技能  ← flutter/skills（官方，首选）</span><br><span class="line">L2 专项技能  ← CPF-Flutter/skills（鸿蒙适配，按需）</span><br><span class="line">L3 定制技能  ← 团队自建 Rules + Skills（强制约束）</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="选择策略">选择策略</h3>
+<table>
+<thead>
+<tr>
+<th>项目类型</th>
+<th>L1 官方</th>
+<th>L2 鸿蒙</th>
+<th>L3 定制</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>纯 iOS/Android</td>
+<td>✅ 必须</td>
+<td>❌</td>
+<td>可选</td>
+<td>标准 Flutter 项目</td>
+</tr>
+<tr>
+<td>鸿蒙跨端</td>
+<td>✅ 必须</td>
+<td>✅ 必须</td>
+<td>可选</td>
+<td>OpenHarmony 适配</td>
+</tr>
+<tr>
+<td>团队协同</td>
+<td>✅ 必须</td>
+<td>按需</td>
+<td>✅ 建议</td>
+<td>统一架构规范</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="三、安装-flutter-skills（L1-官方）">三、安装 flutter/skills（L1 官方）</h2>
+<h3 id="安装方式">安装方式</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CLI 安装全部技能</span></span><br><span class="line">npx skills add flutter/skills --skill <span class="string">'*'</span> --agent universal --<span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装指定技能</span></span><br><span class="line">npx skills add flutter/skills --skill flutter-architecture --agent universal</span><br></pre></td></tr></tbody></table></figure>
+<p>IDE 用户（如 Cursor）也可将仓库放入 <code>.cursor/skills/</code> 目录。</p>
+<h3 id="推荐技能矩阵">推荐技能矩阵</h3>
+<h4 id="基础架构">基础架构</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>强制内容</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flutter-architecture</code></td>
+<td>Clean Architecture 分层</td>
+<td>避免逻辑混杂，View / Domain / Data 三层分离</td>
+</tr>
+<tr>
+<td><code>flutter-setup-declarative-routing</code></td>
+<td>GoRouter 声明式路由</td>
+<td>统一导航配置，支持深度链接</td>
+</tr>
+</tbody>
+</table>
+<h4 id="UI-构建">UI 构建</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>强制内容</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flutter-layout</code></td>
+<td>响应式约束 + 溢出修复</td>
+<td>自动检测 <code>Overflowed</code> 报错并修正</td>
+</tr>
+<tr>
+<td><code>flutter-theming</code></td>
+<td>Material 3 主题规范</td>
+<td>统一 Design Token，避免硬编码色值</td>
+</tr>
+<tr>
+<td><code>flutter-build-responsive-layout</code></td>
+<td>多屏适配模式</td>
+<td>Tablet / Desktop / Mobile 三端布局</td>
+</tr>
+<tr>
+<td><code>flutter-add-widget-preview</code></td>
+<td>Widget 预览</td>
+<td>组件级热重载预览</td>
+</tr>
+</tbody>
+</table>
+<h4 id="数据层">数据层</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>强制内容</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flutter-http-and-json</code></td>
+<td>类型安全 JSON 序列化</td>
+<td>含 Pattern Matching 示例，杜绝 <code>dynamic</code> 蔓延</td>
+</tr>
+<tr>
+<td><code>flutter-state-management</code></td>
+<td>单向数据流规范</td>
+<td>Provider / Riverpod / Bloc 统一写法</td>
+</tr>
+<tr>
+<td><code>flutter-implement-json-serialization</code></td>
+<td><code>fromJson</code>/<code>toJson</code> 模板</td>
+<td>自动生成序列化代码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="测试与优化">测试与优化</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>强制内容</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flutter-testing</code></td>
+<td>Widget / 集成测试标准流程</td>
+<td>统一测试目录结构 + Mock 策略</td>
+</tr>
+<tr>
+<td><code>flutter-add-widget-test</code></td>
+<td>Widget 测试模板</td>
+<td>组件级测试覆盖率</td>
+</tr>
+<tr>
+<td><code>flutter-add-integration-test</code></td>
+<td>集成测试流程</td>
+<td>端到端场景验证</td>
+</tr>
+<tr>
+<td><code>flutter-performance</code></td>
+<td>16ms 帧预算优化策略</td>
+<td>针对 Build / Layout / Paint 各阶段分析</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="四、团队自定义规范（L3）">四、团队自定义规范（L3）</h2>
+<p>当官方技能无法满足团队特定架构时，通过自建 Skills 和 Rules 补充。</p>
+<h3 id="机制">机制</h3>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Skills（动态操作指南） + Rules（静态强制约束）</span><br><span class="line">  ↓                        ↓</span><br><span class="line">"怎么做"               "必须遵守什么"</span><br><span class="line">  ↓                        ↓</span><br><span class="line">SKILL.md 定义流程      AGENTS.md / CLAUDE.md 声明规则</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="项目结构">项目结构</h3>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">项目根/</span><br><span class="line">├── AGENTS.md              ← 完整配置 + 技术栈 + 目录结构</span><br><span class="line">├── CLAUDE.md              ← 快速参考 + 硬性约束</span><br><span class="line">├── .agents/skills/        ← 自定义 Skills</span><br><span class="line">│   └── &lt;skill-name&gt;/</span><br><span class="line">│       └── SKILL.md</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="五、技术栈推荐（Flutter-3-44）">五、技术栈推荐（Flutter 3.44）</h2>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>推荐技术</th>
+<th>版本参考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>状态管理</td>
+<td>Riverpod（<code>flutter_riverpod</code>）</td>
+<td>2.6.x</td>
+</tr>
+<tr>
+<td>路由</td>
+<td>GoRouter</td>
+<td>14.8.x</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>Dio</td>
+<td>5.10.x</td>
+</tr>
+<tr>
+<td>UI 组件</td>
+<td>TDesign Flutter / Material 3</td>
+<td>按需</td>
+</tr>
+<tr>
+<td>屏幕适配</td>
+<td>flutter_screenutil</td>
+<td>5.9.x</td>
+</tr>
+<tr>
+<td>本地存储</td>
+<td>shared_preferences</td>
+<td>2.5.x</td>
+</tr>
+<tr>
+<td>代码规范</td>
+<td>flutter_lints</td>
+<td>6.x</td>
+</tr>
+<tr>
+<td>加密</td>
+<td>dart_sm（SM2）/ pointycastle</td>
+<td>按需</td>
+</tr>
+<tr>
+<td>图片选择</td>
+<td>image_picker</td>
+<td>1.1.x</td>
+</tr>
+<tr>
+<td>加载动画</td>
+<td>flutter_easyloading</td>
+<td>3.0.x</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🏷️ <strong>选型原则</strong>：</p>
+<ul>
+<li>状态管理推荐 <strong>Riverpod</strong>（<code>StateNotifier</code> 模式），比 Provider 更类型安全，比 Bloc 更少样板代码</li>
+<li>路由强制 <strong>GoRouter</strong> 声明式配置，支持深度链接和重定向守卫</li>
+<li>HTTP 使用 <strong>Dio</strong> 而非 <code>http</code> 包，拦截器机制更适合业务场景（token 刷新、日志、加密）</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="六、代码规范">六、代码规范</h2>
+<h3 id="强制规则">强制规则</h3>
+<table>
+<thead>
+<tr>
+<th>约束</th>
+<th>说明</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>状态管理使用 Riverpod（StateNotifier）</td>
+<td>架构强制</td>
+<td><a target="_blank" rel="noopener" href="http://AGENTS.md">AGENTS.md</a></td>
+</tr>
+<tr>
+<td>路由使用 GoRouter（声明式）</td>
+<td>架构强制</td>
+<td><a target="_blank" rel="noopener" href="http://AGENTS.md">AGENTS.md</a></td>
+</tr>
+<tr>
+<td>颜色透明度使用 <code>.withValues(alpha:)</code></td>
+<td>Flutter 3.27+ 废弃 <code>.withOpacity()</code></td>
+<td>flutter_lints</td>
+</tr>
+<tr>
+<td>文件名使用 <code>lowercase_with_underscores</code></td>
+<td>Dart 标准</td>
+<td>flutter_lints</td>
+</tr>
+<tr>
+<td><code>BuildContext</code> 跨 async 需检查 <code>mounted</code></td>
+<td>安全规范</td>
+<td><a target="_blank" rel="noopener" href="http://AGENTS.md">AGENTS.md</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="颜色透明度的迁移">颜色透明度的迁移</h3>
+<p>Flutter 3.27+ 已废弃 <code>Color.withOpacity()</code>，应全部替换为：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 新写法</span></span><br><span class="line">Colors.blue.withValues(alpha: <span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 已废弃</span></span><br><span class="line">Colors.blue.withOpacity(<span class="number">0.5</span>)</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>💡 <code>withValues(alpha:)</code> 的 alpha 取值范围是 <strong>0.0 ~ 1.0</strong>，与 <code>withOpacity</code> 一致。</p>
+</blockquote>
+<h3 id="项目结构规范">项目结构规范</h3>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">lib/</span><br><span class="line">├── main.dart                        # 入口</span><br><span class="line">├── global.dart                      # 全局初始化</span><br><span class="line">├── router/                          # 路由</span><br><span class="line">│   └── app_router.dart</span><br><span class="line">├── common/                          # 公共层</span><br><span class="line">│   ├── api/                         # 网络接口</span><br><span class="line">│   ├── models/                      # 数据模型</span><br><span class="line">│   ├── services/                    # 服务层</span><br><span class="line">│   ├── utils/                       # 工具类</span><br><span class="line">│   ├── values/                      # 常量</span><br><span class="line">│   ├── components/                  # 公共组件</span><br><span class="line">│   ├── extension/                   # 扩展方法</span><br><span class="line">│   └── widgets/                     # 通用组件</span><br><span class="line">├── pages/                           # 页面</span><br><span class="line">│   └── &lt;feature&gt;/</span><br><span class="line">│       ├── view.dart                # UI</span><br><span class="line">│       └── widgets/                 # 页面内组件</span><br><span class="line">└── provider/                        # Riverpod Providers</span><br><span class="line">    └── &lt;feature&gt;/</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>💡 <strong>约定</strong>：</p>
+<ul>
+<li>页面文件：<code>view.dart</code> 放 UI，Provider 放 <code>lib/provider/</code> 对应目录</li>
+<li>barrel export：<code>index.dart</code> 中<strong>不写</strong> <code>library xxx;</code> 声明</li>
+<li>缩进：<strong>2 spaces</strong>（Dart 标准）</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="七、Flutter-3-44-的-gitignore">七、Flutter 3.44 的 .gitignore</h2>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"># Flutter/Dart/Pub</span><br><span class="line">**/doc/api/</span><br><span class="line">**/ios/Flutter/.last_build_id</span><br><span class="line">.dart_tool/</span><br><span class="line">.config/</span><br><span class="line">.flutter-plugins</span><br><span class="line">.flutter-plugins-dependencies</span><br><span class="line">.pub-cache/</span><br><span class="line">.pub/</span><br><span class="line">/build/</span><br><span class="line"></span><br><span class="line"># Platform ephemeral</span><br><span class="line">ios/Flutter/ephemeral/</span><br><span class="line">macos/Flutter/ephemeral/</span><br><span class="line">linux/flutter/ephemeral/</span><br><span class="line">windows/flutter/ephemeral/</span><br><span class="line"></span><br><span class="line"># Flutter 3.44+ — iOS SPM generated files</span><br><span class="line">ios/Flutter/Flutter.podspec</span><br><span class="line">ios/Flutter/Generated.xcconfig</span><br><span class="line">ios/Flutter/flutter_export_environment.sh</span><br><span class="line">ios/Flutter/app.flx</span><br><span class="line">ios/Flutter/app.zip</span><br><span class="line"></span><br><span class="line"># iOS — auto-generated plugin registrant</span><br><span class="line">ios/Runner/GeneratedPluginRegistrant.h</span><br><span class="line">ios/Runner/GeneratedPluginRegistrant.m</span><br><span class="line"></span><br><span class="line"># CocoaPods (legacy projects only)</span><br><span class="line">ios/Pods/</span><br><span class="line">ios/.symlinks/</span><br><span class="line"></span><br><span class="line"># Android Studio / Gradle / Kotlin</span><br><span class="line">android/local.properties</span><br><span class="line">android/.gradle/</span><br><span class="line">android/.kotlin/</span><br><span class="line">android/app/src/main/java/</span><br><span class="line">**/android/**/build/</span><br><span class="line">**/android/**/.cxx/</span><br><span class="line"></span><br><span class="line"># iOS/macOS — user-specific Xcode data only</span><br><span class="line">**/xcuserdata/</span><br><span class="line"></span><br><span class="line"># Flutter version management (FVM)</span><br><span class="line">.fvm/</span><br><span class="line">flutter_sdk/</span><br><span class="line"></span><br><span class="line"># Service credentials / secrets</span><br><span class="line">*.keystore</span><br><span class="line">*.jks</span><br><span class="line">*.p8</span><br><span class="line">*.p12</span><br><span class="line">*.key</span><br><span class="line">*.crt</span><br><span class="line">.env</span><br><span class="line">.env.local</span><br><span class="line"></span><br><span class="line"># IDE / OS</span><br><span class="line">.DS_Store</span><br><span class="line">*.swp</span><br><span class="line">*.swo</span><br><span class="line">*~</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>注意：虽然 SPM 已取代 CocoaPods 成为默认方案，但 <code>ios/Pods/</code> 和 <code>ios/.symlinks/</code> 仍保留在 <code>.gitignore</code> 中以兼容旧项目迁移。</p>
+</blockquote>
+<hr>
+<h2 id="八、Android-构建配置（AGP-9-Kotlin-DSL）">八、Android 构建配置（AGP 9 + Kotlin DSL）</h2>
+<figure class="highlight kotlin"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// android/app/build.gradle.kts</span></span><br><span class="line">plugins {</span><br><span class="line">    id(<span class="string">"com.android.application"</span>)</span><br><span class="line">    id(<span class="string">"kotlin-android"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">android {</span><br><span class="line">    namespace = <span class="string">"com.example.app"</span></span><br><span class="line">    compileSdk = <span class="number">35</span></span><br><span class="line"></span><br><span class="line">    defaultConfig {</span><br><span class="line">        minSdk = <span class="number">21</span></span><br><span class="line">        targetSdk = <span class="number">35</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    compileOptions {</span><br><span class="line">        sourceCompatibility = JavaVersion.VERSION_17</span><br><span class="line">        targetCompatibility = JavaVersion.VERSION_17</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    kotlinOptions {</span><br><span class="line">        jvmTarget = <span class="string">"17"</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>推荐值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AGP</td>
+<td>9.0.1</td>
+</tr>
+<tr>
+<td>Kotlin</td>
+<td>2.3.20</td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td>9.1.0</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>17</td>
+</tr>
+<tr>
+<td>Gradle DSL</td>
+<td>Kotlin DSL（<code>.kts</code>）</td>
+</tr>
+<tr>
+<td>MainActivity</td>
+<td>Kotlin（<code>.kt</code>）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="九、项目初始化检查清单">九、项目初始化检查清单</h2>
+<h3 id="新项目初始化">新项目初始化</h3>
+<ul>
+<li>[ ] <code>flutter create</code> 标准模板</li>
+<li>[ ] 安装 L1 <code>flutter/skills</code> 全部技能（或按需选装）</li>
+<li>[ ] 创建 <code>AGENTS.md</code> + <code>CLAUDE.md</code></li>
+<li>[ ] 配置 <code>analysis_options.yaml</code>（依赖 <code>flutter_lints</code> 6.x）</li>
+<li>[ ] 配置 <code>.gitignore</code>（包含 Flutter 3.44+ 新条目）</li>
+<li>[ ] 初始化 Git</li>
+</ul>
+<h3 id="持续维护">持续维护</h3>
+<ul>
+<li>[ ] <code>flutter analyze</code> 零 error（info/warning 按需清理）</li>
+<li>[ ] Skills 随 flutter/skills 仓库更新</li>
+<li>[ ] L3 自定义规则随团队演进迭代</li>
+<li>[ ] 大版本升级时（如 Flutter 4.0）重新评估技能兼容性</li>
+</ul>
+<hr>
+<h2 id="十、参考资源">十、参考资源</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/skills">flutter/skills 官方仓库</a> — AI 辅助开发技能集</li>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.dev">Flutter 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://dart.dev/resources/dart-3-12">Dart 3.12 更新日志</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/evanca/flutter-ai-rules">evanca/flutter-ai-rules</a> — 自定义 Rules 参考</li>
+<li><a target="_blank" rel="noopener" href="https://riverpod.dev">Riverpod 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://pub.dev/packages/go_router">GoRouter 文档</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io">Jerome Xiong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/">https://jeromexiong.github.io/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://jeromexiong.github.io" target="_blank">Jerome Xiong</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Flutter/">Flutter</a><a class="post-meta__tags" href="/tags/Flutter-3-44/">Flutter 3.44</a><a class="post-meta__tags" href="/tags/Dart-3-12/">Dart 3.12</a><a class="post-meta__tags" href="/tags/Riverpod/">Riverpod</a><a class="post-meta__tags" href="/tags/GoRouter/">GoRouter</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/">开发规范</a><a class="post-meta__tags" href="/tags/AI-%E7%BC%96%E7%A8%8B/">AI 编程</a></div><div class="post-share"><div class="social-share" data-image="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img class="cover" src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</div></div><div class="info-2"><div class="info-item-1"> 浏览器自动化测试工具的选择直接影响测试开发效率和维护成本。本文对比四个主流方案，帮助团队根据自身场景做技术选型，重点介绍微软最新推出的 Playwright CLI + Skills 方案及其在 AI Agent 场景下的集成实践。  方案概览    维度 Playwright Playwright CLI + Skills Midscene.js agent-browser     定位 传统 E2E 测试框架 AI Agent 时代的 CLI 浏览器自动化 VLM 驱动的自然语言自动化 Hermes 内置浏览器工具集   定位方式 CSS/XPath 选择器 Accessibility Snapshot + CLI 命令流 VLM 视觉识别 Playwright 底层 + AI 选择   执行引擎 自研浏览器协议 Playwright + Accessibility Tree Playwright + VLM Playwright 封装   AI 依赖 无（纯代码驱动） 无（Skill 驱动的 CLI 命令） 强依赖 VLM 中等（AI 辅助定位）   Token 消耗 —...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA &#x2F; Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img class="cover" src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">IDEA &#x2F; Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</div></div><div class="info-2"><div class="info-item-1"> ProxyAI 插件已无法访问，之前的 ProxyAI + DeepSeek V4 配置方案已失效。现在改为直接在 IDEA 内置终端中使用 Claude Code CLI，零插件、零配置，一条命令即可进入 AI 编程模式。本文记录这个方案的切换过程和实际使用方式。  背景：为什么放弃 ProxyAI ProxyAI 插件之前通过 Custom OpenAI Provider 的方式在 IDEA 中接入 DeepSeek V4，实现了对话补全和代码补全。但 ProxyAI 服务已无法访问，该方案不再可用。 替代方案对比：    维度 ProxyAI（已失效） Claude Code CLI（当前方案）     模式 IDEA 插件 + API 配置 终端 CLI 直接使用   安装 插件市场安装 + 图形配置 npm install -g @anthropic-ai/claude-code   模型 自定义 API（DeepSeek 等） Anthropic Claude（默认）   上下文 受限于插件配置 原生 200K Token   适用场景 内嵌对话面板 + 代码补全 ...</div></div></div></a><a class="pagination-related" href="/2020/04/29/%E5%B7%A5%E5%85%B7/Flutter%20%E7%AC%94%E8%AE%B0/" title="Flutter 笔记"><img class="cover" src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Flutter 笔记</div></div><div class="info-2"><div class="info-item-1">本文汇总了 Flutter 开发中跨平台（iOS/Android）的常见实用技巧，包括插件桥接 OC 库、签名与 ADB 操作、自动方向监听及物理返回按键拦截等，方便快速查阅。 iOS 插件swift 调用oc库  project.podspec文件添加库依赖 s.dependency 'name', 'version' 如需桥接文件  Pods/Development Pods/project/../ios/Classes/目录下创建桥接文件Flutter-Bridging-Header.h，并引用库头文件 在project-umbrella.h文件中添加#import "Flutter-Bridging-Header.h"(也可以全局搜索ProjectPlugin.h后添加在其下)⚠️Podfile必须有use_framework!属性才会生成umbrella文件   如需要添加其他资源文件，需要在project.podspec中配置  12345678search_paths = [    '${SDKROOT}/usr/include/libxml2']s.pod_tar...</div></div></div></a><a class="pagination-related" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img class="cover" src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</div></div><div class="info-2"><div class="info-item-1"> 从零开始搭建 Flutter 开发环境，用 FlyEnv 替代手动配置 SDK，Android Studio 作为主力 IDE，FVM 管理多项目 Flutter 版本——一套省心又不折腾的方案。  背景 Flutter 环境搭建对新手来说一直是个门槛：下载 SDK、配 PATH、装 Android Studio、装插件、还要管理多版本……步骤多且容易出错。 FlyEnv（原 PHPStudy）是一款 macOS 开发环境管理工具，内置 Flutter/Dart 等 SDK 的一键安装和版本切换。配合 Android Studio 和 FVM，可以快速搭出一套整洁、可维护的开发环境。   一、FlyEnv 安装 Flutter &amp; Dart 1.1 安装 FlyEnv 1brew install --cask flyenv 安装后在 应用程序 中找到 FlyEnv 并打开。  FlyEnv 会自己管理 SDK 安装路径，不需要手动配置 PATH，它会自动把 SDK 加到 shell 环境中。  1.2 安装 Flutter/Dart 打开 FlyEnv → 左侧 环境 ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Flutter-3-44-%E7%8E%AF%E5%A2%83%E6%A6%82%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">一、Flutter 3.44 环境概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%8A%80%E8%83%BD%E5%88%86%E7%BA%A7%E4%BD%93%E7%B3%BB%EF%BC%88Skills%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">二、技能分级体系（Skills）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%82%E7%BA%A7%E6%80%BB%E8%A7%88"><span class="toc-number">2.1.</span> <span class="toc-text">层级总览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5"><span class="toc-number">2.2.</span> <span class="toc-text">选择策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%89%E8%A3%85-flutter-skills%EF%BC%88L1-%E5%AE%98%E6%96%B9%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">三、安装 flutter&#x2F;skills（L1 官方）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">安装方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E6%8A%80%E8%83%BD%E7%9F%A9%E9%98%B5"><span class="toc-number">3.2.</span> <span class="toc-text">推荐技能矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84"><span class="toc-number">3.2.1.</span> <span class="toc-text">基础架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UI-%E6%9E%84%E5%BB%BA"><span class="toc-number">3.2.2.</span> <span class="toc-text">UI 构建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B1%82"><span class="toc-number">3.2.3.</span> <span class="toc-text">数据层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.4.</span> <span class="toc-text">测试与优化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%9B%A2%E9%98%9F%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%84%E8%8C%83%EF%BC%88L3%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">四、团队自定义规范（L3）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%88%B6"><span class="toc-number">4.1.</span> <span class="toc-text">机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-number">4.2.</span> <span class="toc-text">项目结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%8A%80%E6%9C%AF%E6%A0%88%E6%8E%A8%E8%8D%90%EF%BC%88Flutter-3-44%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">五、技术栈推荐（Flutter 3.44）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-number">6.</span> <span class="toc-text">六、代码规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E8%A7%84%E5%88%99"><span class="toc-number">6.1.</span> <span class="toc-text">强制规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%9C%E8%89%B2%E9%80%8F%E6%98%8E%E5%BA%A6%E7%9A%84%E8%BF%81%E7%A7%BB"><span class="toc-number">6.2.</span> <span class="toc-text">颜色透明度的迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E8%A7%84%E8%8C%83"><span class="toc-number">6.3.</span> <span class="toc-text">项目结构规范</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81Flutter-3-44-%E7%9A%84-gitignore"><span class="toc-number">7.</span> <span class="toc-text">七、Flutter 3.44 的 .gitignore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81Android-%E6%9E%84%E5%BB%BA%E9%85%8D%E7%BD%AE%EF%BC%88AGP-9-Kotlin-DSL%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">八、Android 构建配置（AGP 9 + Kotlin DSL）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">9.</span> <span class="toc-text">九、项目初始化检查清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">9.1.</span> <span class="toc-text">新项目初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%81%E7%BB%AD%E7%BB%B4%E6%8A%A4"><span class="toc-number">9.2.</span> <span class="toc-text">持续维护</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">10.</span> <span class="toc-text">十、参考资源</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'ae8ab270574517163a19',
+      clientSecret: '1d7564ea5d344abe5afe6717d5dbfe282dd6930b',
+      repo: 'jeromexiong.github.io',
+      owner: 'jeromexiong',
+      admin: ['jeromexiong'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'f492d65f1ae47bd4e4e3a321e5efd223'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

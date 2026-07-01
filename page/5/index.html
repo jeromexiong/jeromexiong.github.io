@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Jerome Xiong - Jerome Xiong 的个人博客</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客，分享移动开发、跨平台技术、编程心得与实用工具">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jerome Xiong">
+<meta property="og:url" content="https://jeromexiong.github.io/page/5/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客，分享移动开发、跨平台技术、编程心得与实用工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jeromexiong.github.io/images/avatar.png">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeromexiong.github.io/images/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/page/5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Jerome Xiong',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://img0.baidu.com/it/u=2537641398,3767872189&amp;fm=26&amp;fmt=auto);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Jerome Xiong</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2020/03/01/%E5%B7%A5%E5%85%B7/GO%20/" title="Go 笔记"><img class="post-bg" src="https://img.shields.io/badge/-Go-00ADD8?logo=go&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go 笔记"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/03/01/%E5%B7%A5%E5%85%B7/GO%20/" title="Go 笔记">Go 笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Go/">Go</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Golang/">Golang</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a></span></div><div class="content">Go 语言开发过程中常遇到环境配置、依赖管理和代码生成等小问题，本文收集了一些高频问题的快速解决方案，方便遇到时直接查阅。 问题  清除所有缓存go clean --modcache 解决第三方插件无法安装 go env -w GOPROXY=https://goproxy.cn,https://gocenter.io,https://goproxy.io,direct 设置插件环境变量  123456vim .bash_profile## golangexport PATH=~/go/bin:$PATHsource .bash_profile  protoc-gen-go: unable to determine Go import path for  1option go_package = "./";    </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/02/01/Linux-DevOps/scp%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/" title="scp传输文件"><img class="post-bg" src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&amp;logo=linux" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="scp传输文件"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/02/01/Linux-DevOps/scp%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/" title="scp传输文件">scp传输文件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%BD%E4%BB%A4/">命令</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/scp/">scp</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/">文件传输</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/SSH/">SSH</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%BF%9C%E7%A8%8B/">远程</a></span></div><div class="content">本文介绍 Linux 下使用 scp 命令通过 SSH 协议安全传输文件和目录的方法，包括上传、下载及递归传输目录的常用操作示例。 在linux下一般用scp这个命令来通过ssh传输文件  从服务器上下载文件   scp username@servername:/path/filename /var/www/local_dir（本地目录）  例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.txt 的文件下载到/var/www/local_dir（本地目录）  上传本地文件到服务器   scp /path/filename username@servername:/path  例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中  从服务器下载整个目录   scp -r username@servernam...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/02/01/iOS-Swift/krc%E3%80%81hrcs%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90/" title="krc、hrcs歌词解析"><img class="post-bg" src="https://img.shields.io/badge/%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90-555555?style=flat-square&amp;logo=apple" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="krc、hrcs歌词解析"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/02/01/iOS-Swift/krc%E3%80%81hrcs%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90/" title="krc、hrcs歌词解析">krc、hrcs歌词解析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS/">iOS</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Swift/">Swift</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%AD%8C%E8%AF%8D/">歌词</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/krc/">krc</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/hrcs/">hrcs</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%A7%A3%E6%9E%90/">解析</a></span></div><div class="content">本文介绍如何使用 Swift 解析 krc 和 hrcs 两种加密歌词格式，提取逐字时间戳和歌词文本内容。 解析krc歌词  gtm_data扩展 链接: https://pan.baidu.com/s/1tNLGCRa2l_y-3nQGPSPNgw 密码: ar76  123456789101112131415161718192021222324252627282930313233func decodeKRC(filePath: String?) -&gt; String? {    let EncKey: NSString = "@Gaw^2tGQ61-ÎÒni"    guard let path = filePath, let totalBytes = NSData(contentsOfFile: path) else {        return nil    }    if !path.lowercased().hasSuffix("krc") {        return nil    }    let EncodedBytes = NSMutableData(...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/01/01/Linux-DevOps/Confluence%20%E5%AE%89%E8%A3%85/" title="Confluence 安装"><img class="post-bg" src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&amp;logo=linux" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Confluence 安装"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/01/01/Linux-DevOps/Confluence%20%E5%AE%89%E8%A3%85/" title="Confluence 安装">Confluence 安装</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MySQL/">MySQL</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Confluence/">Confluence</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%AE%89%E8%A3%85/">安装</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%96%87%E6%A1%A3/">文档</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Java/">Java</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%A0%B4%E8%A7%A3/">破解</a></span></div><div class="content">本文详细介绍 Atlassian Confluence 的安装、破解及 MySQL 数据库配置全过程，帮助您快速搭建企业级团队协作平台。  参考  一、事前准备  jdk安装（jdk版本不得低于1.7）   window jdk 安装配置   mysql 数据库安装，5.6版本正好   mysql msi安装   confluence 官方下载   confluence 安装，一直Next即可。安装完成后会启动Confluence浏览，找到其中的 Service ID 并记录下来，如（BH3W-12N1-Y4CB-FFU4）  二、confluence 破解  破解工具下载   链接: https://pan.baidu.com/s/1gggeXkn 密码: y6xr   mysql JDBC驱动下载   链接: https://pan.baidu.com/s/1eT4362Q 密码: kgvw  将驱动mysql-connector-java-5.1.32-bin.jar，拷贝至C:\Program Files\Atlassian\Confluence\confluence\W...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/01/01/Web-%E5%89%8D%E7%AB%AF/%E4%BA%8C%E4%BB%A3%E8%BA%AB%E4%BB%BD%E8%AF%81%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99/" title="二代身份证编码规则"><img class="post-bg" src="https://img.shields.io/badge/Frontend-4FC08D?logo=vue.js&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二代身份证编码规则"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/01/01/Web-%E5%89%8D%E7%AB%AF/%E4%BA%8C%E4%BB%A3%E8%BA%AB%E4%BB%BD%E8%AF%81%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99/" title="二代身份证编码规则">二代身份证编码规则</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.506Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Web/">Web</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%BA%AB%E4%BB%BD%E8%AF%81/">身份证</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%A0%A1%E9%AA%8C%E7%AE%97%E6%B3%95/">校验算法</a></span></div><div class="content">中国第二代身份证号码为18位，每一位都有其特定含义。本文从前端开发角度深入解析身份证编码结构，并提供校验码计算方法和正则验证表达式。 1 编码格式 1999年我国颁发了第二代居民身份证号，公民身份号码为18位，且终身不变，一代居民身份证编号是15位，已经基本淘汰，本文不作讨论。 居民身份证格式如：ABCDEFYYYYMMDDXXXR 1.1 地址码（ABCDEF） 表示登记户口时所在地的行政区划代码（省、市、县），如果行政区划进行了重新划分，同一个地方进行户口登记的可能存在地址码不一致的情况。行政区划代码按GB/T2260的规定执行。 1.2 出生日期码（YYYYMMDD） 表示该居民的出生年月日，年4位数字，月和日分别用2位数字表示，如19491001，；出生日期码是按GB/T 7408的规定执行的。 1.3 顺序码（XXX） 表示同一地址码区域内，同年、同月、同日生的人所编订的顺序号，根据自己身份证的顺序码就可以知道：与我们同年同月同日生的同性至少有多少个，且在我们之前登记户籍的有多少人。身份证顺序码的奇数分配给男性，偶数分配给女性。这就是为什么倒数第二位奇数表示男生，偶数表...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2019/11/01/Linux-DevOps/CentOS7%20node.js%20nginx%20MySQL%20redis%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A8%E8%BF%87%E7%A8%8B/" title="CentOS7 node.js nginx MySQL redis搭建服务器全过程"><img class="post-bg" src="https://img.shields.io/badge/Linux-009639?style=flat-square&amp;logo=nginx" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CentOS7 node.js nginx MySQL redis搭建服务器全过程"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/11/01/Linux-DevOps/CentOS7%20node.js%20nginx%20MySQL%20redis%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A8%E8%BF%87%E7%A8%8B/" title="CentOS7 node.js nginx MySQL redis搭建服务器全过程">CentOS7 node.js nginx MySQL redis搭建服务器全过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.504Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/CentOS/">CentOS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Node-js/">Node.js</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Nginx/">Nginx</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MySQL/">MySQL</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Redis/">Redis</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/">服务器搭建</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/binlog/">binlog</a></span></div><div class="content">本文记录在 CentOS7 上从零搭建完整服务器环境的全过程，包括 Node.js 安装、Nginx 反向代理配置、MySQL 数据库部署及 Redis 缓存服务搭建。  yum install git -y  一、安装nodejs 推荐   nvm管理不同版本的 node 与 npm   修改 下载仓库为淘宝镜像 npm config set registry http://registry.npm.taobao.org/   如果要发布自己的镜像需要修改回来 npm config set registry https://registry.npmjs.org/     下载 官网查看最新版本，二进制官方下载包 先进入/usr/src文件夹，这个文件夹通常用来存放软件源代码: cd /usr/local/src/ wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz 国内源 wget https://npm.taobao.org/mirrors/node/v8.9.4/node-v8.9.4-linux...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2019/10/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" title="Linux常用工具"><img class="post-bg" src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&amp;logo=linux" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux常用工具"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/10/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" title="Linux常用工具">Linux常用工具</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%BF%90%E7%BB%B4/">运维</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7/">工具</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%BD%E4%BB%A4/">命令</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/rename/">rename</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/sed/">sed</a></span></div><div class="content">本文整理了 Linux 运维中常用的工具和命令技巧，包括批量文件处理、重命名操作以及相关技术资源链接。 Swift Ubuntu上部署Perfect 尝试在CentOS7.2上编译安装Swift4.0 Linux快速搭建Nginx Mysql PHP 常用命令  rename 's/AA/aa/' *.svg 正则替换AA为aa. 特殊字符需要转义\ mv *@3x.png 3x/ 移动当前目录下所有@3x文件移动到3x目录 ls -1 | grep '.png$' &gt; image.txt 将所有以.png结尾的图片名称写入image.txt文件中 ls -1 | grep '.png$' | sed -e 's/^/- assets\/images\//' | grep '.png$' &gt; image.txt 列出所有.png图片，sed命令输出替换前缀后的名称，grep获取文件并输出到txt中。  </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2019/09/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" title="Linux常用命令大全"><img class="post-bg" src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&amp;logo=linux" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux常用命令大全"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/09/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" title="Linux常用命令大全">Linux常用命令大全</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/">命令大全</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%BF%90%E7%BB%B4/">运维</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/">系统管理</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/shell/">shell</a></span></div><div class="content">Linux常用命令大全 最近在弄服务器相关的知识，在这里记录一些常用的Linux命令  系统信息  关机 用户和群组 打包和压缩文件 磁盘空间 备份 光盘 网络   文件和目录  文件搜索 挂载文件系统 文件的权限 文件的特殊属性 文件系统分析 初始化一个文件系统 SWAP文件系统 字符设置和文件格式转换   安装包管理工具  RPM包 YUM软件包升级器 DEB包 APT软件工具   Other  查看文件内容 文本处理 GO TOP INDEX ^    系统信息 12345678910111213141516171819arch 显示机器的处理器架构(1) uname -m 显示机器的处理器架构(2) uname -r 显示正在使用的内核版本 dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) hdparm -i /dev/hda 罗列一个磁盘的架构特性 hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 cat /proc/cpuinfo 显示CPU info的信息 cat /proc/interrupts 显示中断 cat /p...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/" title="软件"><img class="post-bg" src="https://img.shields.io/badge/Mac-000000?logo=apple&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="软件"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/" title="软件">软件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Mac/">Mac</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Mac/">Mac</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%90/">软件推荐</a></span></div><div class="content">精选 Mac 平台各类优质软件资源，从系统开发环境配置到日常效率工具均有覆盖，并附带 macOS 使用中常见问题的解决方法。 系统软件  homebrew mysql pyenv pipx在独立的隔离环境中安装这些工具，从而避免它们干扰其他项目的依赖。默认会依赖最新的python版本，类似于 nvm poetry python 包管理工具 nvm redis 直接brew install redis即可  Mac必装软件  IINA 最好用的音视频播放软件（可播放任何地址 Typora 最好用的Markdown编辑工具 （➕PicGo实现图片自动上传 VsCode 最好用的代码编辑工具 Neat Download Manager 最快速的下载工具 Electerm 开源的跨平台Shell管理工具 FinalShell 最好用跨平台Shell管理工具，就是不开源 Tencent Lemon 类似于CleanMyMac，但是完全免费 xmind 思维导图 wps 好用的文档中心 V2ray mac 推荐v2rayu, win推荐v2rayn （免费订阅free 幽禁节点 FileZi...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2019/06/01/%E5%B7%A5%E5%85%B7/GIT%E7%AE%80%E6%98%93%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="GIT简易的命令行入门教程"><img class="post-bg" src="https://img.shields.io/badge/-Git-F05032?logo=git&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GIT简易的命令行入门教程"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/06/01/%E5%B7%A5%E5%85%B7/GIT%E7%AE%80%E6%98%93%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="GIT简易的命令行入门教程">GIT简易的命令行入门教程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.507Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/dev/">dev</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Git/">Git</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">版本控制</a></span></div><div class="content">Git 是当今最流行的分布式版本控制系统，掌握常用命令行操作是开发者的基本功。本文整理了从仓库初始化到日常提交流程、从分支管理到 submodule 的常用命令，适合作为速查手册。 Git 全局设置: 12git config --global user.name "jeromexiong"git config --global user.email "1540428743@qq.com" 创建 git 仓库: 12345678mkdir bookclubcd bookclubgit inittouch README.mdgit add README.mdgit commit -m "first commit"git remote add origin https://gitee.com/jeromexiong/bookclub.gitgit push -u origin master 已有仓库? 1234567cd existing_git_repogit remote add origin https://gitee.com/jeromexiong/bookclub.gitg...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/4/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/#content-inner">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/#content-inner">6</a><a class="extend next" rel="next" href="/page/6/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI/"><span class="card-category-list-name">AI</span><span class="card-category-list-count">7</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI/%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">工具</span><span class="card-category-list-count">7</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CI-CD/"><span class="card-category-list-name">CI/CD</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Flutter/"><span class="card-category-list-name">Flutter</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/"><span class="card-category-list-name">Linux</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Mac/"><span class="card-category-list-name">Mac</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Web/"><span class="card-category-list-name">Web</span><span class="card-category-list-count">7</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 1.15em; color: rgb(187, 120, 50);">杂记</a><a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" style="font-size: 1.3em; color: rgb(195, 115, 160);">命令行</a><a href="/tags/%E4%BB%A3%E7%A0%81%E7%BB%9F%E8%AE%A1/" style="font-size: 1.15em; color: rgb(50, 163, 50);">代码统计</a><a href="/tags/Git/" style="font-size: 1.45em; color: rgb(86, 61, 133);">Git</a><a href="/tags/Flutter/" style="font-size: 1.45em; color: rgb(150, 81, 73);">Flutter</a><a href="/tags/Flutter-3-44/" style="font-size: 1.15em; color: rgb(182, 103, 67);">Flutter 3.44</a><a href="/tags/Dart-3-12/" style="font-size: 1.15em; color: rgb(157, 191, 50);">Dart 3.12</a><a href="/tags/Riverpod/" style="font-size: 1.15em; color: rgb(181, 50, 58);">Riverpod</a><a href="/tags/GoRouter/" style="font-size: 1.15em; color: rgb(57, 88, 50);">GoRouter</a><a href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" style="font-size: 1.15em; color: rgb(50, 122, 50);">开发规范</a><a href="/tags/AI-%E7%BC%96%E7%A8%8B/" style="font-size: 1.3em; color: rgb(169, 67, 165);">AI 编程</a><a href="/tags/Hermes/" style="font-size: 1.45em; color: rgb(50, 184, 50);">Hermes</a><a href="/tags/AI-Agent/" style="font-size: 1.3em; color: rgb(71, 123, 90);">AI Agent</a><a href="/tags/CLI/" style="font-size: 1.15em; color: rgb(170, 177, 172);">CLI</a><a href="/tags/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" style="font-size: 1.15em; color: rgb(119, 151, 50);">安装配置</a><a href="/tags/Skills/" style="font-size: 1.15em; color: rgb(182, 76, 53);">Skills</a><a href="/tags/MCP/" style="font-size: 1.3em; color: rgb(81, 181, 193);">MCP</a><a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 1.15em; color: rgb(50, 56, 198);">插件</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.15em; color: rgb(50, 50, 127);">微信</a><a href="/tags/%E7%BD%91%E5%85%B3/" style="font-size: 1.15em; color: rgb(65, 174, 81);">网关</a><a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" style="font-size: 1.15em; color: rgb(53, 130, 174);">定时任务</a><a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" style="font-size: 1.15em; color: rgb(173, 76, 50);">工作流</a><a href="/tags/DeepSeek/" style="font-size: 1.15em; color: rgb(50, 65, 97);">DeepSeek</a><a href="/tags/DeepSeek-V4/" style="font-size: 1.15em; color: rgb(157, 71, 50);">DeepSeek-V4</a><a href="/tags/IntelliJ-IDEA/" style="font-size: 1.15em; color: rgb(185, 50, 92);">IntelliJ IDEA</a><a href="/tags/Android-Studio/" style="font-size: 1.45em; color: rgb(65, 50, 181);">Android Studio</a><a href="/tags/Claude-Code/" style="font-size: 1.3em; color: rgb(50, 50, 60);">Claude Code</a><a href="/tags/%E7%BB%88%E7%AB%AF%E5%B7%A5%E5%85%B7/" style="font-size: 1.15em; color: rgb(50, 145, 192);">终端工具</a><a href="/tags/Vercel/" style="font-size: 1.15em; color: rgb(179, 93, 50);">Vercel</a><a href="/tags/eve/" style="font-size: 1.15em; color: rgb(91, 75, 171);">eve</a><a href="/tags/Agent%E6%A1%86%E6%9E%B6/" style="font-size: 1.15em; color: rgb(56, 50, 50);">Agent框架</a><a href="/tags/TypeScript/" style="font-size: 1.15em; color: rgb(71, 50, 97);">TypeScript</a><a href="/tags/%E5%BC%80%E6%BA%90/" style="font-size: 1.15em; color: rgb(131, 78, 168);">开源</a><a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" style="font-size: 1.15em; color: rgb(116, 151, 98);">自动化测试</a><a href="/tags/Playwright/" style="font-size: 1.15em; color: rgb(114, 192, 50);">Playwright</a><a href="/tags/Playwright-CLI/" style="font-size: 1.15em; color: rgb(126, 146, 50);">Playwright CLI</a><a href="/tags/Playwright-MCP/" style="font-size: 1.15em; color: rgb(172, 50, 50);">Playwright MCP</a><a href="/tags/Midscene/" style="font-size: 1.15em; color: rgb(137, 50, 50);">Midscene</a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 1.15em; color: rgb(96, 61, 185);">浏览器自动化</a><a href="/tags/E2E/" style="font-size: 1.15em; color: rgb(50, 83, 50);">E2E</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">13</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/01/">
+            <span class="card-archive-list-date">
+              一月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/10/">
+            <span class="card-archive-list-date">
+              十月 2021
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/09/">
+            <span class="card-archive-list-date">
+              九月 2021
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/06/">
+            <span class="card-archive-list-date">
+              六月 2021
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/05/">
+            <span class="card-archive-list-date">
+              五月 2021
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2020/09/">
+            <span class="card-archive-list-date">
+              九月 2020
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">56</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-07-01T10:36:11.557Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div><div class="card-widget user-map" id="user-map"><div class="item-headline"><i class="fas fa-heartbeat"></i><span>访客地图</span></div><div class="item-content"><script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=5V2tOKp8qAdRM-i8eu7ETTO9ugt5uKbbG-U7Yj8uMl8"></script></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = ["天无边，智无限。","The sky is boundless，wisdom is infinite."].slice()
+
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  typedJSFn.processSubtitle(["天无边，智无限。","The sky is boundless，wisdom is infinite."])
+}
+typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

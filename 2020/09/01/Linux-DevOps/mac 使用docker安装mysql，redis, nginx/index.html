@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>mac 使用docker安装mysql，redis, nginx | Jerome Xiong</title><meta name="author" content="Jerome Xiong"><meta name="copyright" content="Jerome Xiong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在Mac上使用Docker和docker-compose统一安装配置MySQL、Redis和Nginx的完整教程，含镜像加速与数据挂载。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mac 使用docker安装mysql，redis, nginx">
+<meta property="og:url" content="https://jeromexiong.github.io/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="在Mac上使用Docker和docker-compose统一安装配置MySQL、Redis和Nginx的完整教程，含镜像加速与数据挂载。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.shields.io/badge/Linux-2496ED?style=flat-square&logo=docker">
+<meta property="article:published_time" content="2020-09-01T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T10:35:49.505Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Mac">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="docker-compose">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.shields.io/badge/Linux-2496ED?style=flat-square&logo=docker"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "mac 使用docker安装mysql，redis, nginx",
+  "url": "https://jeromexiong.github.io/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/",
+  "image": "https://img.shields.io/badge/Linux-2496ED?style=flat-square&logo=docker",
+  "datePublished": "2020-09-01T10:00:00.000Z",
+  "dateModified": "2026-07-01T10:35:49.505Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jerome Xiong",
+      "url": "https://jeromexiong.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://jeromexiong.github.io/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":-1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":10},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: Jerome Xiong","link":"链接: ","source":"来源: Jerome Xiong","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'mac 使用docker安装mysql，redis, nginx',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background-image: url(/url('https:/img1.baidu.com/it/u=2786885453,3849157565&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=301&amp;h=169'));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img.shields.io/badge/Linux-2496ED?style=flat-square&amp;logo=docker);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Jerome Xiong</span></a><a class="nav-page-title" href="/"><span class="site-name">mac 使用docker安装mysql，redis, nginx</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-compass"></i><span> 目录</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">mac 使用docker安装mysql，redis, nginx</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon fas fa-history"></i><span class="post-meta-label">更新于</span><time datetime="2026-07-01T10:35:49.505Z" title="更新于 2026-07-01 18:35:49">2026-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>本文介绍在 Mac 上使用 Docker 和 docker-compose 一键部署 MySQL、Redis 和 Nginx 服务，涵盖镜像加速、数据持久化、容器链接等关键配置。</p>
+<h2 id="安装">安装</h2>
+<p>首先去<a target="_blank" rel="noopener" href="https://www.runoob.com/docker/macos-docker-install.html">官网下载</a>，因为国内网络问题，需要配置网络加速，可以使用：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://hub-mirror.c.163.com">http://hub-mirror.c.163.com</a> 网易</li>
+<li><a target="_blank" rel="noopener" href="https://registry.docker-cn.com">https://registry.docker-cn.com</a> 中国区官方</li>
+<li><a target="_blank" rel="noopener" href="http://docker.mirrors.ustc.edu.cn">docker.mirrors.ustc.edu.cn</a> 中国科技大学</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/jeromexiong/resources/img/20210903144322.png" alt=""></p>
+<pre><code>{
+  "registry-mirrors": [
+    "https://docker.registry.cyou",
+    "https://docker-cf.registry.cyou",
+    "https://dockercf.jsdelivr.fyi",
+    "https://docker.jsdelivr.fyi",
+    "https://dockertest.jsdelivr.fyi",
+    "https://mirror.aliyuncs.com",
+    "https://dockerproxy.com",
+    "https://mirror.baidubce.com",
+    "https://docker.m.daocloud.io",
+    "https://docker.nju.edu.cn",
+    "https://docker.mirrors.sjtug.sjtu.edu.cn",
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://mirror.iscas.ac.cn",
+    "https://docker.rainbond.cc"
+  ]
+}
+</code></pre>
+<h2 id="使用compose统一配置mysql、redis镜像">使用compose统一配置mysql、redis镜像</h2>
+<ol>
+<li>在用户目录<code>~</code>下新建<code>mkdir -p docker/service</code>目录</li>
+<li>在<code>service</code>目录下新建文件<code>docker-compose.yml</code></li>
+</ol>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis:5.0.4</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">${REDIS_PORT}:6379</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"${REDIS_DIR}/conf:/usr/local/etc/redis"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"${REDIS_DIR}/data:/data"</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="string">redis-server</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">${MYSQL_PORT}:3306</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"${MYSQL_DIR}/data:/var/lib/mysql"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"${MYSQL_DIR}/conf.d:/etc/mysql/conf.d"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li><code>docker-compose.yml</code>文件会读取系统环境变量以及当前目录下的<code>.env</code>文件变量</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># redis</span><br><span class="line">REDIS_PORT=6379</span><br><span class="line">REDIS_PWD=123456</span><br><span class="line">REDIS_DIR=./redis</span><br><span class="line"></span><br><span class="line"># mysql</span><br><span class="line">MYSQL_PORT=3306</span><br><span class="line">MYSQL_DIR=./mysql</span><br><span class="line">MYSQL_ROOT_PASSWORD=123456 # 密码只在初始化时设置</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>运行后会默认生成镜像服务容器名<code>service_mysql_1, service_redis_1</code></p>
+<h2 id="docker-compose常用命令">docker-compose常用命令</h2>
+<ul>
+<li>
+<p>docker-compose up -d [options] [SERVICE…]<br>
+该命令十分强大，它将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作。<br>
+链接的服务都将会被自动启动，除非已经处于运行状态。<br>
+-d 以守护进程方式运行</p>
+</li>
+<li>
+<p>docker-compose down<br>
+此命令将会停止 up 命令所启动的容器，并移除网络</p>
+</li>
+<li>
+<p>docker-compose restart [options] [SERVICE…]<br>
+重启项目中的服务。</p>
+</li>
+</ul>
+<h2 id="安装nginx">安装nginx</h2>
+<ol>
+<li>
+<p>拉取nginx镜像 <code>docker pull nginx@latest</code></p>
+</li>
+<li>
+<p>查看镜像 <code>docker images</code></p>
+</li>
+<li>
+<p>运行镜像为容器</p>
+<p>docker run -d -p 4000:80 --name service_nginx nginx</p>
+<h1>用4000端口映射80，用service_nginx作为容器名，对应仓库镜像 nginx</h1>
+</li>
+<li>
+<p>查看容器</p>
+<p>docker ps -a</p>
+<h3 id="所有容器，包括未运行">所有容器，包括未运行</h3>
+</li>
+<li>
+<p>以终端的方式进入nginx容器</p>
+<p>docker exec -it service_nginx bash</p>
+</li>
+<li>
+<p>复制文件到本地</p>
+<p>docker cp service_nginx:/etc/nginx ~/docker/nginx/config/</p>
+<p>docker cp service_nginx:/usr/share/nginx/html ~/docker/nginx/</p>
+<p>docker cp service_nginx:/var/log/nginx ~/docker/nginx/logs/</p>
+</li>
+<li>
+<p>关闭容器, 重启并挂载文件</p>
+<p>docker rm -f service_nginx</p>
+<p>docker run --name service_nginx -p 4000:80 <br>
+-v ~/docker/nginx/config/:/etc/nginx <br>
+-v ~/docker/nginx/html:/usr/share/nginx/html <br>
+-v ~/docker/nginx/logs:/var/log/nginx <br>
+--link service_mysql_1:mysql <br>
+-d nginx</p>
+</li>
+</ol>
+<p><code>--link service_mysql_1:mysql</code>，表示 nginx 容器要连到 service_mysql_1 容器，冒号表示该容器的别名是mysql</p>
+<h2 id="问题">问题</h2>
+<h3 id="修改密码">修改密码</h3>
+<p>进入<code>docker exec -it service_mysql_1 bash mysql -u root -p</code></p>
+<pre><code># 修改普通用户，只改一个就好
+SET PASSWORD FOR 'youruser' = PASSWORD('newpwd');
+
+# 修改root用户，改两个
+SET PASSWORD FOR 'root' = PASSWORD('newpwd');
+SET PASSWORD FOR 'root'@'localhost'=PASSWORD('newpwd');
+</code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io">Jerome Xiong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://jeromexiong.github.io/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/">https://jeromexiong.github.io/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://jeromexiong.github.io" target="_blank">Jerome Xiong</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Nginx/">Nginx</a><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/Docker/">Docker</a><a class="post-meta__tags" href="/tags/docker-compose/">docker-compose</a><a class="post-meta__tags" href="/tags/Mac/">Mac</a></div><div class="post-share"><div class="social-share" data-image="https://img.shields.io/badge/Linux-2496ED?style=flat-square&amp;logo=docker" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2021/05/01/%E5%B7%A5%E5%85%B7/%E4%BB%8E%20nvm%20%E8%BF%81%E7%A7%BB%E5%88%B0%20Volta%20&amp;npm%E5%88%B0%20pnpm/" title="从 nvm 迁移到 Volta &amp;npm到 pnpm"><img class="cover" src="https://img.shields.io/badge/-Node.js-339933?logo=node.js&amp;logoColor=white" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">从 nvm 迁移到 Volta &npm到 pnpm</div></div><div class="info-2"><div class="info-item-1">Node.js 版本管理工具从 nvm 迁移到 Volta，包管理器从 npm 迁移到 pnpm，是提升前端开发效率的重要一步。Volta 相比 nvm 的优势在于自动版本切换和项目级配置，本文记录完整的迁移过程。 一、卸载 nvm（避免冲突）   ​卸载 nvm​： 在终端执行以下命令移除 nvm 及其配置： nvm unload                    # 卸载 nvm rm -rf "${NVM_DIR:-~/.nvm}"  # 删除安装目录    ​清理配置文件​： 编辑 shell 配置文件（如&nbsp;~/.zshrc或&nbsp;~/.bashrc），删除以下行： export NVM_DIR="$HOME/.nvm" [ -s "$NVM_DIR/nvm.sh" ] &amp;&amp; \. "$NVM_DIR/nvm.sh" [[ -r $NVM_DIR/bash_completion ]] &amp;&amp; \. $NVM_DIR/bash_completion  完成后运行&nbsp;source ~/.zshrc（或重启终端）。   ...</div></div></div></a><a class="pagination-related" href="/2020/08/01/Linux-DevOps/%E5%AE%9D%E5%A1%94%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/" title="宝塔管理服务器部署"><img class="cover" src="https://img.shields.io/badge/Linux-009639?style=flat-square&amp;logo=nginx" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">宝塔管理服务器部署</div></div><div class="info-2"><div class="info-item-1">本教程详细介绍如何在宝塔面板中配置 Nginx 反向代理、静态资源服务，以及部署 Let’s Encrypt 免费 SSL 证书和自动续期功能。 在宝塔面板中配置您提供的 Nginx 反向代理和静态资源服务，可以按照以下步骤操作。下面的流程图汇总了核心配置步骤，帮助您快速了解整体流程： 1234567891011121314151617flowchart TD    A[开始配置] --&gt; B[登录宝塔面板&lt;br&gt;创建或选择站点]    B --&gt; C{配置目标}    C --&gt;|反向代理| D[配置反向代理]    C --&gt;|静态资源| E[配置静态资源]        D --&gt; D1[添加反向代理规则]    D1 --&gt; D2[自定义代理名称和目标URL]    D2 --&gt; D3[高级配置中添加&lt;br&gt;proxy_set_header等参数]        E --&gt; E1[修改网站根目录]    E1 --&gt; E2[设置默认文档]    E2 --&gt; E3[添加try_files指...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2019/11/01/Linux-DevOps/CentOS7%20node.js%20nginx%20MySQL%20redis%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A8%E8%BF%87%E7%A8%8B/" title="CentOS7 node.js nginx MySQL redis搭建服务器全过程"><img class="cover" src="https://img.shields.io/badge/Linux-009639?style=flat-square&logo=nginx" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">CentOS7 node.js nginx MySQL redis搭建服务器全过程</div></div><div class="info-2"><div class="info-item-1">本文记录在 CentOS7 上从零搭建完整服务器环境的全过程，包括 Node.js 安装、Nginx 反向代理配置、MySQL 数据库部署及 Redis 缓存服务搭建。  yum install git -y  一、安装nodejs 推荐   nvm管理不同版本的 node 与 npm   修改 下载仓库为淘宝镜像 npm config set registry http://registry.npm.taobao.org/   如果要发布自己的镜像需要修改回来 npm config set registry https://registry.npmjs.org/     下载 官网查看最新版本，二进制官方下载包 先进入/usr/src文件夹，这个文件夹通常用来存放软件源代码: cd /usr/local/src/ wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz 国内源 wget https://npm.taobao.org/mirrors/node/v8.9.4/node-v8.9.4-linux...</div></div></div></a><a class="pagination-related" href="/2020/07/01/Linux-DevOps/%E4%BD%BF%E7%94%A8LetsEncrypt%E8%8E%B7%E5%8F%96%E5%92%8C%E5%AE%89%E8%A3%85SSLTLS%E8%AF%81%E4%B9%A6%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/" title="使用LetsEncrypt获取和安装SSLTLS证书的完整指南"><img class="cover" src="https://img.shields.io/badge/Linux-009639?style=flat-square&logo=nginx" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">使用LetsEncrypt获取和安装SSLTLS证书的完整指南</div></div><div class="info-2"><div class="info-item-1">使用Let’s Encrypt获取和安装SSL/TLS证书的完整指南 Let’s Encrypt是一个免费、自动化的证书颁发机构(CA)，通过其官方工具Certbot可以简化SSL/TLS证书的获取和安装流程。以下是详细的步骤指南： 一、准备工作  域名准备：确保您拥有要申请证书的域名，并且该域名的DNS记录已正确解析到您的服务器IP地址 服务器要求：需要root或sudo权限，并确保服务器开放了80(HTTP)和443(HTTPS)端口 Web服务器：已安装Nginx或Apache等Web服务器软件  二、安装Certbot工具 Certbot是Let’s Encrypt官方推荐的客户端工具，安装方法因操作系统而异： Ubuntu/Debian系统 1234sudo apt updatesudo apt install certbot python3-certbot-nginx  # 用于Nginx# 或sudo apt install certbot python3-certbot-apache # 用于Apache CentOS/RHEL系统 12345678sudo yu...</div></div></div></a><a class="pagination-related" href="/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/" title="软件"><img class="cover" src="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">软件</div></div><div class="info-2"><div class="info-item-1">精选 Mac 平台各类优质软件资源，从系统开发环境配置到日常效率工具均有覆盖，并附带 macOS 使用中常见问题的解决方法。 系统软件  homebrew mysql pyenv pipx在独立的隔离环境中安装这些工具，从而避免它们干扰其他项目的依赖。默认会依赖最新的python版本，类似于 nvm poetry python 包管理工具 nvm redis 直接brew install redis即可  Mac必装软件  IINA 最好用的音视频播放软件（可播放任何地址 Typora 最好用的Markdown编辑工具 （➕PicGo实现图片自动上传 VsCode 最好用的代码编辑工具 Neat Download Manager 最快速的下载工具 Electerm 开源的跨平台Shell管理工具 FinalShell 最好用跨平台Shell管理工具，就是不开源 Tencent Lemon 类似于CleanMyMac，但是完全免费 xmind 思维导图 wps 好用的文档中心 V2ray mac 推荐v2rayu, win推荐v2rayn （免费订阅free 幽禁节点 FileZi...</div></div></div></a><a class="pagination-related" href="/2019/01/01/Mac/Mac%20x%2010.12.4%20%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85sshfs/" title="Mac x 10.12.4 如何安装sshfs"><img class="cover" src="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Mac x 10.12.4 如何安装sshfs</div></div><div class="info-2"><div class="info-item-1">SSHFS 允许你通过 SSH 协议远程挂载目录到本地，方便文件管理。本文详细介绍在 macOS 10.12.4 上安装和使用 SSHFS 的完整步骤。 下载安装包 mac安装SSHFS需要安装fuse和sshfs安装包，sshfs依赖于fuse   下载安装fuse for macOS 3.5.8。历史版本   下载sshfs 2.5。历史版本   挂载远程路径  $ sshfs -C -o reconnect @:&lt;remote_dir&gt; &lt;local_dir&gt; 更多 sshfs 的用法可以 sshfs -h 查看  卸载路径 挂载之后，可以通过 df -h 查看挂载情况  $ sudo umount -f &lt;local_dir&gt;   说明： -f 是强制退出的意思，谨慎操作，使用卸载命令前要关闭所有使用的程序，避免程序闪退造成不必要的麻烦。  如何卸载SSHFS 因为SSHFS没有卸载脚本，所以卸载只能手动安装文件了。 123$ sudo rm /usr/local/bin/sshfs$ sudo rm /usr/local/share/...</div></div></div></a><a class="pagination-related" href="/2020/01/01/Linux-DevOps/Confluence%20%E5%AE%89%E8%A3%85/" title="Confluence 安装"><img class="cover" src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Confluence 安装</div></div><div class="info-2"><div class="info-item-1">本文详细介绍 Atlassian Confluence 的安装、破解及 MySQL 数据库配置全过程，帮助您快速搭建企业级团队协作平台。  参考  一、事前准备  jdk安装（jdk版本不得低于1.7）   window jdk 安装配置   mysql 数据库安装，5.6版本正好   mysql msi安装   confluence 官方下载   confluence 安装，一直Next即可。安装完成后会启动Confluence浏览，找到其中的 Service ID 并记录下来，如（BH3W-12N1-Y4CB-FFU4）  二、confluence 破解  破解工具下载   链接: https://pan.baidu.com/s/1gggeXkn 密码: y6xr   mysql JDBC驱动下载   链接: https://pan.baidu.com/s/1eT4362Q 密码: kgvw  将驱动mysql-connector-java-5.1.32-bin.jar，拷贝至C:\Program Files\Atlassian\Confluence\confluence\W...</div></div></div></a><a class="pagination-related" href="/2021/09/17/Mac/Mac%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/" title="Mac必装软件"><img class="cover" src="https://img.shields.io/badge/Mac-000000?logo=apple&logoColor=white" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2026-07-01</div><div class="info-item-2">Mac必装软件</div></div><div class="info-2"><div class="info-item-1">本文整理了 Mac 平台上一系列实用软件和开发工具，从系统配置到日常应用一应俱全，帮助你快速搭建高效的工作环境。 系统软件  homebrew mysql pyenv nvm redis 直接brew install redis即可  Mac必装软件  IINA 最好用的音视频播放软件（可播放任何地址 Typora 最好用的Markdown编辑工具 （➕PicGo实现图片自动上传 VsCode 最好用的代码编辑工具 Neat Download Manager 最快速的下载工具 Electerm 开源的跨平台Shell管理工具 FinalShell 最好用跨平台Shell管理工具，就是不开源 Tencent Lemon 类似于CleanMyMac，但是完全免费 xmind 思维导图 wps 好用的文档中心 V2ray mac 推荐v2rayu, win推荐v2rayn （免费订阅free 幽禁节点   可选软件  OBS 强大的推流工具 ishot 截图、长截图、贴图、标注、取色、录屏，样样优秀 PicGo 一个用于快速上传图片并获取图片 URL 链接的工具 Daisy Disk ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Jerome Xiong</div><div class="author-info-description">天无边，智无限。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">190</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jeromexiong"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/jeromexiong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jerome_xiong@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8compose%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEmysql%E3%80%81redis%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">使用compose统一配置mysql、redis镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-compose%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">docker-compose常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85nginx"><span class="toc-number">4.</span> <span class="toc-text">安装nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">用4000端口映射80，用service_nginx作为容器名，对应仓库镜像 nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E5%AE%B9%E5%99%A8%EF%BC%8C%E5%8C%85%E6%8B%AC%E6%9C%AA%E8%BF%90%E8%A1%8C"><span class="toc-number">5.1.</span> <span class="toc-text">所有容器，包括未运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81"><span class="toc-number">5.2.1.</span> <span class="toc-text">修改密码</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"><img src="https://img.shields.io/badge/Flutter%203.44-开发规范-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板"/></a><div class="content"><a class="title" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a><time datetime="2026-07-02T04:00:00.000Z" title="发表于 2026-07-02 12:00:00">2026-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"><img src="https://img.shields.io/badge/E2E%20Test-自动化测试-43B02A?logo=testing-library&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a><time datetime="2026-07-01T09:00:00.000Z" title="发表于 2026-07-01 17:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"><img src="https://img.shields.io/badge/Claude%20Code-终端方案-FF6B35?logo=claude&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案"/></a><div class="content"><a class="title" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/" title="IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案">IDEA / Android Studio 中接入 Claude Code：替代 ProxyAI 的终端方案</a><time datetime="2026-07-01T04:00:00.000Z" title="发表于 2026-07-01 12:00:00">2026-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"><img src="https://img.shields.io/badge/-Flutter-02569B?logo=flutter&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM"/></a><div class="content"><a class="title" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/" title="Flutter 开发环境搭建：FlyEnv + Android Studio + FVM">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a><time datetime="2026-06-29T09:30:00.000Z" title="发表于 2026-06-29 17:30:00">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"><img src="https://img.shields.io/badge/PostCSS%20%2B%20Stylelint%20%2B%20Tailwind%20CSS-工具链-06B6D4?logo=tailwindcss&amp;logoColor=white" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境"/></a><div class="content"><a class="title" href="/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/" title="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</a><time datetime="2026-06-25T14:30:00.000Z" title="发表于 2026-06-25 22:30:00">2026-06-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By Jerome Xiong</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'ae8ab270574517163a19',
+      clientSecret: '1d7564ea5d344abe5afe6717d5dbfe282dd6930b',
+      repo: 'jeromexiong.github.io',
+      owner: 'jeromexiong',
+      admin: ['jeromexiong'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '4c7dedf08510fa7fccead4a7709ad046'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
