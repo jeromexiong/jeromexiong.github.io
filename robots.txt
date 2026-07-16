@@ -1,0 +1,12 @@
+# robots.txt for jeromexiong.github.io
+# 允许所有爬虫抓取
+User-agent: *
+Allow: /
+
+# 禁止爬取页面
+Disallow: /tags/
+Disallow: /categories/
+Disallow: /archives/
+
+# Sitemap
+Sitemap: https://jeromexiong.github.io/sitemap.xml

@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术">
+    
+    
+    <meta name="author" content="Jerome Xiong">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://jeromexiong.github.io/2026/06/25/web-前端/vscode-中配置-postcss-stylelint-tailwind-css-通用环境/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境">
+<meta property="og:url" content="https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jeromexiong.github.io/images/banner-modern.jpg">
+<meta property="article:published_time" content="2026-06-25T14:30:00.000Z">
+<meta property="article:modified_time" content="2026-07-16T07:31:40.639Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="PostCSS">
+<meta property="article:tag" content="Stylelint">
+<meta property="article:tag" content="Tailwind CSS">
+<meta property="article:tag" content="VSCode">
+<meta property="article:tag" content="前端工程化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeromexiong.github.io/images/banner-modern.jpg">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+    <meta name="theme-color" content="#7C3AED">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境 | Jerome Xiong
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style>
+.sidebar-hot-posts{margin-top:22.8px;padding:20px;background:rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-radius:18px;box-shadow:rgba(0,0,0,0.05) 0 6px 24px 0,rgba(0,0,0,0.08) 0 0 0 1px}.sidebar-hot-posts .title{font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-color)}.sidebar-hot-posts .item{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13px;line-height:1.5;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,0.06)}.sidebar-hot-posts .item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}.sidebar-hot-posts .item a{color:var(--second-text-color);text-decoration:none;transition:color .2s;display:block}.sidebar-hot-posts .item a:hover{color:var(--primary-color)}
+</style>
+
+            
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"jeromexiong.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.7,"image_border_radius":"12px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3rem","h2":"2.4rem","h3":"1.8rem","h4":"1.5rem","h5":"1.3rem","h6":"1.2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":true,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/banner-modern.jpg","skip_dirs":[]}},"colors":{"primary":"#7C3AED","secondary":"#A78BFA","default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"960px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":false,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/banner-modern.jpg","description":"iOS / Swift / Flutter 开发者的技术博客"},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/banner-modern.jpg","dark":"/images/banner-modern.jpg"},"title":"Jerome Xiong","subtitle":{"text":["iOS / Swift / Flutter 开发者","AI Agent 技术探索者","天无边，智无限。"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":70,"starting_delay":600,"backing_delay":2000,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.4rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":[{"icon":"fa-brands fa-github","url":"https://github.com/jeromexiong"},{"icon":"fa-brands fa-twitter","url":null},{"icon":"fa-solid fa-at","url":"you@example.com"},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#6366F1","right":"#7C3AED","transparency":20},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"GitHub":{"path":"https://github.com/jeromexiong","icon":"fa-brands fa-github"},"时间轴":{"path":"/archives/","icon":"fa-regular fa-clock"},"分类":{"path":"/categories/","icon":"fa-regular fa-folder"},"标签":{"path":"/tags/","icon":"fa-regular fa-tag"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":5}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"--fa-animation-duration: 0.5s; color: #7C3AED\"></i>","start":"2020/01/01 00:00:00","statistics":false,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2020/01/01 00:00:00","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/avatar.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Jerome Xiong
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://github.com/jeromexiong"
+                                        >
+                                    <i class="fa-brands fa-github fa-fw"></i>
+                                    GITHUB
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives/"
+                                        >
+                                    <i class="fa-regular fa-clock fa-fw"></i>
+                                    时间轴
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-regular fa-tag fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://github.com/jeromexiong"
+                        >
+                            <span>
+                                GITHUB
+                            </span>
+                            
+                                <i class="fa-brands fa-github fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives/"
+                        >
+                            <span>
+                                时间轴
+                            </span>
+                            
+                                <i class="fa-regular fa-clock fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tag fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">194</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">19</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">57</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="/images/covers/Web-%E5%89%8D%E7%AB%AF-VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83.png" alt="VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+				<img src="/images/avatar.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Jerome Xiong</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-06-25 22:30</span>
+        <span class="mobile">2026-06-25 22:30</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-07-16 15:31:40</span>
+            <span class="mobile">2026-07-16 15:31:40</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Web-%E5%89%8D%E7%AB%AF/">Web-前端</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Web-%E5%89%8D%E7%AB%AF/%E5%B7%A5%E5%85%B7%E9%93%BE/">工具链</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/PostCSS/">PostCSS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Stylelint/">Stylelint</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Tailwind-CSS/">Tailwind CSS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/VSCode/">VSCode</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.9k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>7 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>在 VSCode 中使用 Tailwind CSS 开发时，常见几个痛点：</p>
+<ul>
+<li><code>@apply</code>、<code>@layer</code> 等 PostCSS 指令被标红</li>
+<li>Tailwind 类名没有智能补全</li>
+<li>保存时 Autoprefixer 不自动加前缀，Stylelint 也不修复</li>
+</ul>
+<p>这些问题源自 <strong>VSCode 默认将 <code>.css</code> 文件当作标准 CSS 处理</strong>，不认识 PostCSS 的自定义语法。以下是从插件安装到工作区配置的完整方案，一次配置，全项目受益。</p>
+<hr>
+<h2 id="必备插件安装">必备插件安装</h2>
+<p>在 VSCode 扩展市场安装以下插件：</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PostCSS Language Support</strong></td>
+<td><code>csstools.postcss</code></td>
+<td>识别 <code>@apply</code>、<code>@layer</code> 等 PostCSS 规则，避免标红</td>
+</tr>
+<tr>
+<td><strong>Tailwind CSS IntelliSense</strong></td>
+<td><code>bradlc.vscode-tailwindcss</code></td>
+<td>类名智能提示、悬停预览 CSS 值、错误校验</td>
+</tr>
+<tr>
+<td><strong>Stylelint</strong></td>
+<td><code>stylelint.vscode-stylelint</code></td>
+<td>CSS/PostCSS 代码规范检查与自动修复</td>
+</tr>
+<tr>
+<td><strong>Prettier - Code formatter</strong></td>
+<td><code>esbenp.prettier-vscode</code></td>
+<td>基础代码格式化（可选，Stylelint 若已涵盖可忽略）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如果是 Vue 项目，还需安装 <strong>Vue - Official</strong> (<code>vue.volar</code>)，以支持 <code>.vue</code> 文件中 <code>&lt;style&gt;</code> 块的样式解析。</p>
+</blockquote>
+<hr>
+<h2 id="项目依赖安装">项目依赖安装</h2>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -D postcss autoprefixer stylelint stylelint-config-standard stylelint-order tailwindcss @tailwindcss/postcss</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="版本说明">版本说明</h3>
+<table>
+<thead>
+<tr>
+<th>包</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@tailwindcss/postcss</code></td>
+<td>Tailwind CSS v4+ 推荐的 PostCSS 插件</td>
+</tr>
+<tr>
+<td><code>tailwindcss</code></td>
+<td>v3 使用 <code>tailwindcss</code>，v4 配套 <code>@tailwindcss/postcss</code></td>
+</tr>
+<tr>
+<td><code>stylelint-order</code></td>
+<td>可选，用于 CSS 属性排序</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 Tailwind CSS v4 于 2025 年发布，推荐新项目直接使用。若你仍在使用 v3，将 <code>@tailwindcss/postcss</code> 替换为 <code>tailwindcss</code> 即可。</p>
+</blockquote>
+<hr>
+<h2 id="配置文件">配置文件</h2>
+<h3 id="A-PostCSS-配置-—-postcss-config-js">A. PostCSS 配置 — <code>postcss.config.js</code></h3>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File: postcss.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = {</span><br><span class="line">  <span class="attr">plugins</span>: {</span><br><span class="line">    <span class="string">'@tailwindcss/postcss'</span>: {}, <span class="comment">// Tailwind v4 插件</span></span><br><span class="line">    <span class="comment">// 'tailwindcss/nesting': {}, // v3 下如需嵌套支持</span></span><br><span class="line">    <span class="attr">autoprefixer</span>: {},           <span class="comment">// 自动添加浏览器前缀</span></span><br><span class="line">  },</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div>
+<blockquote>
+<p>⚠️ <strong><code>postcss.config.js</code> 必须放在 VSCode 工作区根目录</strong>（即 <code>.vscode/</code> 所在的目录），否则 <code>codeActionsOnSave</code> 找不到它。</p>
+</blockquote>
+<h3 id="B-Stylelint-配置-—-stylelintrc-json">B. Stylelint 配置 — <code>.stylelintrc.json</code></h3>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"extends"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"stylelint-config-standard"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"plugins"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"stylelint-order"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"rules"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"at-rule-no-unknown"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"ignoreAtRules"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"tailwind"</span><span class="punctuation">,</span> <span class="string">"apply"</span><span class="punctuation">,</span> <span class="string">"layer"</span><span class="punctuation">,</span> <span class="string">"config"</span><span class="punctuation">,</span> <span class="string">"plugin"</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"property-no-unknown"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"ignoreProperties"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"/^--/"</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"order/properties-alphabetical-order"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>规则说明</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>at-rule-no-unknown</code></td>
+<td>避免把 <code>@apply</code>、<code>@layer</code> 等 Tailwind 指令标记为语法错误</td>
+</tr>
+<tr>
+<td><code>property-no-unknown</code></td>
+<td>允许 CSS 自定义属性（<code>--color-primary</code> 等）</td>
+</tr>
+<tr>
+<td><code>order/properties-alphabetical-order</code></td>
+<td>强制 CSS 属性按字母序排列，保持统一风格（如不需要可移除）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="C-Tailwind-配置-—-tailwind-config-js">C. Tailwind 配置 — <code>tailwind.config.js</code></h3>
+<p><code>content</code> 字段必须覆盖所有包含类名的文件路径，否则智能提示失效：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File: tailwind.config.js</span></span><br><span class="line"><span class="comment">/** <span class="doctag">@type</span> {<span class="type">import('tailwindcss').Config</span>} */</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = {</span><br><span class="line">  <span class="attr">content</span>: [</span><br><span class="line">    <span class="string">"./index.html"</span>,</span><br><span class="line">    <span class="string">"./src/**/*.{vue,js,ts,jsx,tsx}"</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">theme</span>: {</span><br><span class="line">    <span class="attr">extend</span>: {},</span><br><span class="line">  },</span><br><span class="line">  <span class="attr">plugins</span>: [],</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div>
+<blockquote>
+<p>✅ 确保 VSCode 打开的<strong>是项目根目录</strong>（包含 <code>tailwind.config.js</code> 的文件夹），而不是子文件夹。IntelliSense 通过查找配置文件来确定启用范围。</p>
+</blockquote>
+<hr>
+<h2 id="VSCode-工作区设置-—-vscode-settings-json">VSCode 工作区设置 — <code>.vscode/settings.json</code></h2>
+<p>这是最关键的一步。创建或更新项目根目录下的 <code>.vscode/settings.json</code>：</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="comment">// 1. 文件关联：告知 VSCode .css 和 .pcss 使用 PostCSS 语法</span></span><br><span class="line">  <span class="attr">"files.associations"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"*.css"</span><span class="punctuation">:</span> <span class="string">"postcss"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"*.pcss"</span><span class="punctuation">:</span> <span class="string">"postcss"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. Tailwind CSS 智能提示增强</span></span><br><span class="line">  <span class="attr">"tailwindCSS.emmetCompletions"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"tailwindCSS.includeLanguages"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"plaintext"</span><span class="punctuation">:</span> <span class="string">"html"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"vue"</span><span class="punctuation">:</span> <span class="string">"html"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"javascript"</span><span class="punctuation">:</span> <span class="string">"javascript"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"typescript"</span><span class="punctuation">:</span> <span class="string">"typescript"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="comment">// 在字符串中也能获得类名提示（例如 Vue template 中的 class 属性）</span></span><br><span class="line">  <span class="attr">"editor.quickSuggestions"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"strings"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 保存时自动修复与格式化</span></span><br><span class="line">  <span class="comment">// 关闭通用的 formatOnSave（避免与 Stylelint 冲突）</span></span><br><span class="line">  <span class="attr">"editor.formatOnSave"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 通过 codeActionsOnSave 触发 PostCSS 和 Stylelint 修复</span></span><br><span class="line">  <span class="attr">"editor.codeActionsOnSave"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"source.fixAll.stylelint"</span><span class="punctuation">:</span> <span class="string">"explicit"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"source.fixAll.postcss"</span><span class="punctuation">:</span> <span class="string">"explicit"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 4. Stylelint 验证范围</span></span><br><span class="line">  <span class="attr">"stylelint.validate"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">"css"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"postcss"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"vue"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"html"</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 5. Vue 专属设置（如果使用 Vue）</span></span><br><span class="line">  <span class="attr">"[vue]"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"editor.defaultFormatter"</span><span class="punctuation">:</span> <span class="string">"esbenp.prettier-vscode"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"editor.formatOnSave"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="为什么关闭-editor-formatOnSave-再用-codeActionsOnSave？">为什么关闭 <code>editor.formatOnSave</code> 再用 <code>codeActionsOnSave</code>？</h3>
+<ul>
+<li><code>editor.formatOnSave</code> 调用的是 Prettier 或默认格式化器，对 PostCSS 文件它只能做基础格式化，不会触发 Autoprefixer 和 Stylelint 修复。</li>
+<li><code>codeActionsOnSave</code> 中的 <code>source.fixAll.postcss</code> 会触发 PostCSS 的 Autoprefixer 等插件运行，<code>source.fixAll.stylelint</code> 则触发 Stylelint 自动修复。</li>
+<li>两者互不冲突，但需要<strong>统一入口</strong>——通过 <code>codeActionsOnSave</code> 控制，而不是依赖 <code>formatOnSave</code>。</li>
+</ul>
+<blockquote>
+<p>💡 <code>"explicit"</code> 是 VSCode 1.88+ 的新语法，替代旧的 <code>true</code>。如果使用的是旧版本 VSCode，可以换成 <code>true</code>。</p>
+</blockquote>
+<hr>
+<h2 id="工作流程一览">工作流程一览</h2>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">编辑器中写 CSS/PostCSS</span><br><span class="line">  → Ctrl+S（或 Cmd+S）</span><br><span class="line">    → PostCSS 运行 Autoprefixer 自动添加前缀</span><br><span class="line">    → Stylelint 检查并修复格式问题</span><br><span class="line">    → Tailwind IntelliSense 持续提供类名补全</span><br><span class="line">  → 无红色波浪线，类名有提示，保存即处理</span><br></pre></td></tr></tbody></table></figure></div>
+<hr>
+<h2 id="常见踩坑与解决方案">常见踩坑与解决方案</h2>
+<h3 id="❌-apply-被标红或没有语法提示">❌ <code>@apply</code> 被标红或没有语法提示</h3>
+<p><strong>原因</strong>：VSCode 默认将 <code>.css</code> 文件识别为标准 CSS，不认识 PostCSS 的 <code>@apply</code> 指令。</p>
+<p><strong>解决</strong>：</p>
+<ol>
+<li>安装 <code>csstools.postcss</code> 插件</li>
+<li>在 <code>.vscode/settings.json</code> 中设置 <code>"files.associations": { "*.css": "postcss" }</code></li>
+<li>如果仍无效，手动点击 VSCode 右下角语言模式 → 选择 <strong>“PostCSS”</strong></li>
+</ol>
+<blockquote>
+<p>很多教程只提第 1 步，但第 2 步才是关键——VSCode 不会自动关联文件类型，需要显式声明。两者缺一不可。</p>
+</blockquote>
+<h3 id="❌-Tailwind-类名无补全提示">❌ Tailwind 类名无补全提示</h3>
+<p><strong>原因</strong>：<code>tailwind.config.js</code> 未被找到，或 <code>content</code> 路径未覆盖当前编辑的文件。</p>
+<p><strong>排查步骤</strong>：</p>
+<ol>
+<li><strong>确认工作区根目录</strong> — VSCode 打开的文件夹必须包含 <code>tailwind.config.js</code></li>
+<li><strong>检查 <code>content</code> 路径</strong> — 例如编辑 <code>src/components/Button.vue</code> 时，<code>content</code> 中需包含 <code>"./src/**/*.vue"</code> 或更具体的路径</li>
+<li><strong>重启 Tailwind IntelliSense</strong> — 命令面板 → <code>&gt;Tailwind CSS: Show Output</code> 查看诊断信息</li>
+</ol>
+<p>最常见的错误：在 monorepo 中打开了子包目录，而 <code>tailwind.config.js</code> 在根目录。这时 IntelliSense 找不到配置，自然没有提示。</p>
+<h3 id="❌-保存时不自动加前缀或不格式化">❌ 保存时不自动加前缀或不格式化</h3>
+<p><strong>原因</strong>：仅安装了插件但未配置 <code>codeActionsOnSave</code>，或者 <code>postcss.config.js</code> 位置不对。</p>
+<p><strong>验证方法</strong>：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 确认 postcss.config.js 在工作区根目录</span></span><br><span class="line"><span class="built_in">ls</span> -la $(<span class="built_in">pwd</span>)/postcss.config.js</span><br><span class="line"></span><br><span class="line"><span class="comment"># 手动测试 PostCSS 是否正常工作</span></span><br><span class="line">npx postcss src/style.css --use autoprefixer -o /dev/null</span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>关键规则</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>必须位置</th>
+<th>检查方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postcss.config.js</code></td>
+<td>VSCode 工作区根目录</td>
+<td><code>.vscode/settings.json</code> 同目录</td>
+</tr>
+<tr>
+<td><code>.stylelintrc.json</code></td>
+<td>任意上级目录（自动向上查找）</td>
+<td><code>npx stylelint --print-config</code></td>
+</tr>
+<tr>
+<td><code>tailwind.config.js</code></td>
+<td>VSCode 工作区根目录</td>
+<td>IntelliSense 以此定位</td>
+</tr>
+</tbody>
+</table>
+<h3 id="❌-Vue-文件中-style-块报错">❌ Vue 文件中 <code>&lt;style&gt;</code> 块报错</h3>
+<p><strong>原因</strong>：Stylelint 或 PostCSS 插件未配置对 Vue 文件的支持。</p>
+<p><strong>解决</strong>：</p>
+<ol>
+<li>安装 <code>vue.volar</code>（Vue - Official）插件</li>
+<li>在 <code>settings.json</code> 的 <code>stylelint.validate</code> 数组中添加 <code>"vue"</code></li>
+<li>在 <code>tailwindCSS.includeLanguages</code> 中添加 <code>"vue": "html"</code></li>
+</ol>
+<p>完整配置见上文的 <code>.vscode/settings.json</code> 示例。</p>
+<h3 id="❌-Stylelint-报告-Unknown-rule-order-properties-alphabetical-order">❌ Stylelint 报告 <code>Unknown rule: order/properties-alphabetical-order</code></h3>
+<p><strong>原因</strong>：没有安装 <code>stylelint-order</code> 插件。</p>
+<p><strong>解决</strong>：确保安装了 <code>stylelint-order</code> 并在配置的 <code>plugins</code> 数组中注册了它。如不需要属性排序，直接删除该规则即可。</p>
+<h3 id="❌-两个插件同时保存时产生冲突">❌ 两个插件同时保存时产生冲突</h3>
+<p><code>editor.formatOnSave: false</code> + <code>source.fixAll.stylelint</code> + <code>source.fixAll.postcss</code> 三者配合不会冲突——它们各自处理不同的事情：</p>
+<table>
+<thead>
+<tr>
+<th>修复源</th>
+<th>做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source.fixAll.stylelint</code></td>
+<td>修正缩进、空格、分号等代码风格问题</td>
+</tr>
+<tr>
+<td><code>source.fixAll.postcss</code></td>
+<td>运行 PostCSS 插件（Autoprefixer 等）进行编译转换</td>
+</tr>
+</tbody>
+</table>
+<p>两者不是竞争关系，而是流水线关系：Stylelint 保证代码风格统一，PostCSS 保证语法兼容。如果要用 Prettier 做基础格式化，可以为 <code>[vue]</code>、<code>[javascript]</code> 等语言单独启用 <code>formatOnSave</code>，它们作用域不同。</p>
+<hr>
+<h2 id="VS-Code-设置优先级（用于排查）">VS Code 设置优先级（用于排查）</h2>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">默认设置 &lt; 用户设置 &lt; 工作区设置 &lt; 文件夹设置</span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>用户设置</strong> 在 <code>~/Library/Application Support/Code/User/settings.json</code>（macOS），<strong>会覆盖项目设置</strong>中同名的配置。如果设置了全局 <code>"editor.formatOnSave": false</code> 或全局 <code>"editor.codeActionsOnSave"</code>，项目级的 settings.json 同样会被覆盖。</p>
+<blockquote>
+<p>✅ 推荐做法：用户设置只放个人偏好（主题、字体、键绑定），项目设置放工具链配置。如果用户设置中有覆盖项，注释掉它们。</p>
+</blockquote>
+<hr>
+<h2 id="总结">总结</h2>
+<p>通过以上配置，你可以实现：</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>实现方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ 实时错误检查</td>
+<td>Stylelint 即时反馈代码规范问题</td>
+</tr>
+<tr>
+<td>✅ 智能补全</td>
+<td>Tailwind 类名、CSS 属性、Emmet 缩写全面支持</td>
+</tr>
+<tr>
+<td>✅ 自动格式化</td>
+<td>保存时自动应用 PostCSS 转换（Autoprefixer）和 Stylelint 修复</td>
+</tr>
+<tr>
+<td>✅ 无冲突</td>
+<td>关闭 <code>formatOnSave</code>，统一由 <code>codeActionsOnSave</code> 驱动</td>
+</tr>
+<tr>
+<td>✅ Vue 支持</td>
+<td>与 <code>vue.volar</code> 配合，<code>.vue</code> 中 <code>&lt;style&gt;</code> 块完美支持</td>
+</tr>
+</tbody>
+</table>
+<p>一次配置，全项目受益。提交到 Git 后所有成员都能获得一致的开发体验——这就是 <code>.vscode/settings.json</code> 放到版本控制中的价值。</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</li>
+        <li><strong>作者:</strong> Jerome Xiong</li>
+        <li><strong>创建于
+                :</strong> 2026-06-25 22:30:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-07-16 15:31:40
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://jeromexiong.github.io/2026/06/25/Web-前端/VSCode-中配置-PostCSS-Stylelint-Tailwind-CSS-通用环境/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">#前端工程化</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/PostCSS/">#PostCSS</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Stylelint/">#Stylelint</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Tailwind-CSS/">#Tailwind CSS</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/VSCode/">#VSCode</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推荐阅读</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" title="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例" rel="bookmark">
+  <img src="/images/covers/Web-前端-Prettier-ESLint-集成配置指南.png" alt="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例" class="!max-w-none">
+  <span class="title">Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</span>
+</a><a class="recommended-article-item" href="/2020/06/15/%E5%B7%A5%E5%85%B7/vscode%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE/" title="vscode用户设置" rel="bookmark">
+  <img src="/images/covers/工具-vscode用户设置.png" alt="vscode用户设置" class="!max-w-none">
+  <span class="title">vscode用户设置</span>
+</a><a class="recommended-article-item" href="/2026/07/15/Web-%E5%89%8D%E7%AB%AF/Oxc-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97-oxlint-oxfmt/" title="Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier" rel="bookmark">
+  <img src="/images/covers/Web-前端-Oxc-配置指南-oxlint-oxfmt.png" alt="Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier" class="!max-w-none">
+  <span class="title">Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推荐阅读</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" title="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例" rel="bookmark">
+  <img src="/images/covers/Web-前端-Prettier-ESLint-集成配置指南.png" alt="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例" class="!max-w-none">
+  <span class="title">Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</span>
+</a><a class="recommended-article-item" href="/2020/06/15/%E5%B7%A5%E5%85%B7/vscode%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE/" title="vscode用户设置" rel="bookmark">
+  <img src="/images/covers/工具-vscode用户设置.png" alt="vscode用户设置" class="!max-w-none">
+  <span class="title">vscode用户设置</span>
+</a></div>
+   </div>
+  </div>
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    
+    
+    
+    
+    
+    <div id="utterances-container"
+         data-utterances-theme-light="github-light"
+         data-utterances-theme-dark="github-dark">
+    </div>
+    <script false>
+        (function() {
+            const container = document.getElementById("utterances-container");
+            if (!container) {
+                return;
+            }
+
+            const repo = "jeromexiong/jeromexiong.github.io";
+            const issueNumber = "";
+            const issueTerm = "title";
+            const label = "💬 Comment";
+
+            if (!repo || (!issueNumber && !issueTerm)) {
+                return;
+            }
+
+            container.innerHTML = "";
+
+            const themeLight = container.dataset.utterancesThemeLight || "github-light";
+            const themeDark = container.dataset.utterancesThemeDark || "github-dark";
+            const isDark = document.body.classList.contains("dark-mode");
+            const theme = isDark ? themeDark : themeLight;
+
+            const script = document.createElement("script");
+            script.src = "https://utteranc.es/client.js";
+            script.async = true;
+            script.crossOrigin = "anonymous";
+            script.setAttribute("repo", repo);
+
+            if (issueNumber) {
+                script.setAttribute("issue-number", issueNumber);
+            } else {
+                script.setAttribute("issue-term", issueTerm);
+            }
+
+            if (label) {
+                script.setAttribute("label", label);
+            }
+
+            script.setAttribute("theme", theme);
+            container.appendChild(script);
+        })();
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%85%E5%A4%87%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-text">必备插件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="nav-text">项目依赖安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="nav-text">版本说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-PostCSS-%E9%85%8D%E7%BD%AE-%E2%80%94-postcss-config-js"><span class="nav-text">A. PostCSS 配置 — postcss.config.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Stylelint-%E9%85%8D%E7%BD%AE-%E2%80%94-stylelintrc-json"><span class="nav-text">B. Stylelint 配置 — .stylelintrc.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-Tailwind-%E9%85%8D%E7%BD%AE-%E2%80%94-tailwind-config-js"><span class="nav-text">C. Tailwind 配置 — tailwind.config.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCode-%E5%B7%A5%E4%BD%9C%E5%8C%BA%E8%AE%BE%E7%BD%AE-%E2%80%94-vscode-settings-json"><span class="nav-text">VSCode 工作区设置 — .vscode&#x2F;settings.json</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%B3%E9%97%AD-editor-formatOnSave-%E5%86%8D%E7%94%A8-codeActionsOnSave%EF%BC%9F"><span class="nav-text">为什么关闭 editor.formatOnSave 再用 codeActionsOnSave？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%80%E8%A7%88"><span class="nav-text">工作流程一览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%B8%A9%E5%9D%91%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">常见踩坑与解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9D%8C-apply-%E8%A2%AB%E6%A0%87%E7%BA%A2%E6%88%96%E6%B2%A1%E6%9C%89%E8%AF%AD%E6%B3%95%E6%8F%90%E7%A4%BA"><span class="nav-text">❌ @apply 被标红或没有语法提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9D%8C-Tailwind-%E7%B1%BB%E5%90%8D%E6%97%A0%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA"><span class="nav-text">❌ Tailwind 类名无补全提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9D%8C-%E4%BF%9D%E5%AD%98%E6%97%B6%E4%B8%8D%E8%87%AA%E5%8A%A8%E5%8A%A0%E5%89%8D%E7%BC%80%E6%88%96%E4%B8%8D%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-text">❌ 保存时不自动加前缀或不格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9D%8C-Vue-%E6%96%87%E4%BB%B6%E4%B8%AD-style-%E5%9D%97%E6%8A%A5%E9%94%99"><span class="nav-text">❌ Vue 文件中 &lt;style&gt; 块报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9D%8C-Stylelint-%E6%8A%A5%E5%91%8A-Unknown-rule-order-properties-alphabetical-order"><span class="nav-text">❌ Stylelint 报告 Unknown rule: order&#x2F;properties-alphabetical-order</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9D%8C-%E4%B8%A4%E4%B8%AA%E6%8F%92%E4%BB%B6%E5%90%8C%E6%97%B6%E4%BF%9D%E5%AD%98%E6%97%B6%E4%BA%A7%E7%94%9F%E5%86%B2%E7%AA%81"><span class="nav-text">❌ 两个插件同时保存时产生冲突</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VS-Code-%E8%AE%BE%E7%BD%AE%E4%BC%98%E5%85%88%E7%BA%A7%EF%BC%88%E7%94%A8%E4%BA%8E%E6%8E%92%E6%9F%A5%EF%BC%89"><span class="nav-text">VS Code 设置优先级（用于排查）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a>
+            
+        </div>
+        
+            <script false src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script false>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+                
+
+                    
+                        <script>
+(function() {
+  function addHotPosts() {
+    var sidebar = document.querySelector('.sticky-container');
+    if (!sidebar || document.querySelector('.sidebar-hot-posts')) return;
+    var links = [];
+    var h3links = document.querySelectorAll('h3 a');
+    for (var i = 0; i < h3links.length; i++) {
+      var a = h3links[i];
+      if (a.getAttribute('href') && a.getAttribute('href') !== '/' && !a.getAttribute('href').startsWith('#')) {
+        links.push({href: a.getAttribute('href'), text: (a.textContent || a.getAttribute('title') || '').trim()});
+      }
+    }
+    if (links.length < 2) return;
+    var html = '<div class="sidebar-hot-posts"><div class="title">&#x1F525; 热门文章</div>';
+    for (var i = 0; i < Math.min(5, links.length); i++) {
+      html += '<div class="item"><a href="' + links[i].href + '">' + links[i].text + '</a></div>';
+    }
+    html += '</div>';
+    sidebar.insertAdjacentHTML('beforeend', html);
+  }
+  if (document.readyState === 'complete') setTimeout(addHotPosts, 800);
+  else window.addEventListener('load', function(){setTimeout(addHotPosts, 800)});
+})();
+</script>
+
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+		<li class="right-bottom-tools rss flex justify-center items-center">
+			<a class="flex justify-center items-center" href="/atom.xml,rss2.xml" target="_blank">
+				<i class="fa-regular fa-rss"></i>
+			</a>
+		</li>
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
+</body>
+
+</html>

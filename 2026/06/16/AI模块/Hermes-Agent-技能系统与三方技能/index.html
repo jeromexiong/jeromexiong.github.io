@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术">
+    
+    
+    <meta name="author" content="Jerome Xiong">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://jeromexiong.github.io/2026/06/16/ai模块/hermes-agent-技能系统与三方技能/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hermes Agent 技能系统与三方技能">
+<meta property="og:url" content="https://jeromexiong.github.io/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E4%B8%8E%E4%B8%89%E6%96%B9%E6%8A%80%E8%83%BD/index.html">
+<meta property="og:site_name" content="Jerome Xiong">
+<meta property="og:description" content="iOS &#x2F; Swift &#x2F; Flutter 开发者的技术博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jeromexiong.github.io/images/banner-modern.jpg">
+<meta property="article:published_time" content="2026-06-16T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-16T07:31:40.637Z">
+<meta property="article:author" content="Jerome Xiong">
+<meta property="article:tag" content="Hermes">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="Skills">
+<meta property="article:tag" content="插件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeromexiong.github.io/images/banner-modern.jpg">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+    <meta name="theme-color" content="#7C3AED">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hermes Agent 技能系统与三方技能 | Jerome Xiong
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style>
+.sidebar-hot-posts{margin-top:22.8px;padding:20px;background:rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-radius:18px;box-shadow:rgba(0,0,0,0.05) 0 6px 24px 0,rgba(0,0,0,0.08) 0 0 0 1px}.sidebar-hot-posts .title{font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-color)}.sidebar-hot-posts .item{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13px;line-height:1.5;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,0.06)}.sidebar-hot-posts .item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}.sidebar-hot-posts .item a{color:var(--second-text-color);text-decoration:none;transition:color .2s;display:block}.sidebar-hot-posts .item a:hover{color:var(--primary-color)}
+</style>
+
+            
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"jeromexiong.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.7,"image_border_radius":"12px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3rem","h2":"2.4rem","h3":"1.8rem","h4":"1.5rem","h5":"1.3rem","h6":"1.2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":true,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/banner-modern.jpg","skip_dirs":[]}},"colors":{"primary":"#7C3AED","secondary":"#A78BFA","default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"960px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":false,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/banner-modern.jpg","description":"iOS / Swift / Flutter 开发者的技术博客"},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/banner-modern.jpg","dark":"/images/banner-modern.jpg"},"title":"Jerome Xiong","subtitle":{"text":["iOS / Swift / Flutter 开发者","AI Agent 技术探索者","天无边，智无限。"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":70,"starting_delay":600,"backing_delay":2000,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.4rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":[{"icon":"fa-brands fa-github","url":"https://github.com/jeromexiong"},{"icon":"fa-brands fa-twitter","url":null},{"icon":"fa-solid fa-at","url":"you@example.com"},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#6366F1","right":"#7C3AED","transparency":20},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"GitHub":{"path":"https://github.com/jeromexiong","icon":"fa-brands fa-github"},"时间轴":{"path":"/archives/","icon":"fa-regular fa-clock"},"分类":{"path":"/categories/","icon":"fa-regular fa-folder"},"标签":{"path":"/tags/","icon":"fa-regular fa-tag"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":5}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"--fa-animation-duration: 0.5s; color: #7C3AED\"></i>","start":"2020/01/01 00:00:00","statistics":false,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2020/01/01 00:00:00","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Jerome Xiong" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Jerome Xiong" type="application/rss+xml">
+</head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/avatar.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Jerome Xiong
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://github.com/jeromexiong"
+                                        >
+                                    <i class="fa-brands fa-github fa-fw"></i>
+                                    GITHUB
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives/"
+                                        >
+                                    <i class="fa-regular fa-clock fa-fw"></i>
+                                    时间轴
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-regular fa-tag fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://github.com/jeromexiong"
+                        >
+                            <span>
+                                GITHUB
+                            </span>
+                            
+                                <i class="fa-brands fa-github fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives/"
+                        >
+                            <span>
+                                时间轴
+                            </span>
+                            
+                                <i class="fa-regular fa-clock fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tag fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">194</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">19</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">57</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="/images/covers/AI%E6%A8%A1%E5%9D%97-Hermes-Agent-%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E4%B8%8E%E4%B8%89%E6%96%B9%E6%8A%80%E8%83%BD.png" alt="Hermes Agent 技能系统与三方技能" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">Hermes Agent 技能系统与三方技能</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+				<img src="/images/avatar.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Jerome Xiong</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-06-16 12:00</span>
+        <span class="mobile">2026-06-16 12:00</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-07-16 15:31:40</span>
+            <span class="mobile">2026-07-16 15:31:40</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/AI/">AI</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/AI/%E5%B7%A5%E5%85%B7/">工具</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Hermes/">Hermes</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Skills/">Skills</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MCP/">MCP</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%8F%92%E4%BB%B6/">插件</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.5k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>6 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<blockquote>
+<p>Hermes Agent 的核心能力来源于**技能（Skills）**系统。每个技能是一个 markdown 文件，定义了特定场景下的行为、工作流和注意事项。</p>
+</blockquote>
+<h2 id="技能系统概览">技能系统概览</h2>
+<p>技能文件存储在 <code>~/.hermes/skills/</code> 下，按类别组织：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">skills/</span><br><span class="line">├── academic/           # 学术写作</span><br><span class="line">├── apple/              # Apple 生态（iMessage, 提醒事项）</span><br><span class="line">├── autonomous-ai-agents/  # AI 智能体</span><br><span class="line">│   ├── hermes-agent/   # Hermes 自身配置</span><br><span class="line">│   ├── claude-code/    # Claude Code 集成</span><br><span class="line">│   ├── codex/          # OpenAI Codex</span><br><span class="line">│   ├── karpathy-guidelines/  # Karpathy 编码准则</span><br><span class="line">│   └── ...</span><br><span class="line">├── creative/           # 创意内容（ASCII 艺术、漫画、P5.js）</span><br><span class="line">├── engineering/        # 工程开发</span><br><span class="line">├── marketing/          # 营销推广</span><br><span class="line">├── devops/             # DevOps 运维</span><br><span class="line">├── mcp/                # MCP 协议</span><br><span class="line">│   ├── native-mcp/     # 原生 MCP 客户端</span><br><span class="line">│   └── midscene-browser/  # 浏览器自动化</span><br><span class="line">├── github/             # GitHub 工作流</span><br><span class="line">├── testing/            # 软件测试</span><br><span class="line">└── ...</span><br></pre></td></tr></tbody></table></figure></div>
+<p>总计 <strong>320+ 技能</strong>，覆盖 <strong>55 个类别</strong>。</p>
+<h2 id="加载技能">加载技能</h2>
+<p>技能会自动匹配任务场景，也可以手动加载：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 Hermes 中手动加载</span></span><br><span class="line">/skill &lt;技能名&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在提示词中引用</span></span><br><span class="line">请加载 karpathy-guidelines 技能后回答</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="常用三方技能">常用三方技能</h2>
+<h3 id="0-日常高频技能">0. 日常高频技能</h3>
+<p>以下是我日常工作中最常用的技能，按场景分类：</p>
+<h4 id="设计与创意">设计与创意</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ui-ux-pro-max</code></td>
+<td>移动端电商/应用 UI 设计，完整的组件规范和像素级页面设计</td>
+</tr>
+<tr>
+<td><code>brainstorming</code></td>
+<td>创意构思，生成产品设计和解决方案的多种可能</td>
+</tr>
+<tr>
+<td><code>excalidraw</code></td>
+<td>手绘风格架构图、流程图、时序图</td>
+</tr>
+<tr>
+<td><code>architecture-diagram</code></td>
+<td>深色主题 SVG 架构/云/基础设施图</td>
+</tr>
+</tbody>
+</table>
+<h4 id="全栈开发">全栈开发</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reasonix</code></td>
+<td>⭐ <strong>默认编码委托</strong> — DeepSeek 原生框架，成本比 Claude 省 97%</td>
+</tr>
+<tr>
+<td><code>claude-code</code></td>
+<td>编码委托备选（需要 Claude 特定功能时）</td>
+</tr>
+<tr>
+<td><code>codex</code></td>
+<td>编码委托</td>
+</tr>
+<tr>
+<td><code>opencode</code></td>
+<td>编码委托</td>
+</tr>
+<tr>
+<td><code>engineering-senior-developer</code></td>
+<td>Laravel/Livewire/FluxUI 全栈开发，高端 CSS、Three.js</td>
+</tr>
+<tr>
+<td><code>engineering-frontend-developer</code></td>
+<td>Vue3/React 前端开发，UI 实现与性能优化</td>
+</tr>
+<tr>
+<td><code>engineering-backend-architect</code></td>
+<td>FastAPI/后端架构设计、数据库、API 开发</td>
+</tr>
+<tr>
+<td><code>engineering-code-reviewer</code></td>
+<td>代码审查，关注正确性、可维护性、安全性</td>
+</tr>
+</tbody>
+</table>
+<h4 id="项目管理与规划">项目管理与规划</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>writing-plans</code></td>
+<td>编写实施方案，分解为可执行步骤</td>
+</tr>
+<tr>
+<td><code>project-manager-senior</code></td>
+<td>需求拆分、任务分解、经验复盘</td>
+</tr>
+<tr>
+<td><code>spike</code></td>
+<td>快速验证想法的实验性原型</td>
+</tr>
+<tr>
+<td><code>test-driven-development</code></td>
+<td>TDD 模式：RED → GREEN → REFACTOR</td>
+</tr>
+</tbody>
+</table>
+<h4 id="调试与问题排查">调试与问题排查</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>systematic-debugging</code></td>
+<td>系统性调试：理解问题后再修复，而非盲目尝试</td>
+</tr>
+<tr>
+<td><code>python-debugpy</code></td>
+<td>Python 远程调试（pdb + debugpy DAP）</td>
+</tr>
+<tr>
+<td><code>node-inspect-debugger</code></td>
+<td>Node.js 远程调试（Chrome DevTools Protocol）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="部署与运维">部署与运维</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yisugou-deployment</code></td>
+<td>易速购一键部署脚本（git clone + bash <a class="link" target="_blank" rel="noopener" href="http://deploy.sh">deploy.sh<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>）</td>
+</tr>
+<tr>
+<td><code>yisugou-mvp-workflow</code></td>
+<td>易速购 MVP 开发流程：后端模块 → 管理后台 → 数据入库 → 端到端测试</td>
+</tr>
+<tr>
+<td><code>hexo-ci-cd</code></td>
+<td>Hexo 博客 GitHub Actions CI/CD 构建与部署</td>
+</tr>
+<tr>
+<td><code>nginx-layered-proxy</code></td>
+<td>双层 Nginx 架构（统一入口 + Docker 内部）</td>
+</tr>
+<tr>
+<td><code>mysql-operations</code></td>
+<td>MySQL Docker 管理、密码重置、数据迁移、端口冲突处理</td>
+</tr>
+<tr>
+<td><code>dockerfile-patterns</code></td>
+<td>Dockerfile 构建优化（上下文裁剪、层缓存、apt 镜像）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="浏览器与自动化测试">浏览器与自动化测试</h4>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>midscene-browser</code></td>
+<td>基于 MCP 的浏览器自动化，自然语言控制浏览器</td>
+</tr>
+<tr>
+<td><code>testing-api-tester</code></td>
+<td>API 全面验证、性能测试、质量保证</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-Karpathy-Guidelines">1. Karpathy Guidelines</h3>
+<p>来源：<a class="link" target="_blank" rel="noopener" href="https://github.com/multica-ai/andrej-karpathy-skills">multica-ai/andrej-karpathy-skills<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>著名的 AI 编码行为准则，包含 4 条核心原则：</p>
+<ol>
+<li><strong>Think Before Coding</strong> — 显式陈述假设，不默默选择</li>
+<li><strong>Simplicity First</strong> — 只写最少代码，不过度抽象</li>
+<li><strong>Surgical Changes</strong> — 只改必须改的行，不顺手重构</li>
+<li><strong>Goal-Driven Execution</strong> — 先定义成功标准再执行</li>
+</ol>
+<h3 id="2-Claude-Code-Codex-集成">2. Claude Code / Codex 集成</h3>
+<p>Hermes 可以委派编码任务给专用编码 Agent：</p>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>用途</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude-code</code></td>
+<td>编码委托</td>
+<td>用 Claude Code CLI 处理复杂编码任务</td>
+</tr>
+<tr>
+<td><code>codex</code></td>
+<td>编码委托</td>
+<td>用 OpenAI Codex CLI 处理编码任务</td>
+</tr>
+<tr>
+<td><code>opencode</code></td>
+<td>编码委托</td>
+<td>用 OpenCode CLI 处理编码任务</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-浏览器自动化-Midscene-js">3. 浏览器自动化 (Midscene.js)</h3>
+<p>基于 MCP 协议的浏览器自动化工具，用自然语言控制浏览器：</p>
+<div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config.yaml MCP 配置</span></span><br><span class="line"><span class="attr">mcp_servers:</span></span><br><span class="line">  <span class="attr">midscene-web:</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">npx</span></span><br><span class="line">    <span class="attr">args:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">'@midscene/web-bridge-mcp'</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>用于：网页测试、表单填写、数据抓取、功能验证。</p>
+<h3 id="4-Agency-Agents-—-Claude-Code-人格库">4. Agency Agents — Claude Code 人格库</h3>
+<p>来源：<a class="link" target="_blank" rel="noopener" href="https://github.com/msitarzewski/agency-agents">msitarzewski/agency-agents<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>184 个预定义的 AI Agent 人格，安装到 <code>~/.claude/agents/</code>，在 Claude Code 中用 <code>@agent-name</code> 调用：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>Agent 数</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Engineering</td>
+<td>18</td>
+<td><code>@frontend-developer</code>, <code>@backend-architect</code>, <code>@code-reviewer</code></td>
+</tr>
+<tr>
+<td>Design</td>
+<td>8</td>
+<td><code>@ui-designer</code>, <code>@ux-architect</code>, <code>@brand-guardian</code></td>
+</tr>
+<tr>
+<td>Marketing</td>
+<td>30+</td>
+<td><code>@seo-specialist</code>, <code>@content-creator</code>, <code>@growth-hacker</code></td>
+</tr>
+<tr>
+<td>Product</td>
+<td>5</td>
+<td><code>@product-manager</code>, <code>@sprint-prioritizer</code></td>
+</tr>
+<tr>
+<td>Sales</td>
+<td>8</td>
+<td><code>@deal-strategist</code>, <code>@sales-engineer</code></td>
+</tr>
+<tr>
+<td>Finance</td>
+<td>8</td>
+<td><code>@financial-analyst</code>, <code>@tax-strategist</code></td>
+</tr>
+<tr>
+<td>Specialized</td>
+<td>30+</td>
+<td><code>@mcp-builder</code>, <code>@prompt-engineer</code>, <code>@workflow-architect</code></td>
+</tr>
+</tbody>
+</table>
+<p>安装方式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> --depth 1 https://github.com/msitarzewski/agency-agents.git /tmp/agency-agents</span><br><span class="line"><span class="built_in">cd</span> /tmp/agency-agents</span><br><span class="line">bash scripts/install.sh --tool claude-code --no-interactive</span><br><span class="line"><span class="built_in">rm</span> -rf /tmp/agency-agents</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="5-Reasonix-—-DeepSeek-原生编码框架">5. Reasonix — DeepSeek 原生编码框架</h3>
+<p>Reasonix 是基于 DeepSeek 原生 API 的编码智能体框架，特点和优势：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版本</td>
+<td>v0.50.1</td>
+</tr>
+<tr>
+<td>模型</td>
+<td>deepseek-v4-flash / deepseek-v4-pro</td>
+</tr>
+<tr>
+<td>缓存</td>
+<td>主动缓存优化（前缀共享 + 会话持久化）</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>比 Claude Code 节省约 <strong>97%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>命令速查：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reasonix run "任务"</code></td>
+<td>非交互模式，单次任务</td>
+</tr>
+<tr>
+<td><code>reasonix code</code></td>
+<td>交互模式，带缓存/成本实时面板</td>
+</tr>
+<tr>
+<td><code>reasonix stats</code></td>
+<td>查看缓存命中率和成本统计</td>
+</tr>
+<tr>
+<td><code>reasonix doctor</code></td>
+<td>检查环境配置</td>
+</tr>
+</tbody>
+</table>
+<p>与 Claude Code 的成本对比：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>Claude Code → DeepSeek</th>
+<th>Reasonix (原生)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单次调用</td>
+<td>~$0.009</td>
+<td>~$0.00027</td>
+</tr>
+<tr>
+<td>缓存策略</td>
+<td>服务端决定</td>
+<td>主动前缀共享 + 会话持久化</td>
+</tr>
+<tr>
+<td>交互模式</td>
+<td><code>claude</code></td>
+<td><code>reasonix code</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-Apple-生态集成">6. Apple 生态集成</h3>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>imessage</code></td>
+<td>发送/接收 iMessage 和 SMS</td>
+</tr>
+<tr>
+<td><code>apple-reminders</code></td>
+<td>管理 Apple 提醒事项</td>
+</tr>
+<tr>
+<td><code>apple-notes</code></td>
+<td>管理 Apple 备忘录</td>
+</tr>
+<tr>
+<td><code>findmy</code></td>
+<td>追踪 Apple 设备位置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-MCP（Model-Context-Protocol）">7. MCP（Model Context Protocol）</h3>
+<p>原生 MCP 客户端支持，可连接任意 MCP 服务器动态注册工具。当前配置了：</p>
+<ul>
+<li><code>codegraph</code> — 代码图谱分析</li>
+<li><code>midscene-web</code> — 浏览器自动化</li>
+</ul>
+<h2 id="安装三方技能">安装三方技能</h2>
+<p>从 GitHub 仓库安装技能：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆仓库到 skills 目录</span></span><br><span class="line">git <span class="built_in">clone</span> &lt;repo-url&gt; ~/.hermes/skills/&lt;category&gt;/&lt;skill-name&gt;</span><br></pre></td></tr></tbody></table></figure></div>
+<p>安装后重启 Hermes 即可使用。也可以使用 <code>hermes install</code> 命令（如果支持）。</p>
+<h2 id="插件系统">插件系统</h2>
+<p>除了技能，Hermes 还支持插件机制。当前安装的插件：</p>
+<ul>
+<li><code>hermes-achievements</code> — 成就系统</li>
+</ul>
+<hr>
+<p><em>参考：<a class="link" target="_blank" rel="noopener" href="https://hermes-agent.nousresearch.com/docs/skills">Hermes Agent 技能文档<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></em></p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Hermes Agent 技能系统与三方技能</li>
+        <li><strong>作者:</strong> Jerome Xiong</li>
+        <li><strong>创建于
+                :</strong> 2026-06-16 12:00:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-07-16 15:31:40
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://jeromexiong.github.io/2026/06/16/AI模块/Hermes-Agent-技能系统与三方技能/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Hermes/">#Hermes</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Skills/">#Skills</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/MCP/">#MCP</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%8F%92%E4%BB%B6/">#插件</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推荐阅读</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser" rel="bookmark">
+  <img src="/images/covers/AI模块-浏览器自动化测试方案对比-Midscene-vs-Playwright.png" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser" class="!max-w-none">
+  <span class="title">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</span>
+</a><a class="recommended-article-item" href="/2021/10/09/%E5%B7%A5%E5%85%B7/iris-go%E5%90%8E%E5%8F%B0%E6%A8%A1%E7%89%88/" title="iris-go后台模版" rel="bookmark">
+  <img src="/images/covers/工具-iris-go后台模版.png" alt="iris-go后台模版" class="!max-w-none">
+  <span class="title">iris-go后台模版</span>
+</a><a class="recommended-article-item" href="/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" title="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板" rel="bookmark">
+  <img src="/images/covers/AI模块-Flutter-3-44-开发规范.png" alt="Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板" class="!max-w-none">
+  <span class="title">Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推荐阅读</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/" title="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser" rel="bookmark">
+  <img src="/images/covers/AI模块-浏览器自动化测试方案对比-Midscene-vs-Playwright.png" alt="浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser" class="!max-w-none">
+  <span class="title">浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</span>
+</a><a class="recommended-article-item" href="/2021/10/09/%E5%B7%A5%E5%85%B7/iris-go%E5%90%8E%E5%8F%B0%E6%A8%A1%E7%89%88/" title="iris-go后台模版" rel="bookmark">
+  <img src="/images/covers/工具-iris-go后台模版.png" alt="iris-go后台模版" class="!max-w-none">
+  <span class="title">iris-go后台模版</span>
+</a></div>
+   </div>
+  </div>
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2026/06/16/%E5%B7%A5%E5%85%B7/Git-%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E8%A7%84%E8%8C%83/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Git 提交信息规范 — Emoji + Type 约定式提交</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E4%B8%8E%E9%9B%86%E6%88%90/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Hermes Agent 日常使用与集成</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    
+    
+    
+    
+    
+    <div id="utterances-container"
+         data-utterances-theme-light="github-light"
+         data-utterances-theme-dark="github-dark">
+    </div>
+    <script false>
+        (function() {
+            const container = document.getElementById("utterances-container");
+            if (!container) {
+                return;
+            }
+
+            const repo = "jeromexiong/jeromexiong.github.io";
+            const issueNumber = "";
+            const issueTerm = "title";
+            const label = "💬 Comment";
+
+            if (!repo || (!issueNumber && !issueTerm)) {
+                return;
+            }
+
+            container.innerHTML = "";
+
+            const themeLight = container.dataset.utterancesThemeLight || "github-light";
+            const themeDark = container.dataset.utterancesThemeDark || "github-dark";
+            const isDark = document.body.classList.contains("dark-mode");
+            const theme = isDark ? themeDark : themeLight;
+
+            const script = document.createElement("script");
+            script.src = "https://utteranc.es/client.js";
+            script.async = true;
+            script.crossOrigin = "anonymous";
+            script.setAttribute("repo", repo);
+
+            if (issueNumber) {
+                script.setAttribute("issue-number", issueNumber);
+            } else {
+                script.setAttribute("issue-term", issueTerm);
+            }
+
+            if (label) {
+                script.setAttribute("label", label);
+            }
+
+            script.setAttribute("theme", theme);
+            container.appendChild(script);
+        })();
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">Hermes Agent 技能系统与三方技能</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%A7%88"><span class="nav-text">技能系统概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%8A%80%E8%83%BD"><span class="nav-text">加载技能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%B8%89%E6%96%B9%E6%8A%80%E8%83%BD"><span class="nav-text">常用三方技能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-%E6%97%A5%E5%B8%B8%E9%AB%98%E9%A2%91%E6%8A%80%E8%83%BD"><span class="nav-text">0. 日常高频技能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Karpathy-Guidelines"><span class="nav-text">1. Karpathy Guidelines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Claude-Code-Codex-%E9%9B%86%E6%88%90"><span class="nav-text">2. Claude Code &#x2F; Codex 集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96-Midscene-js"><span class="nav-text">3. 浏览器自动化 (Midscene.js)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Agency-Agents-%E2%80%94-Claude-Code-%E4%BA%BA%E6%A0%BC%E5%BA%93"><span class="nav-text">4. Agency Agents — Claude Code 人格库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Reasonix-%E2%80%94-DeepSeek-%E5%8E%9F%E7%94%9F%E7%BC%96%E7%A0%81%E6%A1%86%E6%9E%B6"><span class="nav-text">5. Reasonix — DeepSeek 原生编码框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Apple-%E7%94%9F%E6%80%81%E9%9B%86%E6%88%90"><span class="nav-text">6. Apple 生态集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-MCP%EF%BC%88Model-Context-Protocol%EF%BC%89"><span class="nav-text">7. MCP（Model Context Protocol）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%89%E6%96%B9%E6%8A%80%E8%83%BD"><span class="nav-text">安装三方技能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">插件系统</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a>
+            
+        </div>
+        
+            <script false src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script false>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+                
+
+                    
+                        <script>
+(function() {
+  function addHotPosts() {
+    var sidebar = document.querySelector('.sticky-container');
+    if (!sidebar || document.querySelector('.sidebar-hot-posts')) return;
+    var links = [];
+    var h3links = document.querySelectorAll('h3 a');
+    for (var i = 0; i < h3links.length; i++) {
+      var a = h3links[i];
+      if (a.getAttribute('href') && a.getAttribute('href') !== '/' && !a.getAttribute('href').startsWith('#')) {
+        links.push({href: a.getAttribute('href'), text: (a.textContent || a.getAttribute('title') || '').trim()});
+      }
+    }
+    if (links.length < 2) return;
+    var html = '<div class="sidebar-hot-posts"><div class="title">&#x1F525; 热门文章</div>';
+    for (var i = 0; i < Math.min(5, links.length); i++) {
+      html += '<div class="item"><a href="' + links[i].href + '">' + links[i].text + '</a></div>';
+    }
+    html += '</div>';
+    sidebar.insertAdjacentHTML('beforeend', html);
+  }
+  if (document.readyState === 'complete') setTimeout(addHotPosts, 800);
+  else window.addEventListener('load', function(){setTimeout(addHotPosts, 800)});
+})();
+</script>
+
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+		<li class="right-bottom-tools rss flex justify-center items-center">
+			<a class="flex justify-center items-center" href="/atom.xml,rss2.xml" target="_blank">
+				<i class="fa-regular fa-rss"></i>
+			</a>
+		</li>
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
+</body>
+
+</html>

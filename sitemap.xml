@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://jeromexiong.github.io/tags/index.html</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/29/%E6%9D%82%E8%AE%B0/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/06/01/%E5%B7%A5%E5%85%B7/GIT%E7%AE%80%E6%98%93%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/%E5%B7%A5%E5%85%B7/Git-%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E8%A7%84%E8%8C%83/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/09/17/%E5%B7%A5%E5%85%B7/Typora-GitHub-PicGo%E6%89%93%E9%80%A0%E4%B8%9D%E6%BB%91%E7%9A%84%E7%BC%96%E8%BE%91%E4%BD%93%E9%AA%8C/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/06/15/%E5%B7%A5%E5%85%B7/vscode%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/05/01/%E5%B7%A5%E5%85%B7/%E4%BB%8E%20nvm%20%E8%BF%81%E7%A7%BB%E5%88%B0%20Volta%20&npm%E5%88%B0%20pnpm/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/%E5%B7%A5%E5%85%B7/template-%E6%8A%80%E5%B7%A7%E5%90%88%E9%9B%86/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/10/09/%E5%B7%A5%E5%85%B7/iris-go%E5%90%8E%E5%8F%B0%E6%A8%A1%E7%89%88/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/03/01/%E5%B7%A5%E5%85%B7/GO%20/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/categories/index.html</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/09/17/Mac/Mac%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/05/01/Web-%E5%89%8D%E7%AB%AF/ES6%E7%9A%84NodeJS%20&%20pm2%E5%90%AF%E5%8A%A8/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/08/01/Mac/%E8%BD%AF%E4%BB%B6/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/07/15/Web-%E5%89%8D%E7%AB%AF/Oxc-%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97-oxlint-oxfmt/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/25/Web-%E5%89%8D%E7%AB%AF/VSCode-%E4%B8%AD%E9%85%8D%E7%BD%AE-PostCSS-Stylelint-Tailwind-CSS-%E9%80%9A%E7%94%A8%E7%8E%AF%E5%A2%83/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/03/01/Web-%E5%89%8D%E7%AB%AF/SOCKET.IO/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/06/01/Web-%E5%89%8D%E7%AB%AF/Vue%20%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/01/01/Web-%E5%89%8D%E7%AB%AF/%E4%BA%8C%E4%BB%A3%E8%BA%AB%E4%BB%BD%E8%AF%81%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/03/15/Web-%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2018/12/01/iOS-Swift/CocoaPods%20&%20podfile/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/06/01/iOS-Swift/Framework%E8%BD%AC%E6%8D%A2XCFramework%E4%B9%8B%E6%97%85/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/29/iOS-Swift/IGListKit%E4%BD%BF%E7%94%A8/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/29/iOS-Swift/Swift%20%E6%A8%A1%E5%9E%8B%E5%8C%96%E4%BD%BF%E7%94%A8SQLite3/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2018/01/01/iOS-Swift/Swift%20%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/04/01/iOS-Swift/Swift%20%E9%9D%A2%E8%AF%95%E9%A2%98/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/29/iOS-Swift/Swift-5-1-%E9%AB%98%E5%B8%A7%E7%8E%87%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%AE%9E%E7%8E%B0/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/03/15/iOS-Swift/Xcode%20&%20Android%20Studio%20%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/01/Web-%E5%89%8D%E7%AB%AF/%E9%9D%A2%E8%AF%95/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/10/14/iOS-Swift/Xcode%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2022/01/01/iOS-Swift/kilomind%E5%A4%8D%E7%9B%98/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2021/10/15/iOS-Swift/iOS%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/02/01/iOS-Swift/krc%E3%80%81hrcs%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/29/%E5%B7%A5%E5%85%B7/Flutter%20%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/01/01/Linux-DevOps/Confluence%20%E5%AE%89%E8%A3%85/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/09/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/10/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/03/15/Linux-DevOps/Ubuntu%E5%AE%89%E8%A3%85libssl-dev%E5%A4%B1%E8%B4%A5/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/04/01/Linux-DevOps/nginx%20%E9%85%8D%E7%BD%AE/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/02/01/Linux-DevOps/scp%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/09/01/Linux-DevOps/mac%20%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85mysql%EF%BC%8Credis,%20nginx/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/07/01/Linux-DevOps/%E4%BD%BF%E7%94%A8LetsEncrypt%E8%8E%B7%E5%8F%96%E5%92%8C%E5%AE%89%E8%A3%85SSLTLS%E8%AF%81%E4%B9%A6%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2020/08/01/Linux-DevOps/%E5%AE%9D%E5%A1%94%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/05/01/Linux-DevOps/%E6%A0%91%E8%8E%93%E6%B4%BE%20-%20%E4%BF%AE%E6%94%B9pi%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81,%E5%BC%80%E5%90%AFroot%E8%B4%A6%E5%8F%B7/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/01/01/Mac/Mac%20x%2010.12.4%20%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85sshfs/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/07/02/AI%E6%A8%A1%E5%9D%97/Flutter-3-44-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E4%B8%8E%E4%B8%89%E6%96%B9%E6%8A%80%E8%83%BD/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E4%B8%8E%E9%9B%86%E6%88%90/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/07/01/AI%E6%A8%A1%E5%9D%97/IDEA-Android-Studio-%E9%85%8D%E7%BD%AE-DeepSeek-%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/07/01/AI%E6%A8%A1%E5%9D%97/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94-Midscene-vs-Playwright/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/CI-CD/Hexo%E5%8D%9A%E5%AE%A2GitHub-Actions%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2019/11/01/Linux-DevOps/CentOS7%20node.js%20nginx%20MySQL%20redis%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A8%E8%BF%87%E7%A8%8B/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/16/AI%E6%A8%A1%E5%9D%97/Hermes-Agent-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2026-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeromexiong.github.io/2026/06/19/AI%E6%A8%A1%E5%9D%97/Vercel-eve-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%85%88%E7%9A%84AI-Agent%E6%A1%86%E6%9E%B6/</loc>
+    
+    <lastmod>2026-06-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  <url>
+    <loc>https://jeromexiong.github.io/</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+
+  
+</urlset>
