@@ -1,0 +1,10 @@
+/*!
+ * 站点 Web 字体子集（由 web/scripts/subset-fonts.mjs 生成，勿手改）
+ * 字符集 1556 个码位（其中拉丁 218 个）；wght 可变轴原样保留，未拆权重。
+ * Geist Variable: 55.5KB → 24.1KB（−56.5%）
+ * Chillax-Variable: 54.3KB → 30.4KB（−44.0%）
+ * Geist Mono: 56.7KB → 28.1KB（−50.4%）
+ */
+@font-face{font-family:'Geist Variable';font-style:normal;font-weight:200 700;font-display:swap;src:url(./GeistVF-subset.woff2) format('woff2')}
+@font-face{font-family:'Chillax-Variable';font-style:normal;font-weight:200 700;font-display:swap;src:url(./Chillax-Variable-subset.woff2) format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url(./GeistMonoVF-subset.woff2) format('woff2')}

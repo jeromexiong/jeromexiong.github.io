@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例 | Jerome Xiong</title><meta name="description" content="在 Vue3 项目中集成 Prettier 与 ESLint，实现代码风格自动格式化与质量检查的统一，告别格式化冲突。"><meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术"><meta name="author" content="Jerome Xiong"><link rel="canonical" href="https://jeromexiong.github.io/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><!-- feed 自动发现：旧站在 head 里两条都挂了，浏览器/阅读器据此显示订阅按钮。 --><link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml"><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss2.xml"><meta property="og:title" content="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例 | Jerome Xiong"><meta property="og:description" content="在 Vue3 项目中集成 Prettier 与 ESLint，实现代码风格自动格式化与质量检查的统一，告别格式化冲突。"><meta property="og:type" content="article"><meta property="og:url" content="https://jeromexiong.github.io/2026/06/23/Web-%E5%89%8D%E7%AB%AF/Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><meta property="og:image" content="https://jeromexiong.github.io/images/covers/Web-%E5%89%8D%E7%AB%AF-Prettier-ESLint-%E9%9B%86%E6%88%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.png"><meta property="og:site_name" content="Jerome Xiong"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="/images/avatar-192.png" sizes="192x192"><link rel="apple-touch-icon" sizes="180x180" href="/images/avatar-192.png"><meta name="theme-color" content="#7C3AED"><!-- 主题初始化必须在首次绘制前跑完，避免亮色闪一下再变暗。
+         localStorage 键与旧主题一致，老访客的暗色偏好不丢。
+         主题 CSS 分两档：`dark` / `light` 加在 <html>（Tailwind 的 dark: 变体），
+         `dark-mode` / `light-mode` 加在 <body>（code-theme.styl 的代码块配色按 body 选档）。
+         两者必须同时同步、并各自移除反向类，否则切换后暗色代码块会掉回亮色配色。 --><script>
+      (function () {
+        const KEY = 'REDEFINE-THEME-STATUS';
+        let theme = null;
+        try {
+          const saved = localStorage.getItem(KEY);
+          if (saved) theme = JSON.parse(saved).isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* 坏数据按未保存处理 */
+        }
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        const root = document.documentElement;
+        const apply = function (t) {
+          const other = t === 'dark' ? 'light' : 'dark';
+          /* <html> 只带裸档位（Tailwind dark: 变体），反向档位一并摘掉避免残留。 */
+          root.classList.remove(other);
+          root.classList.add(t);
+          /* 代码块配色认 <body> 上的 <theme>-mode，切换时两档互斥。 */
+          if (document.body) {
+            document.body.classList.remove(t + '-mode', other + '-mode');
+            document.body.classList.add(t + '-mode');
+          }
+          root.style.colorScheme = t;
+        };
+        apply(theme);
+        // 本脚本在 <head> 里执行时 document.body 还不存在，DOM 就绪后补一次。
+        document.addEventListener('DOMContentLoaded', function () {
+          apply(theme);
+        });
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BYNm7Ctz.css"><style>.post-sidebar-container[data-astro-cid-ssdmjifj]{margin-top:24px}.article-wordcount[data-astro-cid-ssdmjifj],.article-min2read[data-astro-cid-ssdmjifj]{white-space:nowrap}
+.sidebar-recommended[data-astro-cid-wv7whodv]{padding:20px;border-radius:18px;box-sizing:border-box;background:var(--background-color);box-shadow:var(--redefine-box-shadow);white-space:normal}.sidebar-recommended[data-astro-cid-wv7whodv]:hover{box-shadow:var(--redefine-box-shadow-hover)}.sidebar-content[data-astro-cid-wv7whodv]+.sidebar-content[data-astro-cid-wv7whodv]{margin-top:22.8px}.sidebar-recommended-title[data-astro-cid-wv7whodv]{font-size:1rem;font-weight:600;color:var(--second-text-color);margin-bottom:12px}.sidebar-recommended-list[data-astro-cid-wv7whodv]{list-style:none;margin:0;padding:0}.sidebar-recommended-item[data-astro-cid-wv7whodv]{margin:0 0 10px}.sidebar-recommended-item[data-astro-cid-wv7whodv]:last-child{margin-bottom:0}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;font-size:.85rem;line-height:1.5;color:var(--third-text-color);text-decoration:none;transition:color .2s}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]:hover{color:var(--primary-color)}
+</style></head><body><!-- 主题的阅读进度条：body 第一个子元素，固定在最顶端。数值由后续任务的 runtime.js 更新。 --><div class="progress-bar-container"><span class="scroll-progress-bar"></span></div><main class="page-container" id="swup"><div class="main-content-container flex flex-col justify-between min-h-dvh"><div class="main-content-header"><header class="navbar-container px-6 md:px-12"><div class="navbar-content transition-navbar"><div class="left"><a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/"><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" class="w-full h-full rounded-xs"></a><a class="logo-title" href="/"><h1>Jerome Xiong</h1></a></div><div class="right"><!-- PC --><div class="desktop"><ul class="navbar-list"><li class="navbar-item"><a href="/"><i class="fa-regular fa-house fa-fw"></i>首页</a></li><li class="navbar-item"><a href="https://github.com/jeromexiong" target="_blank" rel="noopener"><i class="fa-brands fa-github fa-fw"></i>GitHub</a></li><li class="navbar-item"><a href="/archives/"><i class="fa-regular fa-clock fa-fw"></i>归档</a></li><li class="navbar-item"><a href="/categories/"><i class="fa-regular fa-folder fa-fw"></i>分类</a></li><li class="navbar-item"><a href="/tags/"><i class="fa-regular fa-tag fa-fw"></i>标签</a></li><li class="navbar-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></li><li class="navbar-item theme-toggle"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li></ul></div><!-- Mobile --><div class="mobile"><button class="icon-item theme-toggle" type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button><div class="icon-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></div><div class="icon-item navbar-bar" role="button" tabindex="0" aria-label="菜单"><div class="navbar-bar-middle"></div></div></div></div></div><!-- 移动端抽屉；展开状态由后续任务的 JS 加 navbar-drawer-show --><div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between"><ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start"><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/"><span>首页</span><i class="fa-regular fa-house fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="https://github.com/jeromexiong" target="_blank" rel="noopener"><span>GitHub</span><i class="fa-brands fa-github fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/archives/"><span>归档</span><i class="fa-regular fa-clock fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/categories/"><span>分类</span><i class="fa-regular fa-folder fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/tags/"><span>标签</span><i class="fa-regular fa-tag fa-fw"></i></a></li></ul></div></header></div><div class="main-content-body transition-fade-up"><div class="main-content has-toc"><div class="post-page-container show-toc flex relative justify-between box-border w-full h-full" data-astro-cid-ssdmjifj><div class="article-content-container" data-pagefind-body data-astro-cid-ssdmjifj><div class="article-title relative w-full" data-astro-cid-ssdmjifj><picture style="display: contents" data-astro-cid-ssdmjifj><source srcset="/images/covers/Web-前端-Prettier-ESLint-集成配置指南.webp" type="image/webp" data-astro-cid-ssdmjifj><img src="/images/covers/Web-前端-Prettier-ESLint-集成配置指南.png" alt="Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例" width="800" height="420" loading="eager" fetchpriority="high" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" data-astro-cid-ssdmjifj></picture><div class="w-full flex items-center absolute bottom-0 justify-start" data-astro-cid-ssdmjifj><h1 data-pagefind-meta="title" class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color" data-astro-cid-ssdmjifj>Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</h1></div></div><div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px" data-astro-cid-ssdmjifj><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" data-astro-cid-ssdmjifj></div><div class="info flex flex-col justify-between" data-astro-cid-ssdmjifj><div class="author flex items-center" data-astro-cid-ssdmjifj><span class="name text-default-text-color text-lg font-semibold" data-astro-cid-ssdmjifj>Jerome Xiong</span></div><div class="meta-info" data-astro-cid-ssdmjifj><div class="article-meta-info" data-astro-cid-ssdmjifj><span class="article-date article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-pen-fancy" data-astro-cid-ssdmjifj></i>&nbsp;<span class="desktop" data-astro-cid-ssdmjifj>2026-06-23 16:00</span><span class="mobile" data-astro-cid-ssdmjifj>2026-06-23 16:00</span><span class="hover-info" data-astro-cid-ssdmjifj>创建</span></span><span class="article-categories article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-folders" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/categories/Web-前端/" data-astro-cid-ssdmjifj>Web-前端</a></li><li data-astro-cid-ssdmjifj>&gt;</li><li data-astro-cid-ssdmjifj><a href="/categories/Web-前端/工具链/" data-astro-cid-ssdmjifj>工具链</a></li></ul></span><span class="article-wordcount article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-typewriter" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>2.6k 字</span></span><span class="article-min2read article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-clock" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>9 分钟</span></span></div></div></div></div><div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8" data-astro-cid-ssdmjifj><h2 id="背景">背景</h2>
+<p>在一个 Vue3 + Vite 项目中，同时使用 ESLint（代码质量检查）和 Prettier（代码格式化）时，两者的规则可能冲突。最典型的就是 ESLint 要求最大行长 80 字符，而 Prettier 默认也是 80——看起来一致，但一旦自定义其中一个就可能打架。</p>
+<p>解决方案：<strong>用 ESLint 驱动 Prettier</strong>。通过 <code>eslint-plugin-prettier</code> 将 Prettier 的格式化规则作为 ESLint 的一条规则运行，再通过 <code>eslint-config-prettier</code> 关闭所有与 Prettier 冲突的 ESLint 原生风格规则。</p>
+<p>本文以 <code>qiyun_admin</code> 项目的实际配置为例，完整说明集成方式和关键细节。</p>
+<hr>
+<h2 id="依赖安装">依赖安装</h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -D</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> prettier</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eslint-plugin-prettier</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eslint-config-prettier</span></span></code></pre>
+<p>三个包的分工：</p>
+<table>
+<thead>
+<tr>
+<th>包</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prettier</code></td>
+<td>格式化引擎</td>
+</tr>
+<tr>
+<td><code>eslint-plugin-prettier</code></td>
+<td>将 Prettier 作为 ESLint 的一条 rule 运行</td>
+</tr>
+<tr>
+<td><code>eslint-config-prettier</code></td>
+<td>关闭 ESLint 中与 Prettier 冲突的风格规则</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如果项目中还没有 ESLint 和 Vue ESLint 支持，还需安装：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -D</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eslint</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> @eslint/js</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eslint-plugin-vue</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> globals</span></span></code></pre>
+</blockquote>
+<hr>
+<h2 id="1-prettier-配置--prettierrcyaml">1. Prettier 配置 — <code>.prettierrc.yaml</code></h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span class="line-number">1</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 箭头函数参数始终加括号</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#22863A;--shiki-dark:#85E89D">arrowParens</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">always</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#6A737D;--shiki-dark:#6A737D"># JSX 右尖括号与最后一行属性同行</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#22863A;--shiki-dark:#85E89D">bracketSameLine</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 对象大括号内部首尾保留空格</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#22863A;--shiki-dark:#85E89D">bracketSpacing</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 换行符使用 LF (Unix/Linux/macOS 风格)</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#22863A;--shiki-dark:#85E89D">endOfLine</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">lf</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 自动格式化嵌入的代码（如 Markdown 和 HTML 内的代码）</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#22863A;--shiki-dark:#85E89D">embeddedLanguageFormatting</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">auto</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#6A737D;--shiki-dark:#6A737D"># HTML 忽略空白敏感性，结合bracketSameLine: true</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#22863A;--shiki-dark:#85E89D">htmlWhitespaceSensitivity</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ignore"</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#6A737D;--shiki-dark:#6A737D"># JSX 中使用单引号</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#22863A;--shiki-dark:#85E89D">jsxSingleQuote</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 一行最多字符数</span></span>
+<span class="line"><span class="line-number">16</span><span style="color:#22863A;--shiki-dark:#85E89D">printWidth</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">120</span></span>
+<span class="line"><span class="line-number">17</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 对象属性引号仅在必要时添加</span></span>
+<span class="line"><span class="line-number">18</span><span style="color:#22863A;--shiki-dark:#85E89D">quoteProps</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">as-needed</span></span>
+<span class="line"><span class="line-number">19</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 行尾不使用分号</span></span>
+<span class="line"><span class="line-number">20</span><span style="color:#22863A;--shiki-dark:#85E89D">semi</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span></span>
+<span class="line"><span class="line-number">21</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 使用单引号</span></span>
+<span class="line"><span class="line-number">22</span><span style="color:#22863A;--shiki-dark:#85E89D">singleQuote</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">23</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 每个缩进级别的空格数</span></span>
+<span class="line"><span class="line-number">24</span><span style="color:#22863A;--shiki-dark:#85E89D">tabWidth</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span></span>
+<span class="line"><span class="line-number">25</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 是否添加多余逗号 none|es5|all</span></span>
+<span class="line"><span class="line-number">26</span><span style="color:#22863A;--shiki-dark:#85E89D">trailingComma</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">es5</span></span>
+<span class="line"><span class="line-number">27</span><span style="color:#6A737D;--shiki-dark:#6A737D"># 使用空格而不是制表符缩进</span></span>
+<span class="line"><span class="line-number">28</span><span style="color:#22863A;--shiki-dark:#85E89D">useTabs</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span></span>
+<span class="line"><span class="line-number">29</span><span style="color:#6A737D;--shiki-dark:#6A737D"># Vue 文件中 script 和 style 标签内的代码也进行缩进</span></span>
+<span class="line"><span class="line-number">30</span><span style="color:#22863A;--shiki-dark:#85E89D">vueIndentScriptAndStyle</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span></span></code></pre>
+<p>关键点：</p>
+<ul>
+<li><strong><code>printWidth: 120</code></strong> — 项目使用的行宽是 120，比 Prettier 默认的 80 更宽松，适合 Vue 模板中较长的属性链。</li>
+<li><strong><code>useTabs: true</code></strong> — 使用 Tab 缩进，配合 <code>tabWidth: 2</code> 让 Tab 显示为 2 个空格宽度。</li>
+<li><strong><code>semi: false</code></strong> — 无分号风格。</li>
+<li><strong><code>trailingComma: 'none'</code></strong> — 不添加尾逗号，与 ES2017 以来允许尾逗号的趋势不同，这里是团队风格选择。</li>
+</ul>
+<hr>
+<h2 id="2-eslint-配置--eslintconfigmjsflat-config">2. ESLint 配置 — <code>eslint.config.mjs</code>（Flat Config）</h2>
+<p>项目使用 ESLint 的 <strong>Flat Config</strong>（<code>eslint.config.mjs</code>，ESLint v9+ 默认格式），而非传统的 <code>.eslintrc.*</code>。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span class="line-number">1</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> js </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "@eslint/js"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> prettierConfig </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eslint-config-prettier"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> prettierPlugin </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eslint-plugin-prettier"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> pluginVue </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eslint-plugin-vue"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> globals </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "globals"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> vueParser </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "vue-eslint-parser"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">7</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> [</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // 基础推荐规则</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  js.configs.recommended,</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // Vue 推荐规则</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#D73A49;--shiki-dark:#F97583">  ...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">pluginVue.configs[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"flat/essential"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // 注意：必须放在其他配置之后，以确保它能覆盖前面的风格规则</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  prettierConfig,</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  {</span></span>
+<span class="line"><span class="line-number">16</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    plugins: {</span></span>
+<span class="line"><span class="line-number">17</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // 注册 prettier 插件</span></span>
+<span class="line"><span class="line-number">18</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      prettier: prettierPlugin,</span></span>
+<span class="line"><span class="line-number">19</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    },</span></span>
+<span class="line"><span class="line-number">20</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    languageOptions: {</span></span>
+<span class="line"><span class="line-number">21</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      ecmaVersion: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2020</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">22</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      sourceType: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"module"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">23</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // 对应 env: { browser: true, node: true, es6: true }</span></span>
+<span class="line"><span class="line-number">24</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      globals: {</span></span>
+<span class="line"><span class="line-number">25</span><span style="color:#D73A49;--shiki-dark:#F97583">        ...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">globals.browser,</span></span>
+<span class="line"><span class="line-number">26</span><span style="color:#D73A49;--shiki-dark:#F97583">        ...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">globals.node,</span></span>
+<span class="line"><span class="line-number">27</span><span style="color:#D73A49;--shiki-dark:#F97583">        ...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">globals.es2021,</span></span>
+<span class="line"><span class="line-number">28</span><span style="color:#6A737D;--shiki-dark:#6A737D">        // 对应 env: { 'vue/setup-compiler-macros': true }</span></span>
+<span class="line"><span class="line-number">29</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        defineProps: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"readonly"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">30</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        defineEmits: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"readonly"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">31</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        defineExpose: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"readonly"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">32</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        withDefaults: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"readonly"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">33</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      },</span></span>
+<span class="line"><span class="line-number">34</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      parser: vueParser,</span></span>
+<span class="line"><span class="line-number">35</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    },</span></span>
+<span class="line"><span class="line-number">36</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    rules: {</span></span>
+<span class="line"><span class="line-number">37</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // --- 业务逻辑规则---</span></span>
+<span class="line"><span class="line-number">38</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "no-unused-vars"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">39</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "no-useless-assignment"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">40</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "no-console"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">41</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "no-debugger"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"warn"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">42</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "style/arrow-parens"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"always"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span class="line-number">43</span></span>
+<span class="line"><span class="line-number">44</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // --- Vue 特定规则---</span></span>
+<span class="line"><span class="line-number">45</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "vue/no-unused-vars"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"warn"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">46</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "vue/custom-event-name-casing"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">47</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "vue/attributes-order"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">48</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "vue/one-component-per-file"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">49</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "vue/require-default-prop"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">50</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "vue/multi-word-component-names"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">51</span></span>
+<span class="line"><span class="line-number">52</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // --- Prettier 集成规则 ---</span></span>
+<span class="line"><span class="line-number">53</span><span style="color:#6A737D;--shiki-dark:#6A737D">      // 将 Prettier 格式问题作为 ESLint 错误抛出，统一编辑器反馈</span></span>
+<span class="line"><span class="line-number">54</span><span style="color:#032F62;--shiki-dark:#9ECBFF">      "prettier/prettier"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">55</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    },</span></span>
+<span class="line"><span class="line-number">56</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">57</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  {</span></span>
+<span class="line"><span class="line-number">58</span><span style="color:#6A737D;--shiki-dark:#6A737D">    // 忽略文件 (对应 .eslintignore)</span></span>
+<span class="line"><span class="line-number">59</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    ignores: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dist/**"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"static/**"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"build/**"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span class="line-number">60</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">61</span><span style="color:#24292E;--shiki-dark:#E1E4E8">];</span></span></code></pre>
+<h3 id="集成原理">集成原理</h3>
+<ol>
+<li>
+<p><strong><code>prettierConfig</code>（即 <code>eslint-config-prettier</code>）</strong> — 必须放在 <code>js.configs.recommended</code> 和 <code>pluginVue</code> 配置<strong>之后</strong>。它会把所有与 Prettier 冲突的 ESLint 原生风格规则全部关闭。如果放反了顺序，样式规则会被后面的配置重新打开，等于没关。</p>
+</li>
+<li>
+<p><strong><code>prettierPlugin</code>（即 <code>eslint-plugin-prettier</code>）</strong> — 通过 <code>'prettier/prettier': 'error'</code> 将 Prettier 的格式化结果作为 ESLint 的一条规则执行。不再额外传入 <code>endOfLine</code> 选项，直接信任 <code>.prettierrc.yaml</code> 中的配置。如果团队跨平台遇到换行符冲突（<code>Delete '␍'</code> 错误），统一通过 <code>.gitattributes</code> 解决，见 FAQ。</p>
+</li>
+<li>
+<p><strong>为什么很多 Vue 风格规则设为 <code>'off'</code></strong> — 这些规则（如 <code>vue/max-attributes-per-line</code>、<code>vue/html-closing-bracket-newline</code> 等）都与 Prettier 的 HTML/Vue 格式化能力重叠。Prettier 对 Vue template 的格式化已经处理了缩进、换行、属性排列，所以关闭 ESLint 侧的同功能规则，避免冲突。</p>
+</li>
+</ol>
+<h3 id="flat-config-与传统-eslintrc-的差异注意点">Flat Config 与传统 <code>.eslintrc</code> 的差异注意点</h3>
+<p>如果你从传统配置迁移到 Flat Config：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>传统 <code>.eslintrc.js</code></th>
+<th>Flat Config <code>eslint.config.mjs</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>导出</td>
+<td><code>module.exports = { ... }</code></td>
+<td><code>export default [ ... ]</code>（数组）</td>
+</tr>
+<tr>
+<td>插件注册</td>
+<td><code>plugins: ['prettier']</code></td>
+<td><code>plugins: { prettier: prettierPlugin }</code></td>
+</tr>
+<tr>
+<td>配置继承</td>
+<td><code>extends: ['prettier']</code></td>
+<td>直接导入并展开到数组</td>
+</tr>
+<tr>
+<td>Parser 配置</td>
+<td><code>parser: 'vue-eslint-parser'</code></td>
+<td><code>parser: pluginVue.parsers.vue</code></td>
+</tr>
+<tr>
+<td>忽略文件</td>
+<td><code>.eslintignore</code></td>
+<td><code>ignores: ['dist/**']</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-忽略规则--prettierignore">3. 忽略规则 — <code>.prettierignore</code></h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>dist/</span></span>
+<span class="line"><span class="line-number">2</span><span>node_modules/</span></span>
+<span class="line"><span class="line-number">3</span><span>build/</span></span>
+<span class="line"><span class="line-number">4</span><span>static/</span></span>
+<span class="line"><span class="line-number">5</span><span>public/</span></span>
+<span class="line"><span class="line-number">6</span><span>*.min.js</span></span>
+<span class="line"><span class="line-number">7</span><span>*.min.css</span></span>
+<span class="line"><span class="line-number">8</span><span>*.map</span></span>
+<span class="line"><span class="line-number">9</span><span>.gitignore</span></span>
+<span class="line"><span class="line-number">10</span><span>.curosr/</span></span>
+<span class="line"><span class="line-number">11</span><span>.trae/</span></span>
+<span class="line"><span class="line-number">12</span><span>.idea/</span></span></code></pre>
+<p>与 ESLint 的 <code>ignores</code> 保持同步，确保构建产物和第三方文件不被格式化。</p>
+<hr>
+<h2 id="4-vs-code-配置--保存时自动格式化">4. VS Code 配置 — 保存时自动格式化</h2>
+<p>在项目根目录创建 <code>.vscode/settings.json</code>：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // 通过 codeActionsOnSave 触发 ESLint 修复（同时也触发 prettier/prettier）</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "editor.codeActionsOnSave"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "source.fixAll.eslint"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"explicit"</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">6</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // JS/TS/Vue 文件：Prettier 在保存时自动格式化</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "[javascript]"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"esbenp.prettier-vscode"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.formatOnSave"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "[typescript]"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"esbenp.prettier-vscode"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.formatOnSave"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">16</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "[vue]"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">17</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"esbenp.prettier-vscode"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">18</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.formatOnSave"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span class="line-number">19</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span class="line-number">20</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<blockquote>
+<p>为什么不设全局 <code>editor.formatOnSave</code>？</p>
+<p>在一个项目中，不同语言可能由不同工具负责格式化：JS/TS/Vue 用 Prettier，CSS/PostCSS 用 Stylelint。全局 <code>formatOnSave: true</code> 会强制 Prettier 格式化所有文件，导致与 Stylelint 冲突。</p>
+<p>正确的做法是通过 <strong>语言作用域</strong> 精确控制：只有明确设置了 <code>[javascript]</code>、<code>[typescript]</code>、<code>[vue]</code> 等语言的文件才由 Prettier 格式化，其余语言（CSS、Markdown 等）保持不动，让 Stylelint 等专用工具处理。</p>
+<p>而 <code>codeActionsOnSave</code> 的 <code>source.fixAll.eslint</code> 全局生效不会造成冲突——ESLint 只分析它配置中覆盖的文件类型，不会触碰 CSS 等无关文件。<code>prettier/prettier</code> 规则也只在 ESLint 检查的文件范围内生效，双重保险但不越界。</p>
+</blockquote>
+<p>需要安装 VS Code 扩展：</p>
+<ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">Prettier - Code formatter</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint</a></li>
+</ul>
+<hr>
+<h2 id="5-npm-scripts">5. NPM Scripts</h2>
+<p>在 <code>package.json</code> 中添加：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "scripts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "format"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"prettier --write </span><span style="color:#005CC5;--shiki-dark:#79B8FF">\"</span><span style="color:#032F62;--shiki-dark:#9ECBFF">src/**/*.{js,ts,vue,css,scss,json,md}</span><span style="color:#005CC5;--shiki-dark:#79B8FF">\"</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lint"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint src/ --fix"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lint:check"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint src/"</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>npm run format</code> — 手动格式化所有源码</li>
+<li><code>npm run lint</code> — ESLint 检查并修复（同时也修复 Prettier 问题）</li>
+<li><code>npm run lint:check</code> — 仅检查，不修复（用于 CI）</li>
+</ul>
+<hr>
+<h2 id="6-husky--lint-staged可选-提交前自动检查">6. Husky + lint-staged（可选）— 提交前自动检查</h2>
+<p>仅有编辑器保存格式化还不够——总有人忘记安装扩展、或者直接用其他编辑器修改。<strong>Husky + lint-staged</strong> 可以在 <code>git commit</code> 时自动对暂存文件运行格式化与 ESLint 检查，把住最后一道关。</p>
+<h3 id="安装">安装</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -D</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> husky</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> lint-staged</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npx</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> husky</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> init</span></span></code></pre>
+<p><code>husky init</code> 会在项目根目录创建 <code>.husky/</code> 文件夹和 <code>pre-commit</code> hook。</p>
+<h3 id="配置">配置</h3>
+<h4 id="huskypre-commit"><code>.husky/pre-commit</code></h4>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npx</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> lint-staged</span></span></code></pre>
+<p>这是 Husky v9 默认生成的 hook 文件，内容只有这一行。</p>
+<blockquote>
+<p><strong>Husky v9 注意</strong>：旧版本（v4/v5）需要在 <code>package.json</code> 中配置 <code>"husky": { "hooks": {...} }</code> 或使用 <code>.huskyrc.js</code>。v9 统一使用 <code>.husky/</code> 目录下的 shell 文件，更直观、可版本控制。</p>
+</blockquote>
+<h4 id="packagejson-添加-lint-staged-配置"><code>package.json</code> 添加 lint-staged 配置</h4>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "lint-staged"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "*.{js,ts,vue}"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"prettier --write"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint --fix"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "*.{css,scss,json,md}"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"prettier --write"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>工作流程：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>git add src/components/Button.vue</span></span>
+<span class="line"><span class="line-number">2</span><span>  → git commit -m "feat: add button"</span></span>
+<span class="line"><span class="line-number">3</span><span>    → Husky 触发 pre-commit hook</span></span>
+<span class="line"><span class="line-number">4</span><span>      → lint-staged 读取暂存文件</span></span>
+<span class="line"><span class="line-number">5</span><span>        → 匹配 *.vue → 运行 prettier --write → 运行 eslint --fix</span></span>
+<span class="line"><span class="line-number">6</span><span>        → 格式化结果自动加入暂存区</span></span>
+<span class="line"><span class="line-number">7</span><span>    → commit 成功（或失败并提示修复）</span></span></code></pre>
+<blockquote>
+<p><strong>为什么不直接把 <code>eslint --fix</code> 作为唯一的 hook？</strong></p>
+<p>因为 Prettier 格式化在某些场景下会修改 ESLint 不会触碰的部分（比如 Markdown 换行、YAML 缩进）。先跑 prettier 再跑 eslint，确保两者都通过。</p>
+</blockquote>
+<h3 id="跳过-hook">跳过 hook</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">git</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> commit</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> --no-verify</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -m</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "紧急修复：跳过 lint"</span></span></code></pre>
+<p>只在万不得已时使用（如修复生产环境紧急 bug）。</p>
+<hr>
+<h2 id="7-工作流程总结">7. 工作流程总结</h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>编辑代码</span></span>
+<span class="line"><span class="line-number">2</span><span>  → Ctrl+S（或 Cmd+S）</span></span>
+<span class="line"><span class="line-number">3</span><span>    → VS Code Prettier 格式化</span></span>
+<span class="line"><span class="line-number">4</span><span>    → ESLint 运行 prettier/prettier 校验</span></span>
+<span class="line"><span class="line-number">5</span><span>    → ESLint 报告/修复其他代码质量问题</span></span>
+<span class="line"><span class="line-number">6</span><span>  → git commit</span></span>
+<span class="line"><span class="line-number">7</span><span>    → Husky / lint-staged 再次校验（可选）</span></span></code></pre>
+<p>在编辑器层面，Prettier 负责"好不好看"，ESLint 负责"对不对"。通过 <code>eslint-plugin-prettier</code>，两者在保存时一次性完成，互不打架。</p>
+<hr>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="q-prettier-格式化的结果和-eslint-的-fix-结果不一致">Q: Prettier 格式化的结果和 ESLint 的 fix 结果不一致？</h3>
+<p>A: 检查 <code>eslint-config-prettier</code> 是否放在了数组的最后（或至少在所有规则配置之后）。Flat Config 中数组顺序决定规则优先级，后面的覆盖前面的。</p>
+<h3 id="q-prettierprettier-报错-delete--prettierprettier">Q: <code>prettier/prettier</code> 报错 <code>Delete '␍'</code> (prettier/prettier)？</h3>
+<p>A: 这是换行符冲突。统一团队的 <code>.gitattributes</code> 来解决：<code>* text=auto eol=lf</code>。不再建议在 <code>prettier/prettier</code> 规则中加 <code>endOfLine: 'auto'</code> 覆盖，因为这样会隐藏项目本身的换行符配置问题，而 <code>.gitattributes</code> 是更根本的解决方案。</p>
+<h3 id="q-配置了项目-vscodesettingsjson但保存时-prettier-不生效">Q: 配置了项目 <code>.vscode/settings.json</code>，但保存时 Prettier 不生效？</h3>
+<p>A: 最常见原因：<strong>VS Code 用户设置（User Settings）的优先级高于工作区设置（Workspace Settings）</strong>。如果你之前在用户设置中强制指定了其他格式化器，会覆盖项目配置。</p>
+<p>检查路径：</p>
+<ul>
+<li>macOS：<code>~/Library/Application Support/Code/User/settings.json</code></li>
+<li>Linux：<code>~/.config/Code/User/settings.json</code></li>
+<li>Windows：<code>%APPDATA%\Code\User\settings.json</code></li>
+</ul>
+<p>打开用户设置 JSON，检查是否有以下配置覆盖了项目设置：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // ❌ 全局指定了其他格式化器，会优先生效</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dbaeumer.vscode-eslint"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">4</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // ❌ 全局关闭了保存格式化</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "editor.formatOnSave"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">7</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#6A737D;--shiki-dark:#6A737D">  // ❌ 按语言覆盖了格式化器</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "[javascript]"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dbaeumer.vscode-eslint"</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#005CC5;--shiki-dark:#79B8FF">  "[vue]"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"some-other-formatter"</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p><strong>VS Code 设置优先级（从低到高）</strong>：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>默认设置 &lt; 用户设置 &lt; 工作区设置 &lt; 文件夹设置</span></span></code></pre>
+<p>逻辑上工作区设置（<code>.vscode/settings.json</code>）应该覆盖用户设置，但有两点例外：</p>
+<ol>
+<li><strong><code>editor.defaultFormatter</code> 的行为</strong>：如果用户设置的 <code>[language]</code> 作用域下指定了格式化器，而工作区设置只在顶层指定了 <code>editor.defaultFormatter</code>，前者会胜出。所以项目配置需要<strong>同时在语言作用域下设置</strong>，如上面第 4 节所示。</li>
+<li><strong>显式排除</strong>：用户设置中有 <code>"settingsSync.ignoredSettings": [...]</code> 不会同步某些设置，但本地仍生效。</li>
+</ol>
+<p><strong>排查步骤</strong>：</p>
+<ol>
+<li>打开命令面板（<code>Cmd+Shift+P</code>），输入 <code>&gt;Developer: Inspect Editor Tokens and Scopes</code></li>
+<li>右键点击编辑器状态栏的 Prettier 图标，查看当前文件正在使用哪个格式化器</li>
+<li>或者查看 VS Code 输出面板（<code>Output</code>），选择 "Log (Window)"，搜索 <code>Formatter</code> 相关日志</li>
+</ol>
+<p><strong>推荐做法</strong>：不要在用户设置中设置 <code>editor.defaultFormatter</code>，让每个项目通过 <code>.vscode/settings.json</code> 自行声明。用户设置只放个人偏好（主题、字体、键绑定等）。</p>
+<h3 id="q-不想让-eslint-报-prettier-错误只想让-prettier-独立工作">Q: 不想让 ESLint 报 Prettier 错误，只想让 Prettier 独立工作？</h3>
+<p>A: 那就不要用 <code>eslint-plugin-prettier</code>，只保留 <code>eslint-config-prettier</code>（关掉冲突规则）。Prettier 通过编辑器格式化器独立运行。但这样格式化错误不会显示在 ESLint 的问题面板中。</p>
+<h3 id="q-flat-config-中插件导入报错-module-not-found">Q: Flat Config 中插件导入报错 "Module not found"？</h3>
+<p>A: 确保所有 ESLint 相关依赖都已安装（<code>eslint</code>、<code>eslint-plugin-vue</code>、<code>globals</code>、<code>@eslint/js</code>、<code>eslint-plugin-prettier</code>、<code>eslint-config-prettier</code>）。Flat Config 使用 ESM 的 <code>import</code> 语法，不要用 <code>require()</code>。</p>
+</div><div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8" data-pagefind-ignore><div class="article-copyright-info-container"><ul><li><strong>标题:</strong> Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</li><li><strong>作者:</strong> Jerome Xiong</li><li><strong>创建于:</strong> 2026-06-23 16:00</li><li><strong>链接:</strong> https://jeromexiong.github.io/2026/06/23/Web-前端/Prettier-ESLint-集成配置指南/</li><li><strong>版权声明:</strong>本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。</li></ul></div></div><span class="article-tags article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-tags" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/tags/Prettier/" data-astro-cid-ssdmjifj>Prettier</a></li><li data-astro-cid-ssdmjifj><a href="/tags/ESLint/" data-astro-cid-ssdmjifj>ESLint</a></li><li data-astro-cid-ssdmjifj><a href="/tags/Vue3/" data-astro-cid-ssdmjifj>Vue3</a></li><li data-astro-cid-ssdmjifj><a href="/tags/代码规范/" data-astro-cid-ssdmjifj>代码规范</a></li><li data-astro-cid-ssdmjifj><a href="/tags/前端工程化/" data-astro-cid-ssdmjifj>前端工程化</a></li></ul></span><div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="prev" rel="prev" href="/2026/06/25/Web-前端/VSCode-中配置-PostCSS-Stylelint-Tailwind-CSS-通用环境/" data-astro-cid-ssdmjifj><span class="left arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-left" data-astro-cid-ssdmjifj></i></span><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>VSCode 中配置 PostCSS、Stylelint 和 Tailwind CSS 通用环境</span><span class="post-nav-item" data-astro-cid-ssdmjifj>上一篇</span></span></a></div><div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="next" rel="next" href="/2026/06/19/AI模块/Vercel-eve-文件系统优先的AI-Agent框架/" data-astro-cid-ssdmjifj><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战</span><span class="post-nav-item" data-astro-cid-ssdmjifj>下一篇</span></span><span class="right arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-right" data-astro-cid-ssdmjifj></i></span></a></div></div><div class="comment-container px-2 sm:px-6 md:px-8 pb-8" id="comments" data-pagefind-ignore><div class="comments-container mt-10 w-full"><div id="comment-anchor" class="w-full h-2.5"></div><div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">评论</div><div id="utterances-container"></div></div></div><script>(function(){const repo = "jeromexiong/jeromexiong.github.io";
+
+  (function () {
+    var container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    var script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.async = true;
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('repo', repo);
+    // 硬约束：旧评论按标题建 issue，这里只能是 title。
+    script.setAttribute('issue-term', 'title');
+    script.setAttribute(
+      'theme',
+      document.documentElement.classList.contains('dark') ? 'github-dark' : 'github-light'
+    );
+    container.appendChild(script);
+  })();
+})();</script></div><div class="toc-content-container" data-astro-cid-ssdmjifj><div class="post-toc-wrap" data-astro-cid-ssdmjifj><div class="post-toc" data-astro-cid-ssdmjifj><div class="toc-title" data-astro-cid-ssdmjifj>目录</div><div class="page-title" data-astro-cid-ssdmjifj>Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</div><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="nav-text">依赖安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-prettier-%E9%85%8D%E7%BD%AE--prettierrcyaml"><span class="nav-text">1. Prettier 配置 — .prettierrc.yaml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-eslint-%E9%85%8D%E7%BD%AE--eslintconfigmjsflat-config"><span class="nav-text">2. ESLint 配置 — eslint.config.mjs（Flat Config）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E6%88%90%E5%8E%9F%E7%90%86"><span class="nav-text">集成原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flat-config-%E4%B8%8E%E4%BC%A0%E7%BB%9F-eslintrc-%E7%9A%84%E5%B7%AE%E5%BC%82%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-text">Flat Config 与传统 .eslintrc 的差异注意点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BF%BD%E7%95%A5%E8%A7%84%E5%88%99--prettierignore"><span class="nav-text">3. 忽略规则 — .prettierignore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-vs-code-%E9%85%8D%E7%BD%AE--%E4%BF%9D%E5%AD%98%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-text">4. VS Code 配置 — 保存时自动格式化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-npm-scripts"><span class="nav-text">5. NPM Scripts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-husky--lint-staged%E5%8F%AF%E9%80%89-%E6%8F%90%E4%BA%A4%E5%89%8D%E8%87%AA%E5%8A%A8%E6%A3%80%E6%9F%A5"><span class="nav-text">6. Husky + lint-staged（可选）— 提交前自动检查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%BF%87-hook"><span class="nav-text">跳过 hook</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="nav-text">7. 工作流程总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#q-prettier-%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%9A%84%E7%BB%93%E6%9E%9C%E5%92%8C-eslint-%E7%9A%84-fix-%E7%BB%93%E6%9E%9C%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="nav-text">Q: Prettier 格式化的结果和 ESLint 的 fix 结果不一致？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#q-prettierprettier-%E6%8A%A5%E9%94%99-delete--prettierprettier"><span class="nav-text">Q: prettier/prettier 报错 Delete '␍' (prettier/prettier)？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#q-%E9%85%8D%E7%BD%AE%E4%BA%86%E9%A1%B9%E7%9B%AE-vscodesettingsjson%E4%BD%86%E4%BF%9D%E5%AD%98%E6%97%B6-prettier-%E4%B8%8D%E7%94%9F%E6%95%88"><span class="nav-text">Q: 配置了项目 .vscode/settings.json，但保存时 Prettier 不生效？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#q-%E4%B8%8D%E6%83%B3%E8%AE%A9-eslint-%E6%8A%A5-prettier-%E9%94%99%E8%AF%AF%E5%8F%AA%E6%83%B3%E8%AE%A9-prettier-%E7%8B%AC%E7%AB%8B%E5%B7%A5%E4%BD%9C"><span class="nav-text">Q: 不想让 ESLint 报 Prettier 错误，只想让 Prettier 独立工作？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#q-flat-config-%E4%B8%AD%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%85%A5%E6%8A%A5%E9%94%99-module-not-found"><span class="nav-text">Q: Flat Config 中插件导入报错 &quot;Module not found&quot;？</span></a></li></ol></li></ol></div></div><div class="post-sidebar-container" data-astro-cid-ssdmjifj><div class="sidebar-content sidebar-recommended" data-astro-cid-wv7whodv><div class="sidebar-recommended-title" data-astro-cid-wv7whodv>推荐阅读</div><ul class="sidebar-recommended-list" data-astro-cid-wv7whodv><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/15/工具/FVM-Flutter版本管理工具使用指南/" data-astro-cid-wv7whodv>FVM 使用指南：Flutter 多版本安装与切换</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-wv7whodv>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/04/AI-Agent学习系列/LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析/" data-astro-cid-wv7whodv>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/15/Web-前端/Oxc-配置指南-oxlint-oxfmt/" data-astro-cid-wv7whodv>Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/02/AI模块/Flutter-3-44-开发规范/" data-astro-cid-wv7whodv>Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a></li></ul></div></div></div></div></div></div><div class="main-content-footer"><footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color"><div class="info-container py-3 text-center"><div class="text-center">&copy;<span>2020</span>- 2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a></div><div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left"><span class="lg:block text-sm">由 <a target="_blank" rel="noopener" class="text-base" href="https://astro.build">Astro</a> 驱动</span><span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine</a></span></div><div>博客已运行 <span class="odometer" id="runtime" data-start="2020-01-01"></span></div></div></footer></div></div><!-- 右下角工具条（主题切换/RSS/返回顶部），fixed 定位不占布局。 --><div class="right-side-tools-container hide"><div class="side-tools-container"><!-- 齿轮展开后才显示：主题切换、RSS --><ul class="hidden-tools-list"><li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li><li class="right-bottom-tools rss flex justify-center items-center"><a class="flex justify-center items-center" href="/atom.xml" target="_blank" rel="noopener" aria-label="RSS"><i class="fa-regular fa-rss"></i></a></li></ul><!-- 常驻：齿轮、返回顶部（滚过 400px 才出现，见 scripts/scroll.js） --><ul class="visible-tools-list"><li class="right-bottom-tools toggle-tools-list flex justify-center items-center" role="button" tabindex="0" aria-label="更多工具"><i class="fa-regular fa-cog"></i></li><li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center" role="button" tabindex="0" aria-label="返回顶部"><i class="arrow-up fas fa-arrow-up"></i><span class="percent">0%</span></li></ul></div></div><!-- 站内搜索弹窗：fixed 遮罩，默认隐藏，交互见 scripts/search.js。 --><div id="search-modal" class="search-pop-overlay" role="dialog" aria-modal="true" aria-label="站内搜索" aria-hidden="true" data-site-title="Jerome Xiong"><div class="popup search-popup"><div class="search-header"><span class="search-input-field-pre" role="button" tabindex="0" aria-label="清空搜索"><i class="fa-solid fa-keyboard"></i></span><div class="search-input-container"><input id="search-input" class="search-input" type="search" placeholder="站内搜索您需要的内容..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="搜索关键词"></div><span class="popup-btn-close" role="button" tabindex="0" aria-label="关闭搜索"><i class="fa-solid fa-times"></i></span></div><div id="search-results" aria-live="polite" aria-label="搜索结果"></div></div></div></main><!-- 浏览端脚本：Astro 合并打包成一个模块，DOM 已解析完才执行（type=module 默认 defer）。
+         一律用副作用 import，模块内部自己找挂载点，页面没有对应 DOM 时静默跳过。 --><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CGH9Cwlc.js"></script></body></html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析 | Jerome Xiong</title><meta name="description" content="解读清华与上海AI实验室论文《Towards a Unified View of LLM Post-Training》：UPGE 统一理论如何证明 SFT 与 RL 是同一枚硬币的两面，HPT 算法又如何像智能家教一样动态平衡模仿与探索。"><meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术"><meta name="author" content="Jerome Xiong"><link rel="canonical" href="https://jeromexiong.github.io/2026/08/04/AI-Agent%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/LLM-%E5%90%8E%E8%AE%AD%E7%BB%83%E7%9A%84%E7%BB%9F%E4%B8%80%E8%A7%86%E8%A7%92-SFT%E4%B8%8ERL%E7%9A%84%E7%BB%88%E6%9E%81%E5%92%8C%E8%A7%A3%E4%B8%8EHPT%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90/"><!-- feed 自动发现：旧站在 head 里两条都挂了，浏览器/阅读器据此显示订阅按钮。 --><link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml"><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss2.xml"><meta property="og:title" content="LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析 | Jerome Xiong"><meta property="og:description" content="解读清华与上海AI实验室论文《Towards a Unified View of LLM Post-Training》：UPGE 统一理论如何证明 SFT 与 RL 是同一枚硬币的两面，HPT 算法又如何像智能家教一样动态平衡模仿与探索。"><meta property="og:type" content="article"><meta property="og:url" content="https://jeromexiong.github.io/2026/08/04/AI-Agent%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/LLM-%E5%90%8E%E8%AE%AD%E7%BB%83%E7%9A%84%E7%BB%9F%E4%B8%80%E8%A7%86%E8%A7%92-SFT%E4%B8%8ERL%E7%9A%84%E7%BB%88%E6%9E%81%E5%92%8C%E8%A7%A3%E4%B8%8EHPT%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90/"><meta property="og:image" content="https://jeromexiong.github.io/images/covers/AI-Agent%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97-LLM-%E5%90%8E%E8%AE%AD%E7%BB%83%E7%9A%84%E7%BB%9F%E4%B8%80%E8%A7%86%E8%A7%92-SFT%E4%B8%8ERL%E7%9A%84%E7%BB%88%E6%9E%81%E5%92%8C%E8%A7%A3%E4%B8%8EHPT%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.png"><meta property="og:site_name" content="Jerome Xiong"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="/images/avatar-192.png" sizes="192x192"><link rel="apple-touch-icon" sizes="180x180" href="/images/avatar-192.png"><meta name="theme-color" content="#7C3AED"><!-- 主题初始化必须在首次绘制前跑完，避免亮色闪一下再变暗。
+         localStorage 键与旧主题一致，老访客的暗色偏好不丢。
+         主题 CSS 分两档：`dark` / `light` 加在 <html>（Tailwind 的 dark: 变体），
+         `dark-mode` / `light-mode` 加在 <body>（code-theme.styl 的代码块配色按 body 选档）。
+         两者必须同时同步、并各自移除反向类，否则切换后暗色代码块会掉回亮色配色。 --><script>
+      (function () {
+        const KEY = 'REDEFINE-THEME-STATUS';
+        let theme = null;
+        try {
+          const saved = localStorage.getItem(KEY);
+          if (saved) theme = JSON.parse(saved).isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* 坏数据按未保存处理 */
+        }
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        const root = document.documentElement;
+        const apply = function (t) {
+          const other = t === 'dark' ? 'light' : 'dark';
+          /* <html> 只带裸档位（Tailwind dark: 变体），反向档位一并摘掉避免残留。 */
+          root.classList.remove(other);
+          root.classList.add(t);
+          /* 代码块配色认 <body> 上的 <theme>-mode，切换时两档互斥。 */
+          if (document.body) {
+            document.body.classList.remove(t + '-mode', other + '-mode');
+            document.body.classList.add(t + '-mode');
+          }
+          root.style.colorScheme = t;
+        };
+        apply(theme);
+        // 本脚本在 <head> 里执行时 document.body 还不存在，DOM 就绪后补一次。
+        document.addEventListener('DOMContentLoaded', function () {
+          apply(theme);
+        });
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BYNm7Ctz.css"><style>.post-sidebar-container[data-astro-cid-ssdmjifj]{margin-top:24px}.article-wordcount[data-astro-cid-ssdmjifj],.article-min2read[data-astro-cid-ssdmjifj]{white-space:nowrap}
+.sidebar-recommended[data-astro-cid-wv7whodv]{padding:20px;border-radius:18px;box-sizing:border-box;background:var(--background-color);box-shadow:var(--redefine-box-shadow);white-space:normal}.sidebar-recommended[data-astro-cid-wv7whodv]:hover{box-shadow:var(--redefine-box-shadow-hover)}.sidebar-content[data-astro-cid-wv7whodv]+.sidebar-content[data-astro-cid-wv7whodv]{margin-top:22.8px}.sidebar-recommended-title[data-astro-cid-wv7whodv]{font-size:1rem;font-weight:600;color:var(--second-text-color);margin-bottom:12px}.sidebar-recommended-list[data-astro-cid-wv7whodv]{list-style:none;margin:0;padding:0}.sidebar-recommended-item[data-astro-cid-wv7whodv]{margin:0 0 10px}.sidebar-recommended-item[data-astro-cid-wv7whodv]:last-child{margin-bottom:0}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;font-size:.85rem;line-height:1.5;color:var(--third-text-color);text-decoration:none;transition:color .2s}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]:hover{color:var(--primary-color)}
+</style></head><body><!-- 主题的阅读进度条：body 第一个子元素，固定在最顶端。数值由后续任务的 runtime.js 更新。 --><div class="progress-bar-container"><span class="scroll-progress-bar"></span></div><main class="page-container" id="swup"><div class="main-content-container flex flex-col justify-between min-h-dvh"><div class="main-content-header"><header class="navbar-container px-6 md:px-12"><div class="navbar-content transition-navbar"><div class="left"><a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/"><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" class="w-full h-full rounded-xs"></a><a class="logo-title" href="/"><h1>Jerome Xiong</h1></a></div><div class="right"><!-- PC --><div class="desktop"><ul class="navbar-list"><li class="navbar-item"><a href="/"><i class="fa-regular fa-house fa-fw"></i>首页</a></li><li class="navbar-item"><a href="https://github.com/jeromexiong" target="_blank" rel="noopener"><i class="fa-brands fa-github fa-fw"></i>GitHub</a></li><li class="navbar-item"><a href="/archives/"><i class="fa-regular fa-clock fa-fw"></i>归档</a></li><li class="navbar-item"><a href="/categories/"><i class="fa-regular fa-folder fa-fw"></i>分类</a></li><li class="navbar-item"><a href="/tags/"><i class="fa-regular fa-tag fa-fw"></i>标签</a></li><li class="navbar-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></li><li class="navbar-item theme-toggle"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li></ul></div><!-- Mobile --><div class="mobile"><button class="icon-item theme-toggle" type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button><div class="icon-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></div><div class="icon-item navbar-bar" role="button" tabindex="0" aria-label="菜单"><div class="navbar-bar-middle"></div></div></div></div></div><!-- 移动端抽屉；展开状态由后续任务的 JS 加 navbar-drawer-show --><div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between"><ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start"><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/"><span>首页</span><i class="fa-regular fa-house fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="https://github.com/jeromexiong" target="_blank" rel="noopener"><span>GitHub</span><i class="fa-brands fa-github fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/archives/"><span>归档</span><i class="fa-regular fa-clock fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/categories/"><span>分类</span><i class="fa-regular fa-folder fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/tags/"><span>标签</span><i class="fa-regular fa-tag fa-fw"></i></a></li></ul></div></header></div><div class="main-content-body transition-fade-up"><div class="main-content has-toc"><div class="post-page-container show-toc flex relative justify-between box-border w-full h-full" data-astro-cid-ssdmjifj><div class="article-content-container" data-pagefind-body data-astro-cid-ssdmjifj><div class="article-title relative w-full" data-astro-cid-ssdmjifj><picture style="display: contents" data-astro-cid-ssdmjifj><source srcset="/images/covers/AI-Agent学习系列-LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析.webp" type="image/webp" data-astro-cid-ssdmjifj><img src="/images/covers/AI-Agent学习系列-LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析.png" alt="LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析" width="800" height="420" loading="eager" fetchpriority="high" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" data-astro-cid-ssdmjifj></picture><div class="w-full flex items-center absolute bottom-0 justify-start" data-astro-cid-ssdmjifj><h1 data-pagefind-meta="title" class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color" data-astro-cid-ssdmjifj>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</h1></div></div><div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px" data-astro-cid-ssdmjifj><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" data-astro-cid-ssdmjifj></div><div class="info flex flex-col justify-between" data-astro-cid-ssdmjifj><div class="author flex items-center" data-astro-cid-ssdmjifj><span class="name text-default-text-color text-lg font-semibold" data-astro-cid-ssdmjifj>Jerome Xiong</span></div><div class="meta-info" data-astro-cid-ssdmjifj><div class="article-meta-info" data-astro-cid-ssdmjifj><span class="article-date article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-pen-fancy" data-astro-cid-ssdmjifj></i>&nbsp;<span class="desktop" data-astro-cid-ssdmjifj>2026-08-04 09:00</span><span class="mobile" data-astro-cid-ssdmjifj>2026-08-04 09:00</span><span class="hover-info" data-astro-cid-ssdmjifj>创建</span></span><span class="article-categories article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-folders" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/categories/AI-Agent学习系列/" data-astro-cid-ssdmjifj>AI-Agent学习系列</a></li><li data-astro-cid-ssdmjifj>&gt;</li><li data-astro-cid-ssdmjifj><a href="/categories/AI-Agent学习系列/LLM-基础/" data-astro-cid-ssdmjifj>LLM 基础</a></li></ul></span><span class="article-wordcount article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-typewriter" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>2.0k 字</span></span><span class="article-min2read article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-clock" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>7 分钟</span></span></div></div></div></div><div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8" data-astro-cid-ssdmjifj><blockquote>
+<p>这是 AI Agent 学习系列的第一篇。想要构建真正可靠的 Agent，必须先理解底层模型是如何被"训练"出来的。本文解读清华与上海AI实验室的论文《Towards a Unified View of Large Language Model Post-Training》：一个统一理论（UPGE）把 SFT 与 RL 缝合成同一枚硬币的两面，一个实践算法（HPT）像智能家教一样动态切换"模仿教学"与"探索教学"，在数学推理基准上全面超越现有方案。</p>
+</blockquote>
+<h2 id="为什么-agent-开发者要懂后训练">为什么 Agent 开发者要懂后训练</h2>
+<p>大语言模型（LLM）的成长分为两个阶段：<strong>预训练（Pre-Training）</strong> 让模型拥有广博的知识，<strong>后训练（Post-Training）</strong> 让模型从"通才"走向"专才"。</p>
+<blockquote>
+<p>🎯 <strong>定位</strong>：预训练好的 LLM 像一个知识渊博但行为散漫的大学生，后训练的目标就是把他培养成特定领域的专业人士。</p>
+</blockquote>
+<p>对 Agent 开发者来说，后训练决定了模型能否可靠地遵循指令、调用工具、按格式输出——这些恰恰是 Agent 赖以工作的基础能力。</p>
+<p>长期以来，后训练领域被两大范式主导：</p>
+<table>
+<thead>
+<tr>
+<th>范式</th>
+<th>教学方式</th>
+<th>核心思想</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>监督微调（SFT）</td>
+<td>模仿型教学</td>
+<td>给模型看标准答案，让它照着学</td>
+</tr>
+<tr>
+<td>强化学习（RL）</td>
+<td>探索型教学</td>
+<td>让模型自己试错，用奖励信号引导</td>
+</tr>
+</tbody>
+</table>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-2.webp"><img src="/images/2026/hpt-post-training-2.png" alt="SFT 与 RL 两条培养路径" width="1024" height="1024" loading="eager" decoding="async"></picture></p>
+<p>业界最常见的做法是 "SFT-then-RL" 序贯流程：先用 SFT 打好基础，再用 RL 提升能力。但这更像工程妥协——资源消耗巨大、流程繁琐，而且缺乏根本性理论指导我们如何在两种学习信号间取得最佳平衡。</p>
+<h2 id="论文核心贡献">论文核心贡献</h2>
+<p>这篇来自清华大学与上海AI实验室的论文《Towards a Unified View of Large Language Model Post-Training》提出了一个根本性问题：</p>
+<blockquote>
+<p>🤔 <strong>核心之问</strong>：SFT 和 RL 真的是两种相互独立、甚至矛盾的训练范式吗？还是说，它们本质上是同一枚硬币的两面？</p>
+</blockquote>
+<p>论文的答案分两层：</p>
+<ol>
+<li><strong>理论贡献</strong>：统一策略梯度估计器（Unified Policy Gradient Estimator, UPGE）</li>
+<li><strong>实践贡献</strong>：混合后训练算法（Hybrid Post-Training, HPT）</li>
+</ol>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-1.webp"><img src="/images/2026/hpt-post-training-1.png" alt="论文整体框架" width="1080" height="346" loading="lazy" decoding="async"></picture></p>
+<h2 id="upge后训练领域的罗塞塔石碑">UPGE：后训练领域的"罗塞塔石碑"</h2>
+<p>UPGE 是论文的理论基石。作者通过严谨的数学推导证明：<strong>SFT、PPO、GRPO 等多种看似迥异的后训练算法，其底层的梯度计算形式，都可以被统一到同一个数学表达式中</strong>。</p>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-3.webp"><img src="/images/2026/hpt-post-training-3.png" alt="UPGE 统一公式" width="1080" height="509" loading="lazy" decoding="async"></picture></p>
+<p>在这个统一视角下，SFT 和 RL 不再是两种不同的目标，而是对<strong>同一个优化目标</strong>、具有不同 <strong>偏见-方差权衡（bias-variance trade-offs）</strong> 的两种不同估计：</p>
+<ul>
+<li>SFT：低方差、高偏见的稳定信号（求稳）</li>
+<li>RL：高方差、低偏见的探索信号（求新）</li>
+</ul>
+<blockquote>
+<p>💡 <strong>理解</strong>：SFT 与 RL 的关系，不再是"先模仿还是先探索"，而是"在当前阶段，我们更需要哪种信号"。UPGE 就像后训练领域的"罗塞塔石碑"，提供了一种通用语言来理解和比较不同算法的内在联系。</p>
+</blockquote>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-4.webp"><img src="/images/2026/hpt-post-training-4.png" alt="UPGE 模块化框架" width="1080" height="532" loading="lazy" decoding="async"></picture></p>
+<p>UPGE 的最终形式可以被看作一个由四个可替换模块组成的"乐高"模型——不同的后训练算法，本质上只是为这几个模块选择了不同的"零件"而已。</p>
+<h2 id="hpt一位智能家教的教学四步法">HPT：一位智能家教的"教学四步法"</h2>
+<p>如果说 UPGE 是理论指导，那么 HPT 就是把理论付诸实践的"智能教学系统"。</p>
+<p>HPT 的核心思想极其优雅：<strong>它像一位经验丰富的老师，根据学生在每个问题上的实时表现，动态地决定采用"模仿教学"还是"探索教学"</strong>，从而在一个统一训练流程中自适应地平衡知识的利用（Exploitation）和策略的探索（Exploration）。</p>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-5.webp"><img src="/images/2026/hpt-post-training-5.png" alt="HPT 智能教学系统" width="1080" height="331" loading="lazy" decoding="async"></picture></p>
+<p>对于数据集中的每一个问题，HPT 都会执行以下四步：</p>
+<h3 id="步骤一随堂小测performance-evaluation">步骤一：随堂小测（Performance Evaluation）</h3>
+<p>老师不会直接讲题，而是先评估学生当前的水平——用模型在本题上的表现（能力分）作为动态决策的依据。</p>
+<h3 id="步骤二动态决策dynamic-feedback-and-mode-switching">步骤二：动态决策（Dynamic Feedback and Mode Switching）</h3>
+<p>老师根据刚刚得到的能力分，决定下一步的教学策略：学生基础差就用 SFT 模仿教学，学生有潜力就切换 RL 探索教学。</p>
+<h3 id="步骤三计算后悔分数calculating-the-mixed-loss">步骤三：计算"后悔分数"（Calculating the Mixed Loss）</h3>
+<p>根据所选教学模式，计算一个"后悔分数"（损失函数），衡量模型当前状态与理想状态的差距。最终总后悔分数是两者的加权和；由于开关互斥，任何时刻只有一个损失项在起作用。</p>
+<h3 id="步骤四纠正思路model-update">步骤四：纠正思路（Model Update）</h3>
+<p>最后一步也是最关键的一步——利用"后悔分数"对模型参数进行微小而有益的调整。</p>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-6.webp"><img src="/images/2026/hpt-post-training-6.png" alt="HPT 完整算法流程" width="640" height="2446" loading="lazy" decoding="async"></picture></p>
+<blockquote>
+<p>📝 <strong>类比</strong>：整个训练循环就像一位家教辅导学生——先测试摸底，再决定讲题还是放手让学生试错，最后针对问题修正思路。HPT 在统一训练循环中对每个问题不断重复这"教学四步法"，实现了 SFT 知识利用与 RL 策略探索的精妙平衡。</p>
+</blockquote>
+<h2 id="实验结果hpt-真的有效吗">实验结果：HPT 真的有效吗</h2>
+<p>论文在多个极具挑战性的数学推理基准上对 HPT 进行了全面评估，使用 Qwen2.5-Math-7B 等模型。</p>
+<h3 id="1-全面超越基线">1. 全面超越基线</h3>
+<p>在 6 个数学基准上的平均分达到 <strong>52.7</strong>，显著超过所有对比方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>平均分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HPT（本文）</strong></td>
+<td><strong>52.7</strong></td>
+</tr>
+<tr>
+<td>LUFFY（混合策略）</td>
+<td>49.8</td>
+</tr>
+<tr>
+<td>SFT → GRPO（传统序贯）</td>
+<td>46.5</td>
+</tr>
+</tbody>
+</table>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-7.webp"><img src="/images/2026/hpt-post-training-7.png" alt="实验结果对比" width="1080" height="417" loading="lazy" decoding="async"></picture></p>
+<p>这一优势在不同模型上得到重现，验证了其普适性。</p>
+<h3 id="2-不仅提升准确率更增强探索能力">2. 不仅提升准确率，更增强探索能力</h3>
+<p>Pass@k 指标衡量模型在 k 次尝试中至少有一次成功的概率，能反映模型的探索能力和解题思路多样性。HPT 不仅在 Pass@1（单次尝试成功率）上领先，在 k 值增大时性能优势愈发明显。</p>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-8.webp"><img src="/images/2026/hpt-post-training-8.png" alt="Pass@k 探索能力分析" width="1080" height="429" loading="lazy" decoding="async"></picture></p>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-9.webp"><img src="/images/2026/hpt-post-training-9.png" alt="探索能力对比细节" width="1080" height="379" loading="lazy" decoding="async"></picture></p>
+<blockquote>
+<p>💡 <strong>洞察</strong>：这表明 HPT 的动态机制并非简单地在模仿和探索之间取折中，而是通过 SFT 引入的外部知识极大拓宽了 RL 阶段的探索边界，实现了 1+1&gt;2 的协同效应。</p>
+</blockquote>
+<h3 id="3-动态机制的可视化验证">3. 动态机制的可视化验证</h3>
+<p>训练初期模型能力较弱，SFT 比例非常高；随着训练推进，模型逐渐掌握解题能力，SFT 贡献相应减少，RL 贡献逐渐增加，最终稳定在一个动态平衡状态——有力证明了"智能教学"机制确实在按预期工作。</p>
+<p><picture style="display: contents"><source type="image/webp" srcset="/images/2026/hpt-post-training-10.webp"><img src="/images/2026/hpt-post-training-10.png" alt="HPT 动态调整过程" width="764" height="528" loading="lazy" decoding="async"></picture></p>
+<h2 id="总结与展望">总结与展望</h2>
+<p>HPT 的成功揭示了 LLM 后训练更智能、更高效的方向。这篇论文通过统一的理论框架和优雅的实践算法，解决了困扰业界已久的 SFT 与 RL 的"割裂感"问题。</p>
+<blockquote>
+<p>🎯 <strong>意义</strong>：HPT 所代表的自适应、细粒度的训练范式，为通往更强大、更可靠的通用人工智能模型铺设了一条坚实而富有前景的道路。</p>
+</blockquote>
+<p><strong>未来值得探索的方向</strong>：更细粒度的动态切换策略、与其他训练技术的结合、以及在更多任务类型（推理、工具调用、多模态）上的泛化能力。</p>
+<hr>
+<p>📚 <strong>系列预告</strong>：本篇是 AI Agent 学习系列的开篇，从模型训练基础讲起。后续将逐步深入 Agent 的架构设计、工具调用、规划推理、记忆系统等主题。</p>
+<p><strong>参考</strong>：<a href="https://cloud.tencent.com/developer/article/2698383">SFT与RL的"终极和解"：清华大学提出LLM Post-Training(后训练) 统一理论与HPT算法</a>（腾讯云开发者社区，唐国梁Tommy）</p>
+</div><div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8" data-pagefind-ignore><div class="article-copyright-info-container"><ul><li><strong>标题:</strong> LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</li><li><strong>作者:</strong> Jerome Xiong</li><li><strong>创建于:</strong> 2026-08-04 09:00</li><li><strong>链接:</strong> https://jeromexiong.github.io/2026/08/04/AI-Agent学习系列/LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析/</li><li><strong>版权声明:</strong>本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。</li></ul></div></div><span class="article-tags article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-tags" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/tags/AI-Agent/" data-astro-cid-ssdmjifj>AI Agent</a></li><li data-astro-cid-ssdmjifj><a href="/tags/LLM/" data-astro-cid-ssdmjifj>LLM</a></li><li data-astro-cid-ssdmjifj><a href="/tags/Post-Training/" data-astro-cid-ssdmjifj>Post-Training</a></li><li data-astro-cid-ssdmjifj><a href="/tags/SFT/" data-astro-cid-ssdmjifj>SFT</a></li><li data-astro-cid-ssdmjifj><a href="/tags/RL/" data-astro-cid-ssdmjifj>RL</a></li><li data-astro-cid-ssdmjifj><a href="/tags/HPT/" data-astro-cid-ssdmjifj>HPT</a></li><li data-astro-cid-ssdmjifj><a href="/tags/UPGE/" data-astro-cid-ssdmjifj>UPGE</a></li><li data-astro-cid-ssdmjifj><a href="/tags/清华大学/" data-astro-cid-ssdmjifj>清华大学</a></li></ul></span><div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="prev" rel="prev" href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-ssdmjifj><span class="left arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-left" data-astro-cid-ssdmjifj></i></span><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</span><span class="post-nav-item" data-astro-cid-ssdmjifj>上一篇</span></span></a></div><div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="next" rel="next" href="/2026/07/15/Web-前端/Oxc-配置指南-oxlint-oxfmt/" data-astro-cid-ssdmjifj><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</span><span class="post-nav-item" data-astro-cid-ssdmjifj>下一篇</span></span><span class="right arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-right" data-astro-cid-ssdmjifj></i></span></a></div></div><div class="comment-container px-2 sm:px-6 md:px-8 pb-8" id="comments" data-pagefind-ignore><div class="comments-container mt-10 w-full"><div id="comment-anchor" class="w-full h-2.5"></div><div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">评论</div><div id="utterances-container"></div></div></div><script>(function(){const repo = "jeromexiong/jeromexiong.github.io";
+
+  (function () {
+    var container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    var script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.async = true;
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('repo', repo);
+    // 硬约束：旧评论按标题建 issue，这里只能是 title。
+    script.setAttribute('issue-term', 'title');
+    script.setAttribute(
+      'theme',
+      document.documentElement.classList.contains('dark') ? 'github-dark' : 'github-light'
+    );
+    container.appendChild(script);
+  })();
+})();</script></div><div class="toc-content-container" data-astro-cid-ssdmjifj><div class="post-toc-wrap" data-astro-cid-ssdmjifj><div class="post-toc" data-astro-cid-ssdmjifj><div class="toc-title" data-astro-cid-ssdmjifj>目录</div><div class="page-title" data-astro-cid-ssdmjifj>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</div><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-agent-%E5%BC%80%E5%8F%91%E8%80%85%E8%A6%81%E6%87%82%E5%90%8E%E8%AE%AD%E7%BB%83"><span class="nav-text">为什么 Agent 开发者要懂后训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E6%A0%B8%E5%BF%83%E8%B4%A1%E7%8C%AE"><span class="nav-text">论文核心贡献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#upge%E5%90%8E%E8%AE%AD%E7%BB%83%E9%A2%86%E5%9F%9F%E7%9A%84%E7%BD%97%E5%A1%9E%E5%A1%94%E7%9F%B3%E7%A2%91"><span class="nav-text">UPGE：后训练领域的&quot;罗塞塔石碑&quot;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hpt%E4%B8%80%E4%BD%8D%E6%99%BA%E8%83%BD%E5%AE%B6%E6%95%99%E7%9A%84%E6%95%99%E5%AD%A6%E5%9B%9B%E6%AD%A5%E6%B3%95"><span class="nav-text">HPT：一位智能家教的&quot;教学四步法&quot;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%80%E9%9A%8F%E5%A0%82%E5%B0%8F%E6%B5%8Bperformance-evaluation"><span class="nav-text">步骤一：随堂小测（Performance Evaluation）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4%E4%BA%8C%E5%8A%A8%E6%80%81%E5%86%B3%E7%AD%96dynamic-feedback-and-mode-switching"><span class="nav-text">步骤二：动态决策（Dynamic Feedback and Mode Switching）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%89%E8%AE%A1%E7%AE%97%E5%90%8E%E6%82%94%E5%88%86%E6%95%B0calculating-the-mixed-loss"><span class="nav-text">步骤三：计算&quot;后悔分数&quot;（Calculating the Mixed Loss）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4%E5%9B%9B%E7%BA%A0%E6%AD%A3%E6%80%9D%E8%B7%AFmodel-update"><span class="nav-text">步骤四：纠正思路（Model Update）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9Chpt-%E7%9C%9F%E7%9A%84%E6%9C%89%E6%95%88%E5%90%97"><span class="nav-text">实验结果：HPT 真的有效吗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%85%A8%E9%9D%A2%E8%B6%85%E8%B6%8A%E5%9F%BA%E7%BA%BF"><span class="nav-text">1. 全面超越基线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%8D%E4%BB%85%E6%8F%90%E5%8D%87%E5%87%86%E7%A1%AE%E7%8E%87%E6%9B%B4%E5%A2%9E%E5%BC%BA%E6%8E%A2%E7%B4%A2%E8%83%BD%E5%8A%9B"><span class="nav-text">2. 不仅提升准确率，更增强探索能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%8A%A8%E6%80%81%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E9%AA%8C%E8%AF%81"><span class="nav-text">3. 动态机制的可视化验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="nav-text">总结与展望</span></a></li></ol></div></div><div class="post-sidebar-container" data-astro-cid-ssdmjifj><div class="sidebar-content sidebar-recommended" data-astro-cid-wv7whodv><div class="sidebar-recommended-title" data-astro-cid-wv7whodv>推荐阅读</div><ul class="sidebar-recommended-list" data-astro-cid-wv7whodv><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/15/工具/FVM-Flutter版本管理工具使用指南/" data-astro-cid-wv7whodv>FVM 使用指南：Flutter 多版本安装与切换</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-wv7whodv>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/15/Web-前端/Oxc-配置指南-oxlint-oxfmt/" data-astro-cid-wv7whodv>Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/02/AI模块/Flutter-3-44-开发规范/" data-astro-cid-wv7whodv>Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/01/AI模块/浏览器自动化测试方案对比-Midscene-vs-Playwright/" data-astro-cid-wv7whodv>浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a></li></ul></div></div></div></div></div></div><div class="main-content-footer"><footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color"><div class="info-container py-3 text-center"><div class="text-center">&copy;<span>2020</span>- 2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a></div><div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left"><span class="lg:block text-sm">由 <a target="_blank" rel="noopener" class="text-base" href="https://astro.build">Astro</a> 驱动</span><span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine</a></span></div><div>博客已运行 <span class="odometer" id="runtime" data-start="2020-01-01"></span></div></div></footer></div></div><!-- 右下角工具条（主题切换/RSS/返回顶部），fixed 定位不占布局。 --><div class="right-side-tools-container hide"><div class="side-tools-container"><!-- 齿轮展开后才显示：主题切换、RSS --><ul class="hidden-tools-list"><li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li><li class="right-bottom-tools rss flex justify-center items-center"><a class="flex justify-center items-center" href="/atom.xml" target="_blank" rel="noopener" aria-label="RSS"><i class="fa-regular fa-rss"></i></a></li></ul><!-- 常驻：齿轮、返回顶部（滚过 400px 才出现，见 scripts/scroll.js） --><ul class="visible-tools-list"><li class="right-bottom-tools toggle-tools-list flex justify-center items-center" role="button" tabindex="0" aria-label="更多工具"><i class="fa-regular fa-cog"></i></li><li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center" role="button" tabindex="0" aria-label="返回顶部"><i class="arrow-up fas fa-arrow-up"></i><span class="percent">0%</span></li></ul></div></div><!-- 站内搜索弹窗：fixed 遮罩，默认隐藏，交互见 scripts/search.js。 --><div id="search-modal" class="search-pop-overlay" role="dialog" aria-modal="true" aria-label="站内搜索" aria-hidden="true" data-site-title="Jerome Xiong"><div class="popup search-popup"><div class="search-header"><span class="search-input-field-pre" role="button" tabindex="0" aria-label="清空搜索"><i class="fa-solid fa-keyboard"></i></span><div class="search-input-container"><input id="search-input" class="search-input" type="search" placeholder="站内搜索您需要的内容..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="搜索关键词"></div><span class="popup-btn-close" role="button" tabindex="0" aria-label="关闭搜索"><i class="fa-solid fa-times"></i></span></div><div id="search-results" aria-live="polite" aria-label="搜索结果"></div></div></div></main><!-- 浏览端脚本：Astro 合并打包成一个模块，DOM 已解析完才执行（type=module 默认 defer）。
+         一律用副作用 import，模块内部自己找挂载点，页面没有对应 DOM 时静默跳过。 --><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CGH9Cwlc.js"></script></body></html>

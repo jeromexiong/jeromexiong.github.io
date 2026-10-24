@@ -1,0 +1,448 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Linux常用命令大全 | Jerome Xiong</title><meta name="description" content="Linux系统常用命令大全，涵盖系统信息、文件管理、网络配置、磁盘空间、打包压缩、权限管理等实用命令。"><meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术"><meta name="author" content="Jerome Xiong"><link rel="canonical" href="https://jeromexiong.github.io/2019/09/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/"><!-- feed 自动发现：旧站在 head 里两条都挂了，浏览器/阅读器据此显示订阅按钮。 --><link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml"><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss2.xml"><meta property="og:title" content="Linux常用命令大全 | Jerome Xiong"><meta property="og:description" content="Linux系统常用命令大全，涵盖系统信息、文件管理、网络配置、磁盘空间、打包压缩、权限管理等实用命令。"><meta property="og:type" content="article"><meta property="og:url" content="https://jeromexiong.github.io/2019/09/01/Linux-DevOps/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/"><meta property="og:image" content="https://jeromexiong.github.io/images/covers/Linux-DevOps-Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8.png"><meta property="og:site_name" content="Jerome Xiong"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="/images/avatar-192.png" sizes="192x192"><link rel="apple-touch-icon" sizes="180x180" href="/images/avatar-192.png"><meta name="theme-color" content="#7C3AED"><!-- 主题初始化必须在首次绘制前跑完，避免亮色闪一下再变暗。
+         localStorage 键与旧主题一致，老访客的暗色偏好不丢。
+         主题 CSS 分两档：`dark` / `light` 加在 <html>（Tailwind 的 dark: 变体），
+         `dark-mode` / `light-mode` 加在 <body>（code-theme.styl 的代码块配色按 body 选档）。
+         两者必须同时同步、并各自移除反向类，否则切换后暗色代码块会掉回亮色配色。 --><script>
+      (function () {
+        const KEY = 'REDEFINE-THEME-STATUS';
+        let theme = null;
+        try {
+          const saved = localStorage.getItem(KEY);
+          if (saved) theme = JSON.parse(saved).isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* 坏数据按未保存处理 */
+        }
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        const root = document.documentElement;
+        const apply = function (t) {
+          const other = t === 'dark' ? 'light' : 'dark';
+          /* <html> 只带裸档位（Tailwind dark: 变体），反向档位一并摘掉避免残留。 */
+          root.classList.remove(other);
+          root.classList.add(t);
+          /* 代码块配色认 <body> 上的 <theme>-mode，切换时两档互斥。 */
+          if (document.body) {
+            document.body.classList.remove(t + '-mode', other + '-mode');
+            document.body.classList.add(t + '-mode');
+          }
+          root.style.colorScheme = t;
+        };
+        apply(theme);
+        // 本脚本在 <head> 里执行时 document.body 还不存在，DOM 就绪后补一次。
+        document.addEventListener('DOMContentLoaded', function () {
+          apply(theme);
+        });
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BYNm7Ctz.css"><style>.post-sidebar-container[data-astro-cid-ssdmjifj]{margin-top:24px}.article-wordcount[data-astro-cid-ssdmjifj],.article-min2read[data-astro-cid-ssdmjifj]{white-space:nowrap}
+.sidebar-recommended[data-astro-cid-wv7whodv]{padding:20px;border-radius:18px;box-sizing:border-box;background:var(--background-color);box-shadow:var(--redefine-box-shadow);white-space:normal}.sidebar-recommended[data-astro-cid-wv7whodv]:hover{box-shadow:var(--redefine-box-shadow-hover)}.sidebar-content[data-astro-cid-wv7whodv]+.sidebar-content[data-astro-cid-wv7whodv]{margin-top:22.8px}.sidebar-recommended-title[data-astro-cid-wv7whodv]{font-size:1rem;font-weight:600;color:var(--second-text-color);margin-bottom:12px}.sidebar-recommended-list[data-astro-cid-wv7whodv]{list-style:none;margin:0;padding:0}.sidebar-recommended-item[data-astro-cid-wv7whodv]{margin:0 0 10px}.sidebar-recommended-item[data-astro-cid-wv7whodv]:last-child{margin-bottom:0}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;font-size:.85rem;line-height:1.5;color:var(--third-text-color);text-decoration:none;transition:color .2s}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]:hover{color:var(--primary-color)}
+</style></head><body><!-- 主题的阅读进度条：body 第一个子元素，固定在最顶端。数值由后续任务的 runtime.js 更新。 --><div class="progress-bar-container"><span class="scroll-progress-bar"></span></div><main class="page-container" id="swup"><div class="main-content-container flex flex-col justify-between min-h-dvh"><div class="main-content-header"><header class="navbar-container px-6 md:px-12"><div class="navbar-content transition-navbar"><div class="left"><a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/"><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" class="w-full h-full rounded-xs"></a><a class="logo-title" href="/"><h1>Jerome Xiong</h1></a></div><div class="right"><!-- PC --><div class="desktop"><ul class="navbar-list"><li class="navbar-item"><a href="/"><i class="fa-regular fa-house fa-fw"></i>首页</a></li><li class="navbar-item"><a href="https://github.com/jeromexiong" target="_blank" rel="noopener"><i class="fa-brands fa-github fa-fw"></i>GitHub</a></li><li class="navbar-item"><a href="/archives/"><i class="fa-regular fa-clock fa-fw"></i>归档</a></li><li class="navbar-item"><a href="/categories/"><i class="fa-regular fa-folder fa-fw"></i>分类</a></li><li class="navbar-item"><a href="/tags/"><i class="fa-regular fa-tag fa-fw"></i>标签</a></li><li class="navbar-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></li><li class="navbar-item theme-toggle"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li></ul></div><!-- Mobile --><div class="mobile"><button class="icon-item theme-toggle" type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button><div class="icon-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></div><div class="icon-item navbar-bar" role="button" tabindex="0" aria-label="菜单"><div class="navbar-bar-middle"></div></div></div></div></div><!-- 移动端抽屉；展开状态由后续任务的 JS 加 navbar-drawer-show --><div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between"><ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start"><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/"><span>首页</span><i class="fa-regular fa-house fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="https://github.com/jeromexiong" target="_blank" rel="noopener"><span>GitHub</span><i class="fa-brands fa-github fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/archives/"><span>归档</span><i class="fa-regular fa-clock fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/categories/"><span>分类</span><i class="fa-regular fa-folder fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/tags/"><span>标签</span><i class="fa-regular fa-tag fa-fw"></i></a></li></ul></div></header></div><div class="main-content-body transition-fade-up"><div class="main-content has-toc"><div class="post-page-container show-toc flex relative justify-between box-border w-full h-full" data-astro-cid-ssdmjifj><div class="article-content-container" data-pagefind-body data-astro-cid-ssdmjifj><div class="article-title relative w-full" data-astro-cid-ssdmjifj><picture style="display: contents" data-astro-cid-ssdmjifj><source srcset="/images/covers/Linux-DevOps-Linux常用命令大全.webp" type="image/webp" data-astro-cid-ssdmjifj><img src="/images/covers/Linux-DevOps-Linux常用命令大全.png" alt="Linux常用命令大全" width="800" height="420" loading="eager" fetchpriority="high" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" data-astro-cid-ssdmjifj></picture><div class="w-full flex items-center absolute bottom-0 justify-start" data-astro-cid-ssdmjifj><h1 data-pagefind-meta="title" class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color" data-astro-cid-ssdmjifj>Linux常用命令大全</h1></div></div><div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px" data-astro-cid-ssdmjifj><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" data-astro-cid-ssdmjifj></div><div class="info flex flex-col justify-between" data-astro-cid-ssdmjifj><div class="author flex items-center" data-astro-cid-ssdmjifj><span class="name text-default-text-color text-lg font-semibold" data-astro-cid-ssdmjifj>Jerome Xiong</span></div><div class="meta-info" data-astro-cid-ssdmjifj><div class="article-meta-info" data-astro-cid-ssdmjifj><span class="article-date article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-pen-fancy" data-astro-cid-ssdmjifj></i>&nbsp;<span class="desktop" data-astro-cid-ssdmjifj>2019-09-01 18:00</span><span class="mobile" data-astro-cid-ssdmjifj>2019-09-01 18:00</span><span class="hover-info" data-astro-cid-ssdmjifj>创建</span></span><span class="article-categories article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-folders" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/categories/Linux/" data-astro-cid-ssdmjifj>Linux</a></li></ul></span><span class="article-wordcount article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-typewriter" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>5.6k 字</span></span><span class="article-min2read article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-clock" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>19 分钟</span></span></div></div></div></div><div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8" data-astro-cid-ssdmjifj><h1 id="linux常用命令大全">Linux常用命令大全</h1>
+<p>最近在弄服务器相关的知识，在这里记录一些常用的Linux命令</p>
+<ul>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF">系统信息</a>
+<ul>
+<li><a href="#%E5%85%B3%E6%9C%BA">关机</a></li>
+<li><a href="#%E7%94%A8%E6%88%B7%E5%92%8C%E7%BE%A4%E7%BB%84">用户和群组</a></li>
+<li><a href="#%E6%89%93%E5%8C%85%E5%92%8C%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6">打包和压缩文件</a></li>
+<li><a href="#%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4">磁盘空间</a></li>
+<li><a href="#%E5%A4%87%E4%BB%BD">备份</a></li>
+<li><a href="#%E5%85%89%E7%9B%98">光盘</a></li>
+<li><a href="#%E7%BD%91%E7%BB%9C">网络</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95">文件和目录</a>
+<ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2">文件搜索</a></li>
+<li><a href="#%E6%8C%82%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">挂载文件系统</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%9A%84%E6%9D%83%E9%99%90">文件的权限</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%9A%84%E7%89%B9%E6%AE%8A%E5%B1%9E%E6%80%A7">文件的特殊属性</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90">文件系统分析</a></li>
+<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">初始化一个文件系统</a></li>
+<li><a href="#SWAP%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">SWAP文件系统</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E8%AE%BE%E7%BD%AE%E5%92%8C%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2">字符设置和文件格式转换</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%89%E8%A3%85%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7">安装包管理工具</a>
+<ul>
+<li><a href="#rpm%E5%8C%85">RPM包</a></li>
+<li><a href="#yum%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%8D%87%E7%BA%A7%E5%99%A8">YUM软件包升级器</a></li>
+<li><a href="#DEB%E5%8C%85">DEB包</a></li>
+<li><a href="#apt%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7">APT软件工具</a></li>
+</ul>
+</li>
+<li><a href="#other">Other</a>
+<ul>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9">查看文件内容</a></li>
+<li><a href="#%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86">文本处理</a></li>
+<li>GO TOP INDEX ^</li>
+</ul>
+</li>
+</ul>
+<h2 id="系统信息">系统信息</h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>arch 显示机器的处理器架构(1) </span></span>
+<span class="line"><span class="line-number">2</span><span>uname -m 显示机器的处理器架构(2) </span></span>
+<span class="line"><span class="line-number">3</span><span>uname -r 显示正在使用的内核版本 </span></span>
+<span class="line"><span class="line-number">4</span><span>dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) </span></span>
+<span class="line"><span class="line-number">5</span><span>hdparm -i /dev/hda 罗列一个磁盘的架构特性 </span></span>
+<span class="line"><span class="line-number">6</span><span>hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 </span></span>
+<span class="line"><span class="line-number">7</span><span>cat /proc/cpuinfo 显示CPU info的信息 </span></span>
+<span class="line"><span class="line-number">8</span><span>cat /proc/interrupts 显示中断 </span></span>
+<span class="line"><span class="line-number">9</span><span>cat /proc/meminfo 校验内存使用 </span></span>
+<span class="line"><span class="line-number">10</span><span>cat /proc/swaps 显示哪些swap被使用 </span></span>
+<span class="line"><span class="line-number">11</span><span>cat /proc/version 显示内核的版本 </span></span>
+<span class="line"><span class="line-number">12</span><span>cat /proc/net/dev 显示网络适配器及统计 </span></span>
+<span class="line"><span class="line-number">13</span><span>cat /proc/mounts 显示已加载的文件系统 </span></span>
+<span class="line"><span class="line-number">14</span><span>lspci -tv 罗列 PCI 设备 </span></span>
+<span class="line"><span class="line-number">15</span><span>lsusb -tv 显示 USB 设备 </span></span>
+<span class="line"><span class="line-number">16</span><span>date 显示系统日期 </span></span>
+<span class="line"><span class="line-number">17</span><span>cal 2007 显示2007年的日历表 </span></span>
+<span class="line"><span class="line-number">18</span><span>date 041217002007.00 设置日期和时间 - 月日时分年.秒 </span></span>
+<span class="line"><span class="line-number">19</span><span>clock -w 将时间修改保存到 BIOS</span></span></code></pre>
+<h3 id="关机-系统的关机重启以及登出-">关机 (系统的关机、重启以及登出 )</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>shutdown -h now 关闭系统(1) </span></span>
+<span class="line"><span class="line-number">2</span><span>init 0 关闭系统(2) </span></span>
+<span class="line"><span class="line-number">3</span><span>telinit 0 关闭系统(3) </span></span>
+<span class="line"><span class="line-number">4</span><span>shutdown -h hours:minutes &amp; 按预定时间关闭系统 </span></span>
+<span class="line"><span class="line-number">5</span><span>shutdown -c 取消按预定时间关闭系统 </span></span>
+<span class="line"><span class="line-number">6</span><span>shutdown -r now 重启(1) </span></span>
+<span class="line"><span class="line-number">7</span><span>reboot 重启(2) </span></span>
+<span class="line"><span class="line-number">8</span><span>logout 注销</span></span></code></pre>
+<h3 id="用户和群组">用户和群组</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>groupadd group_name 创建一个新用户组 </span></span>
+<span class="line"><span class="line-number">2</span><span>groupdel group_name 删除一个用户组 </span></span>
+<span class="line"><span class="line-number">3</span><span>groupmod -n new_group_name old_group_name 重命名一个用户组 </span></span>
+<span class="line"><span class="line-number">4</span><span>useradd -c "Name Surname " -g admin -d /home/user1 -s /bin/bash user1 创建一个属于 "admin" 用户组的用户 </span></span>
+<span class="line"><span class="line-number">5</span><span>useradd user1 创建一个新用户 </span></span>
+<span class="line"><span class="line-number">6</span><span>userdel -r user1 删除一个用户 ( '-r' 排除主目录) </span></span>
+<span class="line"><span class="line-number">7</span><span>usermod -c "User FTP" -g system -d /ftp/user1 -s /bin/nologin user1 修改用户属性 </span></span>
+<span class="line"><span class="line-number">8</span><span>passwd 修改口令 </span></span>
+<span class="line"><span class="line-number">9</span><span>passwd user1 修改一个用户的口令 (只允许root执行) </span></span>
+<span class="line"><span class="line-number">10</span><span>chage -E 2005-12-31 user1 设置用户口令的失效期限 </span></span>
+<span class="line"><span class="line-number">11</span><span>pwck 检查 '/etc/passwd' 的文件格式和语法修正以及存在的用户 </span></span>
+<span class="line"><span class="line-number">12</span><span>grpck 检查 '/etc/passwd' 的文件格式和语法修正以及存在的群组 </span></span>
+<span class="line"><span class="line-number">13</span><span>newgrp group_name 登陆进一个新的群组以改变新创建文件的预设群组</span></span></code></pre>
+<h3 id="打包和压缩文件">打包和压缩文件</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>bunzip2 file1.bz2 解压一个叫做 'file1.bz2'的文件 </span></span>
+<span class="line"><span class="line-number">2</span><span>bzip2 file1 压缩一个叫做 'file1' 的文件 </span></span>
+<span class="line"><span class="line-number">3</span><span>gunzip file1.gz 解压一个叫做 'file1.gz'的文件 </span></span>
+<span class="line"><span class="line-number">4</span><span>gzip file1 压缩一个叫做 'file1'的文件 </span></span>
+<span class="line"><span class="line-number">5</span><span>gzip -9 file1 最大程度压缩 </span></span>
+<span class="line"><span class="line-number">6</span><span>rar a file1.rar test_file 创建一个叫做 'file1.rar' 的包 </span></span>
+<span class="line"><span class="line-number">7</span><span>rar a file1.rar file1 file2 dir1 同时压缩 'file1', 'file2' 以及目录 'dir1' </span></span>
+<span class="line"><span class="line-number">8</span><span>rar x file1.rar 解压rar包 </span></span>
+<span class="line"><span class="line-number">9</span><span>unrar x file1.rar 解压rar包 </span></span>
+<span class="line"><span class="line-number">10</span><span>tar -cvf archive.tar file1 创建一个非压缩的 tarball </span></span>
+<span class="line"><span class="line-number">11</span><span>tar -cvf archive.tar file1 file2 dir1 创建一个包含了 'file1', 'file2' 以及 'dir1'的档案文件 </span></span>
+<span class="line"><span class="line-number">12</span><span>tar -tf archive.tar 显示一个包中的内容 </span></span>
+<span class="line"><span class="line-number">13</span><span>tar -xvf archive.tar 释放一个包 </span></span>
+<span class="line"><span class="line-number">14</span><span>tar -xvf archive.tar -C /tmp 将压缩包释放到 /tmp目录下 </span></span>
+<span class="line"><span class="line-number">15</span><span>tar -cvfj archive.tar.bz2 dir1 创建一个bzip2格式的压缩包 </span></span>
+<span class="line"><span class="line-number">16</span><span>tar -xvfj archive.tar.bz2 解压一个bzip2格式的压缩包 </span></span>
+<span class="line"><span class="line-number">17</span><span>tar -cvfz archive.tar.gz dir1 创建一个gzip格式的压缩包 </span></span>
+<span class="line"><span class="line-number">18</span><span>tar -xvfz archive.tar.gz 解压一个gzip格式的压缩包 </span></span>
+<span class="line"><span class="line-number">19</span><span>zip file1.zip file1 创建一个zip格式的压缩包 </span></span>
+<span class="line"><span class="line-number">20</span><span>zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包 </span></span>
+<span class="line"><span class="line-number">21</span><span>unzip file1.zip 解压一个zip格式压缩包</span></span></code></pre>
+<h3 id="磁盘空间">磁盘空间</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>df -h 显示已经挂载的分区列表 </span></span>
+<span class="line"><span class="line-number">2</span><span>ls -lSr |more 以尺寸大小排列文件和目录 </span></span>
+<span class="line"><span class="line-number">3</span><span>du -sh dir1 估算目录 'dir1' 已经使用的磁盘空间' </span></span>
+<span class="line"><span class="line-number">4</span><span>du -sk * | sort -rn 以容量大小为依据依次显示文件和目录的大小 </span></span>
+<span class="line"><span class="line-number">5</span><span>rpm -q -a --qf '%10{SIZE}t%{NAME}n' | sort -k1,1n 以大小为依据依次显示已安装的rpm包所使用的空间 (fedora, redhat类系统) </span></span>
+<span class="line"><span class="line-number">6</span><span>dpkg-query -W -f='${Installed-Size;10}t${Package}n' | sort -k1,1n 以大小为依据显示已安装的deb包所使用的空间 (ubuntu, debian类系统)</span></span></code></pre>
+<h3 id="备份">备份</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>dump -1aj -f /tmp/home0.bak /home 制作一个 '/home' 目录的交互式备份 </span></span>
+<span class="line"><span class="line-number">2</span><span>restore -if /tmp/home0.bak 还原一个交互式备份 </span></span>
+<span class="line"><span class="line-number">3</span><span>rsync -rogpav --delete /home /tmp 同步两边的目录 </span></span>
+<span class="line"><span class="line-number">4</span><span>rsync -rogpav -e ssh --delete /home ip_address:/tmp 通过SSH通道rsync </span></span>
+<span class="line"><span class="line-number">5</span><span>rsync -az -e ssh --delete ip_addr:/home/public /home/local 通过ssh和压缩将一个远程目录同步到本地目录 </span></span>
+<span class="line"><span class="line-number">6</span><span>rsync -az -e ssh --delete /home/local ip_addr:/home/public 通过ssh和压缩将本地目录同步到远程目录 </span></span>
+<span class="line"><span class="line-number">7</span><span>dd bs=1M if=/dev/hda | gzip | ssh user@ip_addr 'dd of=hda.gz' 通过ssh在远程主机上执行一次备份本地磁盘的操作 </span></span>
+<span class="line"><span class="line-number">8</span><span>dd if=/dev/sda of=/tmp/file1 备份磁盘内容到一个文件 </span></span>
+<span class="line"><span class="line-number">9</span><span>tar -Puf backup.tar /home/user 执行一次对 '/home/user' 目录的交互式备份操作 </span></span>
+<span class="line"><span class="line-number">10</span><span>( cd /tmp/local/ &amp;&amp; tar c . ) | ssh -C user@ip_addr 'cd /home/share/ &amp;&amp; tar x -p' 通过ssh在远程目录中复制一个目录内容 </span></span>
+<span class="line"><span class="line-number">11</span><span>( tar c /home ) | ssh -C user@ip_addr 'cd /home/backup-home &amp;&amp; tar x -p' 通过ssh在远程目录中复制一个本地目录 </span></span>
+<span class="line"><span class="line-number">12</span><span>tar cf - . | (cd /tmp/backup ; tar xf - ) 本地将一个目录复制到另一个地方，保留原有权限及链接 </span></span>
+<span class="line"><span class="line-number">13</span><span>find /home/user1 -name '*.txt' | xargs cp -av --target-directory=/home/backup/ --parents 从一个目录查找并复制所有以 '.txt' 结尾的文件到另一个目录 </span></span>
+<span class="line"><span class="line-number">14</span><span>find /var/log -name '*.log' | tar cv --files-from=- | bzip2 &gt; log.tar.bz2 查找所有以 '.log' 结尾的文件并做成一个bzip包 </span></span>
+<span class="line"><span class="line-number">15</span><span>dd if=/dev/hda of=/dev/fd0 bs=512 count=1 做一个将 MBR (Master Boot Record)内容复制到软盘的动作 </span></span>
+<span class="line"><span class="line-number">16</span><span>dd if=/dev/fd0 of=/dev/hda bs=512 count=1 从已经保存到软盘的备份中恢复MBR内容 </span></span></code></pre>
+<h3 id="光盘">光盘</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>mkisofs /dev/cdrom &gt; cd.iso 在磁盘上创建一个光盘的iso镜像文件 </span></span>
+<span class="line"><span class="line-number">2</span><span>mkisofs /dev/cdrom | gzip &gt; cd_iso.gz 在磁盘上创建一个压缩了的光盘iso镜像文件 </span></span>
+<span class="line"><span class="line-number">3</span><span>mkisofs -J -allow-leading-dots -R -V "Label CD" -iso-level 4 -o ./cd.iso data_cd 创建一个目录的iso镜像文件 </span></span>
+<span class="line"><span class="line-number">4</span><span>cdrecord -v dev=/dev/cdrom cd.iso 刻录一个ISO镜像文件 </span></span>
+<span class="line"><span class="line-number">5</span><span>gzip -dc cd_iso.gz | cdrecord dev=/dev/cdrom - 刻录一个压缩了的ISO镜像文件 </span></span>
+<span class="line"><span class="line-number">6</span><span>mount -o loop cd.iso /mnt/iso 挂载一个ISO镜像文件 </span></span>
+<span class="line"><span class="line-number">7</span><span>cd-paranoia -B 从一个CD光盘转录音轨到 wav 文件中 </span></span>
+<span class="line"><span class="line-number">8</span><span>cd-paranoia -- "-3" 从一个CD光盘转录音轨到 wav 文件中（参数-3） </span></span>
+<span class="line"><span class="line-number">9</span><span>cdrecord --scanbus 扫描总线以识别scsi通道 </span></span>
+<span class="line"><span class="line-number">10</span><span>dd if=/dev/hdc | md5sum 校验一个设备的md5sum编码，例如一张 CD </span></span></code></pre>
+<h3 id="网络">网络</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>- （以太网和WIFI无线） </span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>ifup eth0 启用一个 'eth0' 网络设备 </span></span>
+<span class="line"><span class="line-number">2</span><span>ifdown eth0 禁用一个 'eth0' 网络设备 </span></span>
+<span class="line"><span class="line-number">3</span><span>ifconfig eth0 192.168.1.1 netmask 255.255.255.0 控制IP地址 </span></span>
+<span class="line"><span class="line-number">4</span><span>ifconfig eth0 promisc 设置 'eth0' 成混杂模式以嗅探数据包 (sniffing) </span></span>
+<span class="line"><span class="line-number">5</span><span>dhclient eth0 以dhcp模式启用 'eth0' </span></span>
+<span class="line"><span class="line-number">6</span><span>route -n show routing table </span></span>
+<span class="line"><span class="line-number">7</span><span>route add -net 0/0 gw IP_Gateway configura default gateway </span></span>
+<span class="line"><span class="line-number">8</span><span>route add -net 192.168.0.0 netmask 255.255.0.0 gw 192.168.1.1 configure static route to reach network '192.168.0.0/16' </span></span>
+<span class="line"><span class="line-number">9</span><span>route del 0/0 gw IP_gateway remove static route </span></span>
+<span class="line"><span class="line-number">10</span><span>echo "1" &gt; /proc/sys/net/ipv4/ip_forward activate ip routing </span></span>
+<span class="line"><span class="line-number">11</span><span>hostname show hostname of system </span></span>
+<span class="line"><span class="line-number">12</span><span>host www.example.com lookup hostname to resolve name to ip address and viceversa(1) </span></span>
+<span class="line"><span class="line-number">13</span><span>nslookup www.example.com lookup hostname to resolve name to ip address and viceversa(2) </span></span>
+<span class="line"><span class="line-number">14</span><span>ip link show show link status of all interfaces </span></span>
+<span class="line"><span class="line-number">15</span><span>mii-tool eth0 show link status of 'eth0' </span></span>
+<span class="line"><span class="line-number">16</span><span>ethtool eth0 show statistics of network card 'eth0' </span></span>
+<span class="line"><span class="line-number">17</span><span>netstat -tup show all active network connections and their PID </span></span>
+<span class="line"><span class="line-number">18</span><span>netstat -tupl show all network services listening on the system and their PID </span></span>
+<span class="line"><span class="line-number">19</span><span>tcpdump tcp port 80 show all HTTP traffic </span></span>
+<span class="line"><span class="line-number">20</span><span>iwlist scan show wireless networks </span></span>
+<span class="line"><span class="line-number">21</span><span>iwconfig eth1 show configuration of a wireless network card </span></span>
+<span class="line"><span class="line-number">22</span><span>hostname show hostname </span></span>
+<span class="line"><span class="line-number">23</span><span>host www.example.com lookup hostname to resolve name to ip address and viceversa </span></span>
+<span class="line"><span class="line-number">24</span><span>nslookup www.example.com lookup hostname to resolve name to ip address and viceversa </span></span>
+<span class="line"><span class="line-number">25</span><span>whois www.example.com lookup on Whois database </span></span></code></pre>
+<h2 id="文件和目录">文件和目录</h2>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>cd /home 进入 '/ home' 目录' </span></span>
+<span class="line"><span class="line-number">2</span><span>cd .. 返回上一级目录 </span></span>
+<span class="line"><span class="line-number">3</span><span>cd ../.. 返回上两级目录 </span></span>
+<span class="line"><span class="line-number">4</span><span>cd 进入个人的主目录 </span></span>
+<span class="line"><span class="line-number">5</span><span>cd ~user1 进入个人的主目录 </span></span>
+<span class="line"><span class="line-number">6</span><span>cd - 返回上次所在的目录 </span></span>
+<span class="line"><span class="line-number">7</span><span>pwd 显示工作路径 </span></span>
+<span class="line"><span class="line-number">8</span><span>ls 查看目录中的文件 </span></span>
+<span class="line"><span class="line-number">9</span><span>ls -F 查看目录中的文件 </span></span>
+<span class="line"><span class="line-number">10</span><span>ls -l 显示文件和目录的详细资料 </span></span>
+<span class="line"><span class="line-number">11</span><span>ls -a 显示隐藏文件 </span></span>
+<span class="line"><span class="line-number">12</span><span>ls *[0-9]* 显示包含数字的文件名和目录名 </span></span>
+<span class="line"><span class="line-number">13</span><span>tree 显示文件和目录由根目录开始的树形结构(1) </span></span>
+<span class="line"><span class="line-number">14</span><span>lstree 显示文件和目录由根目录开始的树形结构(2) </span></span>
+<span class="line"><span class="line-number">15</span><span>mkdir dir1 创建一个叫做 'dir1' 的目录' </span></span>
+<span class="line"><span class="line-number">16</span><span>mkdir dir1 dir2 同时创建两个目录 </span></span>
+<span class="line"><span class="line-number">17</span><span>mkdir -p /tmp/dir1/dir2 创建一个目录树 </span></span>
+<span class="line"><span class="line-number">18</span><span>rm -f file1 删除一个叫做 'file1' 的文件' </span></span>
+<span class="line"><span class="line-number">19</span><span>rmdir dir1 删除一个叫做 'dir1' 的目录' </span></span>
+<span class="line"><span class="line-number">20</span><span>rm -rf dir1 删除一个叫做 'dir1' 的目录并同时删除其内容 </span></span>
+<span class="line"><span class="line-number">21</span><span>rm -rf dir1 dir2 同时删除两个目录及它们的内容 </span></span>
+<span class="line"><span class="line-number">22</span><span>mv dir1 new_dir 重命名/移动 一个目录 </span></span>
+<span class="line"><span class="line-number">23</span><span>cp file1 file2 复制一个文件 </span></span>
+<span class="line"><span class="line-number">24</span><span>cp dir/* . 复制一个目录下的所有文件到当前工作目录 */</span></span>
+<span class="line"><span class="line-number">25</span><span>cp -a /tmp/dir1 . 复制一个目录到当前工作目录 </span></span>
+<span class="line"><span class="line-number">26</span><span>cp -a dir1 dir2 复制一个目录 </span></span>
+<span class="line"><span class="line-number">27</span><span>ln -s file1 lnk1 创建一个指向文件或目录的软链接 </span></span>
+<span class="line"><span class="line-number">28</span><span>ln file1 lnk1 创建一个指向文件或目录的物理链接 </span></span>
+<span class="line"><span class="line-number">29</span><span>touch -t 0712250000 file1 修改一个文件或目录的时间戳 - (YYMMDDhhmm) </span></span>
+<span class="line"><span class="line-number">30</span><span>file file1 outputs the mime type of the file as text </span></span>
+<span class="line"><span class="line-number">31</span><span>iconv -l 列出已知的编码 </span></span>
+<span class="line"><span class="line-number">32</span><span>iconv -f fromEncoding -t toEncoding inputFile &gt; outputFile creates a new from the given input file by assuming it is encoded in fromEncoding and converting it to toEncoding. </span></span>
+<span class="line"><span class="line-number">33</span><span>find . -maxdepth 1 -name *.jpg -print -exec convert "{}" -resize 80x60 "thumbs/{}" \; batch resize files in the current directory and send them to a thumbnails directory (requires convert from Imagemagick)</span></span></code></pre>
+<h3 id="文件搜索">文件搜索</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>find / -name file1 从 '/' 开始进入根文件系统搜索文件和目录 </span></span>
+<span class="line"><span class="line-number">2</span><span>find / -user user1 搜索属于用户 'user1' 的文件和目录 </span></span>
+<span class="line"><span class="line-number">3</span><span>find /home/user1 -name \*.bin 在目录 '/ home/user1' 中搜索带有'.bin' 结尾的文件 </span></span>
+<span class="line"><span class="line-number">4</span><span>find /usr/bin -type f -atime +100 搜索在过去100天内未被使用过的执行文件 </span></span>
+<span class="line"><span class="line-number">5</span><span>find /usr/bin -type f -mtime -10 搜索在10天内被创建或者修改过的文件 </span></span>
+<span class="line"><span class="line-number">6</span><span>find / -name \*.rpm -exec chmod 755 '{}' \; 搜索以 '.rpm' 结尾的文件并定义其权限 </span></span>
+<span class="line"><span class="line-number">7</span><span>find / -xdev -name \*.rpm 搜索以 '.rpm' 结尾的文件，忽略光驱、捷盘等可移动设备 </span></span>
+<span class="line"><span class="line-number">8</span><span>locate \*.ps 寻找以 '.ps' 结尾的文件 - 先运行 'updatedb' 命令 </span></span>
+<span class="line"><span class="line-number">9</span><span>whereis halt 显示一个二进制文件、源码或man的位置 </span></span>
+<span class="line"><span class="line-number">10</span><span>which halt 显示一个二进制文件或可执行文件的完整路径</span></span></code></pre>
+<h3 id="挂载文件系统">挂载文件系统</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>mount /dev/hda2 /mnt/hda2 挂载一个叫做hda2的盘 - 确定目录 '/ mnt/hda2' 已经存在 </span></span>
+<span class="line"><span class="line-number">2</span><span>umount /dev/hda2 卸载一个叫做hda2的盘 - 先从挂载点 '/ mnt/hda2' 退出 </span></span>
+<span class="line"><span class="line-number">3</span><span>fuser -km /mnt/hda2 当设备繁忙时强制卸载 </span></span>
+<span class="line"><span class="line-number">4</span><span>umount -n /mnt/hda2 运行卸载操作而不写入 /etc/mtab 文件- 当文件为只读或当磁盘写满时非常有用 </span></span>
+<span class="line"><span class="line-number">5</span><span>mount /dev/fd0 /mnt/floppy 挂载一个软盘 </span></span>
+<span class="line"><span class="line-number">6</span><span>mount /dev/cdrom /mnt/cdrom 挂载一个cdrom或dvdrom </span></span>
+<span class="line"><span class="line-number">7</span><span>mount /dev/hdc /mnt/cdrecorder 挂载一个cdrw或dvdrom </span></span>
+<span class="line"><span class="line-number">8</span><span>mount /dev/hdb /mnt/cdrecorder 挂载一个cdrw或dvdrom </span></span>
+<span class="line"><span class="line-number">9</span><span>mount -o loop file.iso /mnt/cdrom 挂载一个文件或ISO镜像文件 </span></span>
+<span class="line"><span class="line-number">10</span><span>mount -t vfat /dev/hda5 /mnt/hda5 挂载一个Windows FAT32文件系统 </span></span>
+<span class="line"><span class="line-number">11</span><span>mount /dev/sda1 /mnt/usbdisk 挂载一个usb 捷盘或闪存设备 </span></span>
+<span class="line"><span class="line-number">12</span><span>mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share 挂载一个windows网络共享</span></span></code></pre>
+<h3 id="文件的权限">文件的权限</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>- 使用 "+" 设置权限，使用 "-" 用于取消</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>ls -lh 显示权限 </span></span>
+<span class="line"><span class="line-number">2</span><span>ls /tmp | pr -T5 -W$COLUMNS 将终端划分成5栏显示 </span></span>
+<span class="line"><span class="line-number">3</span><span>chmod ugo+rwx directory1 设置目录的所有人(u)、群组(g)以及其他人(o)以读（r ）、写(w)和执行(x)的权限 </span></span>
+<span class="line"><span class="line-number">4</span><span>chmod go-rwx directory1 删除群组(g)与其他人(o)对目录的读写执行权限 </span></span>
+<span class="line"><span class="line-number">5</span><span>chown user1 file1 改变一个文件的所有人属性 </span></span>
+<span class="line"><span class="line-number">6</span><span>chown -R user1 directory1 改变一个目录的所有人属性并同时改变改目录下所有文件的属性 </span></span>
+<span class="line"><span class="line-number">7</span><span>chgrp group1 file1 改变文件的群组 </span></span>
+<span class="line"><span class="line-number">8</span><span>chown user1:group1 file1 改变一个文件的所有人和群组属性 </span></span>
+<span class="line"><span class="line-number">9</span><span>find / -perm -u+s 罗列一个系统中所有使用了SUID控制的文件 </span></span>
+<span class="line"><span class="line-number">10</span><span>chmod u+s /bin/file1 设置一个二进制文件的 SUID 位 - 运行该文件的用户也被赋予和所有者同样的权限 </span></span>
+<span class="line"><span class="line-number">11</span><span>chmod u-s /bin/file1 禁用一个二进制文件的 SUID位 </span></span>
+<span class="line"><span class="line-number">12</span><span>chmod g+s /home/public 设置一个目录的SGID 位 - 类似SUID ，不过这是针对目录的 </span></span>
+<span class="line"><span class="line-number">13</span><span>chmod g-s /home/public 禁用一个目录的 SGID 位 </span></span>
+<span class="line"><span class="line-number">14</span><span>chmod o+t /home/public 设置一个文件的 STIKY 位 - 只允许合法所有人删除文件 </span></span>
+<span class="line"><span class="line-number">15</span><span>chmod o-t /home/public 禁用一个目录的 STIKY 位</span></span></code></pre>
+<h3 id="文件的特殊属性">文件的特殊属性</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>使用 "+" 设置权限，使用 "-" 用于取消</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>chattr +a file1 只允许以追加方式读写文件 </span></span>
+<span class="line"><span class="line-number">2</span><span>chattr +c file1 允许这个文件能被内核自动压缩/解压 </span></span>
+<span class="line"><span class="line-number">3</span><span>chattr +d file1 在进行文件系统备份时，dump程序将忽略这个文件 </span></span>
+<span class="line"><span class="line-number">4</span><span>chattr +i file1 设置成不可变的文件，不能被删除、修改、重命名或者链接 </span></span>
+<span class="line"><span class="line-number">5</span><span>chattr +s file1 允许一个文件被安全地删除 </span></span>
+<span class="line"><span class="line-number">6</span><span>chattr +S file1 一旦应用程序对这个文件执行了写操作，使系统立刻把修改的结果写到磁盘 </span></span>
+<span class="line"><span class="line-number">7</span><span>chattr +u file1 若文件被删除，系统会允许你在以后恢复这个被删除的文件 </span></span>
+<span class="line"><span class="line-number">8</span><span>lsattr 显示特殊的属性</span></span></code></pre>
+<h3 id="文件系统分析">文件系统分析</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>badblocks -v /dev/hda1 检查磁盘hda1上的坏磁块 </span></span>
+<span class="line"><span class="line-number">2</span><span>fsck /dev/hda1 修复/检查hda1磁盘上linux文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">3</span><span>fsck.ext2 /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">4</span><span>e2fsck /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">5</span><span>e2fsck -j /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">6</span><span>fsck.ext3 /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">7</span><span>fsck.vfat /dev/hda1 修复/检查hda1磁盘上fat文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">8</span><span>fsck.msdos /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性 </span></span>
+<span class="line"><span class="line-number">9</span><span>dosfsck /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性 </span></span></code></pre>
+<h3 id="初始化一个文件系统">初始化一个文件系统</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>mkfs /dev/hda1 在hda1分区创建一个文件系统 </span></span>
+<span class="line"><span class="line-number">2</span><span>mke2fs /dev/hda1 在hda1分区创建一个linux ext2的文件系统 </span></span>
+<span class="line"><span class="line-number">3</span><span>mke2fs -j /dev/hda1 在hda1分区创建一个linux ext3(日志型)的文件系统 </span></span>
+<span class="line"><span class="line-number">4</span><span>mkfs -t vfat 32 -F /dev/hda1 创建一个 FAT32 文件系统 </span></span>
+<span class="line"><span class="line-number">5</span><span>fdformat -n /dev/fd0 格式化一个软盘 </span></span>
+<span class="line"><span class="line-number">6</span><span>mkswap /dev/hda3 创建一个swap文件系统 </span></span></code></pre>
+<h3 id="swap文件系统">SWAP文件系统</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>mkswap /dev/hda3 创建一个swap文件系统 </span></span>
+<span class="line"><span class="line-number">2</span><span>swapon /dev/hda3 启用一个新的swap文件系统 </span></span>
+<span class="line"><span class="line-number">3</span><span>swapon /dev/hda2 /dev/hdb3 启用两个swap分区 </span></span></code></pre>
+<h3 id="字符设置和文件格式转换">字符设置和文件格式转换</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>dos2unix filedos.txt fileunix.txt 将一个文本文件的格式从MSDOS转换成UNIX </span></span>
+<span class="line"><span class="line-number">2</span><span>unix2dos fileunix.txt filedos.txt 将一个文本文件的格式从UNIX转换成MSDOS </span></span>
+<span class="line"><span class="line-number">3</span><span>recode ..HTML &lt; page.txt &gt; page.html 将一个文本文件转换成html </span></span>
+<span class="line"><span class="line-number">4</span><span>recode -l | more 显示所有允许的转换格式 </span></span></code></pre>
+<h2 id="安装包管理工具">安装包管理工具</h2>
+<h3 id="rpm包">RPM包</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>Fedora, Redhat及类似系统</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>rpm -ivh package.rpm 安装一个rpm包 </span></span>
+<span class="line"><span class="line-number">2</span><span>rpm -ivh --nodeeps package.rpm 安装一个rpm包而忽略依赖关系警告 </span></span>
+<span class="line"><span class="line-number">3</span><span>rpm -U package.rpm 更新一个rpm包但不改变其配置文件 </span></span>
+<span class="line"><span class="line-number">4</span><span>rpm -F package.rpm 更新一个确定已经安装的rpm包 </span></span>
+<span class="line"><span class="line-number">5</span><span>rpm -e package_name.rpm 删除一个rpm包 </span></span>
+<span class="line"><span class="line-number">6</span><span>rpm -qa 显示系统中所有已经安装的rpm包 </span></span>
+<span class="line"><span class="line-number">7</span><span>rpm -qa | grep httpd 显示所有名称中包含 "httpd" 字样的rpm包 </span></span>
+<span class="line"><span class="line-number">8</span><span>rpm -qi package_name 获取一个已安装包的特殊信息 </span></span>
+<span class="line"><span class="line-number">9</span><span>rpm -qg "System Environment/Daemons" 显示一个组件的rpm包 </span></span>
+<span class="line"><span class="line-number">10</span><span>rpm -ql package_name 显示一个已经安装的rpm包提供的文件列表 </span></span>
+<span class="line"><span class="line-number">11</span><span>rpm -qc package_name 显示一个已经安装的rpm包提供的配置文件列表 </span></span>
+<span class="line"><span class="line-number">12</span><span>rpm -q package_name --whatrequires 显示与一个rpm包存在依赖关系的列表 </span></span>
+<span class="line"><span class="line-number">13</span><span>rpm -q package_name --whatprovides 显示一个rpm包所占的体积 </span></span>
+<span class="line"><span class="line-number">14</span><span>rpm -q package_name --scripts 显示在安装/删除期间所执行的脚本l </span></span>
+<span class="line"><span class="line-number">15</span><span>rpm -q package_name --changelog 显示一个rpm包的修改历史 </span></span>
+<span class="line"><span class="line-number">16</span><span>rpm -qf /etc/httpd/conf/httpd.conf 确认所给的文件由哪个rpm包所提供 </span></span>
+<span class="line"><span class="line-number">17</span><span>rpm -qp package.rpm -l 显示由一个尚未安装的rpm包提供的文件列表 </span></span>
+<span class="line"><span class="line-number">18</span><span>rpm --import /media/cdrom/RPM-GPG-KEY 导入公钥数字证书 </span></span>
+<span class="line"><span class="line-number">19</span><span>rpm --checksig package.rpm 确认一个rpm包的完整性 </span></span>
+<span class="line"><span class="line-number">20</span><span>rpm -qa gpg-pubkey 确认已安装的所有rpm包的完整性 </span></span>
+<span class="line"><span class="line-number">21</span><span>rpm -V package_name 检查文件尺寸、 许可、类型、所有者、群组、MD5检查以及最后修改时间 </span></span>
+<span class="line"><span class="line-number">22</span><span>rpm -Va 检查系统中所有已安装的rpm包- 小心使用 </span></span>
+<span class="line"><span class="line-number">23</span><span>rpm -Vp package.rpm 确认一个rpm包还未安装 </span></span>
+<span class="line"><span class="line-number">24</span><span>rpm2cpio package.rpm | cpio --extract --make-directories *bin* 从一个rpm包运行可执行文件 </span></span>
+<span class="line"><span class="line-number">25</span><span>rpm -ivh /usr/src/redhat/RPMS/`arch`/package.rpm 从一个rpm源码安装一个构建好的包 </span></span>
+<span class="line"><span class="line-number">26</span><span>rpmbuild --rebuild package_name.src.rpm 从一个rpm源码构建一个 rpm 包 </span></span></code></pre>
+<h3 id="yum软件包升级器">YUM软件包升级器</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>Fedora, RedHat及类似系统</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>yum install package_name 下载并安装一个rpm包 </span></span>
+<span class="line"><span class="line-number">2</span><span>yum localinstall package_name.rpm 将安装一个rpm包，使用你自己的软件仓库为你解决所有依赖关系 </span></span>
+<span class="line"><span class="line-number">3</span><span>yum update package_name.rpm 更新当前系统中所有安装的rpm包 </span></span>
+<span class="line"><span class="line-number">4</span><span>yum update package_name 更新一个rpm包 </span></span>
+<span class="line"><span class="line-number">5</span><span>yum remove package_name 删除一个rpm包 </span></span>
+<span class="line"><span class="line-number">6</span><span>yum list 列出当前系统中安装的所有包 </span></span>
+<span class="line"><span class="line-number">7</span><span>yum search package_name 在rpm仓库中搜寻软件包 </span></span>
+<span class="line"><span class="line-number">8</span><span>yum clean packages 清理rpm缓存删除下载的包 </span></span>
+<span class="line"><span class="line-number">9</span><span>yum clean headers 删除所有头文件 </span></span>
+<span class="line"><span class="line-number">10</span><span>yum clean all 删除所有缓存的包和头文件</span></span></code></pre>
+<h3 id="deb包">DEB包</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>Debian, Ubuntu 以及类似系统</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>dpkg -i package.deb 安装/更新一个 deb 包 </span></span>
+<span class="line"><span class="line-number">2</span><span>dpkg -r package_name 从系统删除一个 deb 包 </span></span>
+<span class="line"><span class="line-number">3</span><span>dpkg -l 显示系统中所有已经安装的 deb 包 </span></span>
+<span class="line"><span class="line-number">4</span><span>dpkg -l | grep httpd 显示所有名称中包含 "httpd" 字样的deb包 </span></span>
+<span class="line"><span class="line-number">5</span><span>dpkg -s package_name 获得已经安装在系统中一个特殊包的信息 </span></span>
+<span class="line"><span class="line-number">6</span><span>dpkg -L package_name 显示系统中已经安装的一个deb包所提供的文件列表 </span></span>
+<span class="line"><span class="line-number">7</span><span>dpkg --contents package.deb 显示尚未安装的一个包所提供的文件列表 </span></span>
+<span class="line"><span class="line-number">8</span><span>dpkg -S /bin/ping 确认所给的文件由哪个deb包提供</span></span></code></pre>
+<h3 id="apt软件工具">APT软件工具</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>Debian, Ubuntu 以及类似系统</span></span></code></pre>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>apt-get install package_name 安装/更新一个 deb 包 </span></span>
+<span class="line"><span class="line-number">2</span><span>apt-cdrom install package_name 从光盘安装/更新一个 deb 包 </span></span>
+<span class="line"><span class="line-number">3</span><span>apt-get update 升级列表中的软件包 </span></span>
+<span class="line"><span class="line-number">4</span><span>apt-get upgrade 升级所有已安装的软件 </span></span>
+<span class="line"><span class="line-number">5</span><span>apt-get remove package_name 从系统删除一个deb包 </span></span>
+<span class="line"><span class="line-number">6</span><span>apt-get check 确认依赖的软件仓库正确 </span></span>
+<span class="line"><span class="line-number">7</span><span>apt-get clean 从下载的软件包中清理缓存 </span></span>
+<span class="line"><span class="line-number">8</span><span>apt-cache search searched-package 返回包含所要搜索字符串的软件包名称</span></span></code></pre>
+<h2 id="other">Other</h2>
+<h3 id="查看文件内容">查看文件内容</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>cat file1 从第一个字节开始正向查看文件的内容 </span></span>
+<span class="line"><span class="line-number">2</span><span>tac file1 从最后一行开始反向查看一个文件的内容 </span></span>
+<span class="line"><span class="line-number">3</span><span>more file1 查看一个长文件的内容 </span></span>
+<span class="line"><span class="line-number">4</span><span>less file1 类似于 'more' 命令，但是它允许在文件中和正向操作一样的反向操作 </span></span>
+<span class="line"><span class="line-number">5</span><span>head -2 file1 查看一个文件的前两行 </span></span>
+<span class="line"><span class="line-number">6</span><span>tail -2 file1 查看一个文件的最后两行 </span></span>
+<span class="line"><span class="line-number">7</span><span>tail -f /var/log/messages 实时查看被添加到一个文件中的内容 </span></span></code></pre>
+<h3 id="文本处理">文本处理</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>cat file1 file2 ... | command &lt;&gt; file1_in.txt_or_file1_out.txt general syntax for text manipulation using PIPE, STDIN and STDOUT </span></span>
+<span class="line"><span class="line-number">2</span><span>cat file1 | command( sed, grep, awk, grep, etc...) &gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个新文件中 </span></span>
+<span class="line"><span class="line-number">3</span><span>cat file1 | command( sed, grep, awk, grep, etc...) &gt;&gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个已有的文件中 </span></span>
+<span class="line"><span class="line-number">4</span><span>grep Aug /var/log/messages 在文件 '/var/log/messages'中查找关键词"Aug" </span></span>
+<span class="line"><span class="line-number">5</span><span>grep ^Aug /var/log/messages 在文件 '/var/log/messages'中查找以"Aug"开始的词汇 </span></span>
+<span class="line"><span class="line-number">6</span><span>grep [0-9] /var/log/messages 选择 '/var/log/messages' 文件中所有包含数字的行 </span></span>
+<span class="line"><span class="line-number">7</span><span>grep Aug -R /var/log/* 在目录 '/var/log' 及随后的目录中搜索字符串"Aug" </span></span>
+<span class="line"><span class="line-number">8</span><span>sed 's/stringa1/stringa2/g' example.txt 将example.txt文件中的 "string1" 替换成 "string2" </span></span>
+<span class="line"><span class="line-number">9</span><span>sed '/^$/d' example.txt 从example.txt文件中删除所有空白行 </span></span>
+<span class="line"><span class="line-number">10</span><span>sed '/ *#/d; /^$/d' example.txt 从example.txt文件中删除所有注释和空白行 </span></span>
+<span class="line"><span class="line-number">11</span><span>echo 'esempio' | tr '[:lower:]' '[:upper:]' 合并上下单元格内容 </span></span>
+<span class="line"><span class="line-number">12</span><span>sed -e '1d' result.txt 从文件example.txt 中排除第一行 </span></span>
+<span class="line"><span class="line-number">13</span><span>sed -n '/stringa1/p' 查看只包含词汇 "string1"的行 </span></span>
+<span class="line"><span class="line-number">14</span><span>sed -e 's/ *$//' example.txt 删除每一行最后的空白字符 </span></span>
+<span class="line"><span class="line-number">15</span><span>sed -e 's/stringa1//g' example.txt 从文档中只删除词汇 "string1" 并保留剩余全部 </span></span>
+<span class="line"><span class="line-number">16</span><span>sed -n '1,5p;5q' example.txt 查看从第一行到第5行内容 </span></span>
+<span class="line"><span class="line-number">17</span><span>sed -n '5p;5q' example.txt 查看第5行 </span></span>
+<span class="line"><span class="line-number">18</span><span>sed -e 's/00*/0/g' example.txt 用单个零替换多个零 </span></span>
+<span class="line"><span class="line-number">19</span><span>cat -n file1 标示文件的行数 </span></span>
+<span class="line"><span class="line-number">20</span><span>cat example.txt | awk 'NR%2==1' 删除example.txt文件中的所有偶数行 </span></span>
+<span class="line"><span class="line-number">21</span><span>echo a b c | awk '{print $1}' 查看一行第一栏 </span></span>
+<span class="line"><span class="line-number">22</span><span>echo a b c | awk '{print $1,$3}' 查看一行的第一和第三栏 </span></span>
+<span class="line"><span class="line-number">23</span><span>paste file1 file2 合并两个文件或两栏的内容 </span></span>
+<span class="line"><span class="line-number">24</span><span>paste -d '+' file1 file2 合并两个文件或两栏的内容，中间用"+"区分 </span></span>
+<span class="line"><span class="line-number">25</span><span>sort file1 file2 排序两个文件的内容 </span></span>
+<span class="line"><span class="line-number">26</span><span>sort file1 file2 | uniq 取出两个文件的并集(重复的行只保留一份) </span></span>
+<span class="line"><span class="line-number">27</span><span>sort file1 file2 | uniq -u 删除交集，留下其他的行 </span></span>
+<span class="line"><span class="line-number">28</span><span>sort file1 file2 | uniq -d 取出两个文件的交集(只留下同时存在于两个文件中的文件) </span></span>
+<span class="line"><span class="line-number">29</span><span>comm -1 file1 file2 比较两个文件的内容只删除 'file1' 所包含的内容 </span></span>
+<span class="line"><span class="line-number">30</span><span>comm -2 file1 file2 比较两个文件的内容只删除 'file2' 所包含的内容 </span></span>
+<span class="line"><span class="line-number">31</span><span>comm -3 file1 file2 比较两个文件的内容只删除两个文件共有的部分 </span></span></code></pre>
+<h3 id="go-top-index-">GO TOP INDEX ^</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>nbtscan ip_addr netbios name resolution </span></span>
+<span class="line"><span class="line-number">2</span><span>nmblookup -A ip_addr netbios name resolution </span></span>
+<span class="line"><span class="line-number">3</span><span>smbclient -L ip_addr/hostname show remote shares of a windows host </span></span>
+<span class="line"><span class="line-number">4</span><span>smbget -Rr smb://ip_addr/share like wget can download files from a host windows via smb </span></span>
+<span class="line"><span class="line-number">5</span><span>mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share mount a windows network share</span></span></code></pre>
+<p><a href="#linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8">回到顶部</a></p>
+</div><div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8" data-pagefind-ignore><div class="article-copyright-info-container"><ul><li><strong>标题:</strong> Linux常用命令大全</li><li><strong>作者:</strong> Jerome Xiong</li><li><strong>创建于:</strong> 2019-09-01 18:00</li><li><strong>链接:</strong> https://jeromexiong.github.io/2019/09/01/Linux-DevOps/Linux常用命令大全/</li><li><strong>版权声明:</strong>本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。</li></ul></div></div><span class="article-tags article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-tags" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/tags/Linux/" data-astro-cid-ssdmjifj>Linux</a></li><li data-astro-cid-ssdmjifj><a href="/tags/命令大全/" data-astro-cid-ssdmjifj>命令大全</a></li><li data-astro-cid-ssdmjifj><a href="/tags/运维/" data-astro-cid-ssdmjifj>运维</a></li><li data-astro-cid-ssdmjifj><a href="/tags/系统管理/" data-astro-cid-ssdmjifj>系统管理</a></li><li data-astro-cid-ssdmjifj><a href="/tags/shell/" data-astro-cid-ssdmjifj>shell</a></li></ul></span><div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="prev" rel="prev" href="/2019/10/01/Linux-DevOps/Linux常用工具/" data-astro-cid-ssdmjifj><span class="left arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-left" data-astro-cid-ssdmjifj></i></span><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Linux常用工具</span><span class="post-nav-item" data-astro-cid-ssdmjifj>上一篇</span></span></a></div><div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="next" rel="next" href="/2019/08/01/Mac/软件/" data-astro-cid-ssdmjifj><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>软件</span><span class="post-nav-item" data-astro-cid-ssdmjifj>下一篇</span></span><span class="right arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-right" data-astro-cid-ssdmjifj></i></span></a></div></div><div class="comment-container px-2 sm:px-6 md:px-8 pb-8" id="comments" data-pagefind-ignore><div class="comments-container mt-10 w-full"><div id="comment-anchor" class="w-full h-2.5"></div><div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">评论</div><div id="utterances-container"></div></div></div><script>(function(){const repo = "jeromexiong/jeromexiong.github.io";
+
+  (function () {
+    var container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    var script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.async = true;
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('repo', repo);
+    // 硬约束：旧评论按标题建 issue，这里只能是 title。
+    script.setAttribute('issue-term', 'title');
+    script.setAttribute(
+      'theme',
+      document.documentElement.classList.contains('dark') ? 'github-dark' : 'github-light'
+    );
+    container.appendChild(script);
+  })();
+})();</script></div><div class="toc-content-container" data-astro-cid-ssdmjifj><div class="post-toc-wrap" data-astro-cid-ssdmjifj><div class="post-toc" data-astro-cid-ssdmjifj><div class="toc-title" data-astro-cid-ssdmjifj>目录</div><div class="page-title" data-astro-cid-ssdmjifj>Linux常用命令大全</div><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8"><span class="nav-text">Linux常用命令大全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="nav-text">系统信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E6%9C%BA-%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%B3%E6%9C%BA%E9%87%8D%E5%90%AF%E4%BB%A5%E5%8F%8A%E7%99%BB%E5%87%BA-"><span class="nav-text">关机 (系统的关机、重启以及登出 )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%92%8C%E7%BE%A4%E7%BB%84"><span class="nav-text">用户和群组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8C%85%E5%92%8C%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6"><span class="nav-text">打包和压缩文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4"><span class="nav-text">磁盘空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD"><span class="nav-text">备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%9B%98"><span class="nav-text">光盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-text">网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95"><span class="nav-text">文件和目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2"><span class="nav-text">文件搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">挂载文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E6%9D%83%E9%99%90"><span class="nav-text">文件的权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E7%89%B9%E6%AE%8A%E5%B1%9E%E6%80%A7"><span class="nav-text">文件的特殊属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90"><span class="nav-text">文件系统分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">初始化一个文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#swap%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">SWAP文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%AE%BE%E7%BD%AE%E5%92%8C%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="nav-text">字符设置和文件格式转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-text">安装包管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm%E5%8C%85"><span class="nav-text">RPM包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%8D%87%E7%BA%A7%E5%99%A8"><span class="nav-text">YUM软件包升级器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deb%E5%8C%85"><span class="nav-text">DEB包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apt%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7"><span class="nav-text">APT软件工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#other"><span class="nav-text">Other</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-text">查看文件内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86"><span class="nav-text">文本处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-top-index-"><span class="nav-text">GO TOP INDEX ^</span></a></li></ol></li></ol></li></ol></div></div><div class="post-sidebar-container" data-astro-cid-ssdmjifj><div class="sidebar-content sidebar-recommended" data-astro-cid-wv7whodv><div class="sidebar-recommended-title" data-astro-cid-wv7whodv>推荐阅读</div><ul class="sidebar-recommended-list" data-astro-cid-wv7whodv><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/15/工具/FVM-Flutter版本管理工具使用指南/" data-astro-cid-wv7whodv>FVM 使用指南：Flutter 多版本安装与切换</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-wv7whodv>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/04/AI-Agent学习系列/LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析/" data-astro-cid-wv7whodv>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/15/Web-前端/Oxc-配置指南-oxlint-oxfmt/" data-astro-cid-wv7whodv>Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/02/AI模块/Flutter-3-44-开发规范/" data-astro-cid-wv7whodv>Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a></li></ul></div></div></div></div></div></div><div class="main-content-footer"><footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color"><div class="info-container py-3 text-center"><div class="text-center">&copy;<span>2020</span>- 2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a></div><div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left"><span class="lg:block text-sm">由 <a target="_blank" rel="noopener" class="text-base" href="https://astro.build">Astro</a> 驱动</span><span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine</a></span></div><div>博客已运行 <span class="odometer" id="runtime" data-start="2020-01-01"></span></div></div></footer></div></div><!-- 右下角工具条（主题切换/RSS/返回顶部），fixed 定位不占布局。 --><div class="right-side-tools-container hide"><div class="side-tools-container"><!-- 齿轮展开后才显示：主题切换、RSS --><ul class="hidden-tools-list"><li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li><li class="right-bottom-tools rss flex justify-center items-center"><a class="flex justify-center items-center" href="/atom.xml" target="_blank" rel="noopener" aria-label="RSS"><i class="fa-regular fa-rss"></i></a></li></ul><!-- 常驻：齿轮、返回顶部（滚过 400px 才出现，见 scripts/scroll.js） --><ul class="visible-tools-list"><li class="right-bottom-tools toggle-tools-list flex justify-center items-center" role="button" tabindex="0" aria-label="更多工具"><i class="fa-regular fa-cog"></i></li><li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center" role="button" tabindex="0" aria-label="返回顶部"><i class="arrow-up fas fa-arrow-up"></i><span class="percent">0%</span></li></ul></div></div><!-- 站内搜索弹窗：fixed 遮罩，默认隐藏，交互见 scripts/search.js。 --><div id="search-modal" class="search-pop-overlay" role="dialog" aria-modal="true" aria-label="站内搜索" aria-hidden="true" data-site-title="Jerome Xiong"><div class="popup search-popup"><div class="search-header"><span class="search-input-field-pre" role="button" tabindex="0" aria-label="清空搜索"><i class="fa-solid fa-keyboard"></i></span><div class="search-input-container"><input id="search-input" class="search-input" type="search" placeholder="站内搜索您需要的内容..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="搜索关键词"></div><span class="popup-btn-close" role="button" tabindex="0" aria-label="关闭搜索"><i class="fa-solid fa-times"></i></span></div><div id="search-results" aria-live="polite" aria-label="搜索结果"></div></div></div></main><!-- 浏览端脚本：Astro 合并打包成一个模块，DOM 已解析完才执行（type=module 默认 defer）。
+         一律用副作用 import，模块内部自己找挂载点，页面没有对应 DOM 时静默跳过。 --><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CGH9Cwlc.js"></script></body></html>

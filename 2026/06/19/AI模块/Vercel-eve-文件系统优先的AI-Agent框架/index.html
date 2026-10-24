@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战 | Jerome Xiong</title><meta name="description" content="Vercel 开源的 eve 是一个文件系统优先（Filesystem-first）的 AI Agent 框架，5 分钟即可上手构建你的第一个 Agent"><meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术"><meta name="author" content="Jerome Xiong"><link rel="canonical" href="https://jeromexiong.github.io/2026/06/19/AI%E6%A8%A1%E5%9D%97/Vercel-eve-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%85%88%E7%9A%84AI-Agent%E6%A1%86%E6%9E%B6/"><!-- feed 自动发现：旧站在 head 里两条都挂了，浏览器/阅读器据此显示订阅按钮。 --><link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml"><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss2.xml"><meta property="og:title" content="Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战 | Jerome Xiong"><meta property="og:description" content="Vercel 开源的 eve 是一个文件系统优先（Filesystem-first）的 AI Agent 框架，5 分钟即可上手构建你的第一个 Agent"><meta property="og:type" content="article"><meta property="og:url" content="https://jeromexiong.github.io/2026/06/19/AI%E6%A8%A1%E5%9D%97/Vercel-eve-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%85%88%E7%9A%84AI-Agent%E6%A1%86%E6%9E%B6/"><meta property="og:image" content="https://jeromexiong.github.io/images/covers/AI%E6%A8%A1%E5%9D%97-Vercel-eve-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%85%88%E7%9A%84AI-Agent%E6%A1%86%E6%9E%B6.png"><meta property="og:site_name" content="Jerome Xiong"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="/images/avatar-192.png" sizes="192x192"><link rel="apple-touch-icon" sizes="180x180" href="/images/avatar-192.png"><meta name="theme-color" content="#7C3AED"><!-- 主题初始化必须在首次绘制前跑完，避免亮色闪一下再变暗。
+         localStorage 键与旧主题一致，老访客的暗色偏好不丢。
+         主题 CSS 分两档：`dark` / `light` 加在 <html>（Tailwind 的 dark: 变体），
+         `dark-mode` / `light-mode` 加在 <body>（code-theme.styl 的代码块配色按 body 选档）。
+         两者必须同时同步、并各自移除反向类，否则切换后暗色代码块会掉回亮色配色。 --><script>
+      (function () {
+        const KEY = 'REDEFINE-THEME-STATUS';
+        let theme = null;
+        try {
+          const saved = localStorage.getItem(KEY);
+          if (saved) theme = JSON.parse(saved).isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* 坏数据按未保存处理 */
+        }
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        const root = document.documentElement;
+        const apply = function (t) {
+          const other = t === 'dark' ? 'light' : 'dark';
+          /* <html> 只带裸档位（Tailwind dark: 变体），反向档位一并摘掉避免残留。 */
+          root.classList.remove(other);
+          root.classList.add(t);
+          /* 代码块配色认 <body> 上的 <theme>-mode，切换时两档互斥。 */
+          if (document.body) {
+            document.body.classList.remove(t + '-mode', other + '-mode');
+            document.body.classList.add(t + '-mode');
+          }
+          root.style.colorScheme = t;
+        };
+        apply(theme);
+        // 本脚本在 <head> 里执行时 document.body 还不存在，DOM 就绪后补一次。
+        document.addEventListener('DOMContentLoaded', function () {
+          apply(theme);
+        });
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BYNm7Ctz.css"><style>.post-sidebar-container[data-astro-cid-ssdmjifj]{margin-top:24px}.article-wordcount[data-astro-cid-ssdmjifj],.article-min2read[data-astro-cid-ssdmjifj]{white-space:nowrap}
+.sidebar-recommended[data-astro-cid-wv7whodv]{padding:20px;border-radius:18px;box-sizing:border-box;background:var(--background-color);box-shadow:var(--redefine-box-shadow);white-space:normal}.sidebar-recommended[data-astro-cid-wv7whodv]:hover{box-shadow:var(--redefine-box-shadow-hover)}.sidebar-content[data-astro-cid-wv7whodv]+.sidebar-content[data-astro-cid-wv7whodv]{margin-top:22.8px}.sidebar-recommended-title[data-astro-cid-wv7whodv]{font-size:1rem;font-weight:600;color:var(--second-text-color);margin-bottom:12px}.sidebar-recommended-list[data-astro-cid-wv7whodv]{list-style:none;margin:0;padding:0}.sidebar-recommended-item[data-astro-cid-wv7whodv]{margin:0 0 10px}.sidebar-recommended-item[data-astro-cid-wv7whodv]:last-child{margin-bottom:0}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;font-size:.85rem;line-height:1.5;color:var(--third-text-color);text-decoration:none;transition:color .2s}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]:hover{color:var(--primary-color)}
+</style></head><body><!-- 主题的阅读进度条：body 第一个子元素，固定在最顶端。数值由后续任务的 runtime.js 更新。 --><div class="progress-bar-container"><span class="scroll-progress-bar"></span></div><main class="page-container" id="swup"><div class="main-content-container flex flex-col justify-between min-h-dvh"><div class="main-content-header"><header class="navbar-container px-6 md:px-12"><div class="navbar-content transition-navbar"><div class="left"><a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/"><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" class="w-full h-full rounded-xs"></a><a class="logo-title" href="/"><h1>Jerome Xiong</h1></a></div><div class="right"><!-- PC --><div class="desktop"><ul class="navbar-list"><li class="navbar-item"><a href="/"><i class="fa-regular fa-house fa-fw"></i>首页</a></li><li class="navbar-item"><a href="https://github.com/jeromexiong" target="_blank" rel="noopener"><i class="fa-brands fa-github fa-fw"></i>GitHub</a></li><li class="navbar-item"><a href="/archives/"><i class="fa-regular fa-clock fa-fw"></i>归档</a></li><li class="navbar-item"><a href="/categories/"><i class="fa-regular fa-folder fa-fw"></i>分类</a></li><li class="navbar-item"><a href="/tags/"><i class="fa-regular fa-tag fa-fw"></i>标签</a></li><li class="navbar-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></li><li class="navbar-item theme-toggle"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li></ul></div><!-- Mobile --><div class="mobile"><button class="icon-item theme-toggle" type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button><div class="icon-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></div><div class="icon-item navbar-bar" role="button" tabindex="0" aria-label="菜单"><div class="navbar-bar-middle"></div></div></div></div></div><!-- 移动端抽屉；展开状态由后续任务的 JS 加 navbar-drawer-show --><div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between"><ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start"><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/"><span>首页</span><i class="fa-regular fa-house fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="https://github.com/jeromexiong" target="_blank" rel="noopener"><span>GitHub</span><i class="fa-brands fa-github fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/archives/"><span>归档</span><i class="fa-regular fa-clock fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/categories/"><span>分类</span><i class="fa-regular fa-folder fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/tags/"><span>标签</span><i class="fa-regular fa-tag fa-fw"></i></a></li></ul></div></header></div><div class="main-content-body transition-fade-up"><div class="main-content has-toc"><div class="post-page-container show-toc flex relative justify-between box-border w-full h-full" data-astro-cid-ssdmjifj><div class="article-content-container" data-pagefind-body data-astro-cid-ssdmjifj><div class="article-title relative w-full" data-astro-cid-ssdmjifj><picture style="display: contents" data-astro-cid-ssdmjifj><source srcset="/images/covers/AI模块-Vercel-eve-文件系统优先的AI-Agent框架.webp" type="image/webp" data-astro-cid-ssdmjifj><img src="/images/covers/AI模块-Vercel-eve-文件系统优先的AI-Agent框架.png" alt="Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战" width="800" height="420" loading="eager" fetchpriority="high" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" data-astro-cid-ssdmjifj></picture><div class="w-full flex items-center absolute bottom-0 justify-start" data-astro-cid-ssdmjifj><h1 data-pagefind-meta="title" class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color" data-astro-cid-ssdmjifj>Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战</h1></div></div><div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px" data-astro-cid-ssdmjifj><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" data-astro-cid-ssdmjifj></div><div class="info flex flex-col justify-between" data-astro-cid-ssdmjifj><div class="author flex items-center" data-astro-cid-ssdmjifj><span class="name text-default-text-color text-lg font-semibold" data-astro-cid-ssdmjifj>Jerome Xiong</span></div><div class="meta-info" data-astro-cid-ssdmjifj><div class="article-meta-info" data-astro-cid-ssdmjifj><span class="article-date article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-pen-fancy" data-astro-cid-ssdmjifj></i>&nbsp;<span class="desktop" data-astro-cid-ssdmjifj>2026-06-19 08:16:08</span><span class="mobile" data-astro-cid-ssdmjifj>2026-06-19 08:16:08</span><span class="hover-info" data-astro-cid-ssdmjifj>创建</span></span><span class="article-date article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-wrench" data-astro-cid-ssdmjifj></i>&nbsp;<span class="desktop" data-astro-cid-ssdmjifj>2026-06-22 18:00</span><span class="mobile" data-astro-cid-ssdmjifj>2026-06-22 18:00</span><span class="hover-info" data-astro-cid-ssdmjifj>更新</span></span><span class="article-categories article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-folders" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/categories/AI/" data-astro-cid-ssdmjifj>AI</a></li><li data-astro-cid-ssdmjifj>&gt;</li><li data-astro-cid-ssdmjifj><a href="/categories/AI/工具/" data-astro-cid-ssdmjifj>工具</a></li></ul></span><span class="article-wordcount article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-typewriter" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>2.4k 字</span></span><span class="article-min2read article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-clock" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>8 分钟</span></span></div></div></div></div><div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8" data-astro-cid-ssdmjifj><blockquote>
+<p>eve 是一个文件系统优先（filesystem-first）的持久化 AI Agent 框架，由 Vercel 团队开源，遵循 Apache 2.0 协议。它的核心理念是：文件系统即接口——你不需要复杂的配置文件，只需要在项目中创建约定好的文件和目录，Agent 就定义好了。</p>
+</blockquote>
+<h2 id="引言">引言</h2>
+<p>AI Agent 是 2026 年最火的开发方向之一。从 OpenAI 的 GPTs 到各种 Agent 框架，开发者们一直在寻找更简单、更直观的方式来构建 AI Agent。今天要介绍的 Vercel eve，可能就是这个问题的终极答案。</p>
+<p>就在上周，Vercel 在 GitHub 上开源了一个名为 eve 的 AI Agent 框架，短短几天就收获了超过 1300+ Star。作为对比，Next.js 之父 Vercel 出品的每一个开源项目都代表着行业风向。eve 的核心理念是：<strong>文件系统即接口（Filesystem-first）</strong>。</p>
+<p>这意味着什么？简单来说，你不需要复杂的配置文件、不需要学习繁琐的 SDK，你只需要在项目中创建一些约定好的文件和目录，你的 AI Agent 就定义好了。</p>
+<h2 id="什么是-vercel-eve">什么是 Vercel eve</h2>
+<p>eve 是一个**文件系统优先（filesystem-first）**的持久化 AI Agent 框架。它由 Vercel 团队开发并开源，遵循 Apache 2.0 协议。</p>
+<p>它的核心理念是将 Agent 的能力分布在文件系统的约定路径中。这样的设计有几个显著优势：</p>
+<ul>
+<li><strong>直观的项目结构</strong> —— 看一眼目录树就知道 Agent 能做什么</li>
+<li><strong>易于扩展</strong> —— 添加工具就是添加一个文件</li>
+<li><strong>易于运维</strong> —— 代码即配置，支持 Git 版本管理</li>
+<li><strong>持久化</strong> —— Agent 的状态可以跨会话保持</li>
+</ul>
+<h2 id="eve-的核心概念">eve 的核心概念</h2>
+<p>eve 的项目结构非常清晰，看一次就记住了：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>my-agent/</span></span>
+<span class="line"><span class="line-number">2</span><span>└── agent/</span></span>
+<span class="line"><span class="line-number">3</span><span>    ├── agent.ts            # 可选：模型和运行时配置</span></span>
+<span class="line"><span class="line-number">4</span><span>    ├── instructions.md     # 必需：系统提示词（System Prompt）</span></span>
+<span class="line"><span class="line-number">5</span><span>    ├── tools/              # 可选：Agent 可以调用的函数工具</span></span>
+<span class="line"><span class="line-number">6</span><span>    │   └── get_weather.ts</span></span>
+<span class="line"><span class="line-number">7</span><span>    ├── skills/             # 可选：按需加载的任务流程</span></span>
+<span class="line"><span class="line-number">8</span><span>    │   └── plan_a_trip.md</span></span>
+<span class="line"><span class="line-number">9</span><span>    ├── channels/           # 可选：消息通道（HTTP、Slack、Discord 等）</span></span>
+<span class="line"><span class="line-number">10</span><span>    │   └── slack.ts</span></span>
+<span class="line"><span class="line-number">11</span><span>    └── schedules/          # 可选：定时任务（Cron Job）</span></span>
+<span class="line"><span class="line-number">12</span><span>        └── weekly_recap.ts</span></span></code></pre>
+<p>每个目录都有特定的含义：</p>
+<table>
+<thead>
+<tr>
+<th>目录/文件</th>
+<th>是否必须</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instructions.md</code></td>
+<td>✅ 必须</td>
+<td>Agent 的系统提示词，定义行为准则</td>
+</tr>
+<tr>
+<td><code>agent.ts</code></td>
+<td>可选</td>
+<td>配置使用的模型、API key 等</td>
+</tr>
+<tr>
+<td><code>tools/</code></td>
+<td>可选</td>
+<td>Agent 可以调用的 TypeScript 函数</td>
+</tr>
+<tr>
+<td><code>skills/</code></td>
+<td>可选</td>
+<td>按需加载的操作流程（Markdown 描述）</td>
+</tr>
+<tr>
+<td><code>channels/</code></td>
+<td>可选</td>
+<td>接入消息渠道（HTTP API、Slack Bot、Discord Bot）</td>
+</tr>
+<tr>
+<td><code>schedules/</code></td>
+<td>可选</td>
+<td>定时任务配置</td>
+</tr>
+</tbody>
+</table>
+<h2 id="快速开始5-分钟构建第一个-agent">快速开始：5 分钟构建第一个 Agent</h2>
+<h3 id="环境要求">环境要求</h3>
+<ul>
+<li>Node.js 18+</li>
+<li>npm 或 pnpm</li>
+</ul>
+<h3 id="第一步初始化项目">第一步：初始化项目</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npx</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eve@latest</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> init</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> my-agent</span></span></code></pre>
+<p>这条命令会：</p>
+<ol>
+<li>创建一个 <code>my-agent</code> 目录</li>
+<li>安装依赖（eve 包本身）</li>
+<li>初始化 Git 仓库</li>
+<li>启动交互式终端 UI</li>
+</ol>
+<p>如果你已有项目，也可以直接初始化到当前目录：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#005CC5;--shiki-dark:#79B8FF">cd</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> myapp</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npx</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eve@latest</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> init</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> .</span></span></code></pre>
+<h3 id="第二步编写系统提示词">第二步：编写系统提示词</h3>
+<p>打开生成的 <code>agent/instructions.md</code>，用你自己定义的 Agent 行为替换默认内容：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">你是一个简洁的天气预报助手。</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">告诉用户天气数据是模拟的（Mock），仅供演示。</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">回答要简短、友好，每次回复最后加一句"☀️ 祝你今天好心情！"</span></span></code></pre>
+<h3 id="第三步添加工具函数">第三步：添加工具函数</h3>
+<p>接下来为 Agent 添加一个获取天气的工具。创建 <code>agent/tools/get_weather.ts</code>：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span class="line-number">1</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { defineTool } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eve/tools"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { z } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "zod"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> defineTool</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  description: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"获取指定城市的模拟天气数据"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  inputSchema: z.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">object</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    city: z.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">string</span><span style="color:#24292E;--shiki-dark:#E1E4E8">().</span><span style="color:#6F42C1;--shiki-dark:#B392F0">min</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">).</span><span style="color:#6F42C1;--shiki-dark:#B392F0">describe</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"城市名称，如 Beijing、Shanghai"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">),</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  }),</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#D73A49;--shiki-dark:#F97583">  async</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> execute</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({ </span><span style="color:#E36209;--shiki-dark:#FFAB70">city</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }) {</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#6A737D;--shiki-dark:#6A737D">    // 这里可以接入真实天气 API</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      city,</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      condition: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Sunny"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      temperatureC: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">25</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      humidity: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"60%"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">16</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    };</span></span>
+<span class="line"><span class="line-number">17</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">18</span><span style="color:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre>
+<p>可以看到，eve 使用了 zod 做输入验证，defineTool 包装了工具的描述和实现逻辑。这一切都遵循 TypeScript 的类型安全。</p>
+<h3 id="第四步配置模型">第四步：配置模型</h3>
+<p>创建 <code>agent/agent.ts</code> 来选择你想要的模型：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span class="line-number">1</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { defineAgent } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eve"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">2</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> defineAgent</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  model: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"gpt-4o"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  provider: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"openai"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  temperature: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">0.7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre>
+<p>目前 eve 支持 OpenAI、Anthropic Claude 等主流模型提供商。你也可以配置自定义的 API 端点来使用国产大模型。</p>
+<h3 id="第五步运行你的-agent">第五步：运行你的 Agent</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#005CC5;--shiki-dark:#79B8FF">cd</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> my-agent</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npx</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eve</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> dev</span></span></code></pre>
+<p>就可以在终端中与你的 Agent 交互了！输入 "北京今天天气怎么样？"，Agent 会自动调用 get_weather 工具返回数据。</p>
+<h2 id="进阶用法skill-系统和-channel-系统">进阶用法：Skill 系统和 Channel 系统</h2>
+<h3 id="skill-系统按需加载的能力">Skill 系统：按需加载的能力</h3>
+<p>想象一下，你希望 Agent 在用户需要时能够"策划一次旅行"。这个流程可能包含多个步骤，不适合放到系统提示词里。eve 的 Skill 系统就是为此设计的：</p>
+<p>创建 <code>agent/skills/plan_a_trip.md</code>：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span class="line-number">1</span><span style="color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold">## 旅行计划流程</span></span>
+<span class="line"><span class="line-number">2</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">当用户要求策划旅行时，按以下步骤执行：</span></span>
+<span class="line"><span class="line-number">4</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#E36209;--shiki-dark:#FFAB70">1.</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 首先询问用户的目的地、时间、预算</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#E36209;--shiki-dark:#FFAB70">2.</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 调用 </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`search_flights`</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 工具查询航班</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#E36209;--shiki-dark:#FFAB70">3.</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 调用 </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`search_hotels`</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 工具查询酒店</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#E36209;--shiki-dark:#FFAB70">4.</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 调用 </span><span style="color:#005CC5;--shiki-dark:#79B8FF">`get_weather`</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 工具查询目的地天气</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#E36209;--shiki-dark:#FFAB70">5.</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> 整合信息生成旅行建议书</span></span></code></pre>
+<p>Skill 是 Markdown 文件，用自然语言描述流程。Agent 会在需要时自动加载并理解这些流程。</p>
+<h3 id="channel-系统接入真实业务">Channel 系统：接入真实业务</h3>
+<p>想让 Agent 接入 Slack 或 Discord？只需要创建一个 channel 文件：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span class="line-number">1</span><span style="color:#6A737D;--shiki-dark:#6A737D">// agent/channels/slack.ts</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { defineChannel } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eve/channels"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> defineChannel</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  type: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"slack"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  token: process.env.</span><span style="color:#005CC5;--shiki-dark:#79B8FF">SLACK_BOT_TOKEN</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  signingSecret: process.env.</span><span style="color:#005CC5;--shiki-dark:#79B8FF">SLACK_SIGNING_SECRET</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre>
+<p>同样，你也可以创建 HTTP API 端点：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span class="line-number">1</span><span style="color:#6A737D;--shiki-dark:#6A737D">// agent/channels/api.ts</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { defineChannel } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eve/channels"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> defineChannel</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  type: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"http"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  path: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"/api/agent"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  method: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"POST"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre>
+<p>这样你的 Agent 就变成了一个 HTTP 服务，可以集成到任何业务系统中。</p>
+<h2 id="eve-的设计哲学为什么文件系统即接口">eve 的设计哲学：为什么文件系统即接口</h2>
+<p>你可能好奇，为什么 Vercel 选择用文件系统来定义 Agent，而不是像 LangChain 那样用代码编排？</p>
+<p>这其实是 Vercel 一以贯之的设计理念。回想一下 Next.js 的成功之处：<strong>约定优于配置</strong>。在 Next.js 中，<code>pages/</code> 目录下的文件自动变成路由，<code>app/</code> 目录下的 <code>layout.tsx</code> 自动成为布局。开发者不需要写路由配置文件，不需要注册组件。</p>
+<p>eve 把同样的理念带到了 AI Agent 领域：</p>
+<ul>
+<li><code>tools/</code> 目录下的每个文件就是一个工具 —— 不需要注册、不需要导入</li>
+<li><code>skills/</code> 目录下的每个文件就是一个技能 —— 按需自动加载</li>
+<li><code>instructions.md</code> 就是系统提示词 —— 用你最熟悉的 Markdown 编写</li>
+</ul>
+<p>这种设计思路极大降低了 Agent 开发的认知负荷。你不需要理解复杂的 Agent 编排逻辑，只需要知道：文件放在哪里，Agent 就有什么能力。</p>
+<h2 id="与传统-agent-框架的对比">与传统 Agent 框架的对比</h2>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Vercel eve</th>
+<th>LangChain</th>
+<th>AutoGPT</th>
+<th>Dify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学习曲线</td>
+<td>⭐ 低（文件系统即接口）</td>
+<td>⭐⭐⭐ 高</td>
+<td>⭐⭐ 中</td>
+<td>⭐ 低</td>
+</tr>
+<tr>
+<td>可扩展性</td>
+<td>⭐⭐⭐ 目录扩展</td>
+<td>⭐⭐⭐ Chain 组合</td>
+<td>⭐⭐ 插件</td>
+<td>⭐⭐ 工作流</td>
+</tr>
+<tr>
+<td>TypeScript 支持</td>
+<td>✅ 原生</td>
+<td>✅ 支持</td>
+<td>❌ Python</td>
+<td>❌ Python</td>
+</tr>
+<tr>
+<td>持久化状态</td>
+<td>✅ 内置</td>
+<td>❌ 需额外配置</td>
+<td>❌ 有限</td>
+<td>✅ 内置</td>
+</tr>
+<tr>
+<td>多通道接入</td>
+<td>✅ HTTP/Slack/Discord</td>
+<td>✅ 需额外配置</td>
+<td>❌</td>
+<td>✅ 内置</td>
+</tr>
+<tr>
+<td>开源协议</td>
+<td>Apache 2.0</td>
+<td>MIT</td>
+<td>MIT</td>
+<td>Apache 2.0</td>
+</tr>
+<tr>
+<td>文件系统约定</td>
+<td>✅ 核心设计</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到，eve 最大的差异化优势就是<strong>文件系统约定</strong>和<strong>极低的学习曲线</strong>。如果你已经熟悉 TypeScript 和 Markdown，基本上不需要额外学习就能上手。</p>
+<h2 id="实战场景构建一个自动化运营助手">实战场景：构建一个自动化运营助手</h2>
+<p>让我们来构建一个更有实际价值的场景：一个内容运营助手，它可以自动从 RSS 抓取内容、生成摘要、并发布到多个平台。</p>
+<h3 id="项目结构">项目结构</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>content-bot/</span></span>
+<span class="line"><span class="line-number">2</span><span>└── agent/</span></span>
+<span class="line"><span class="line-number">3</span><span>    ├── instructions.md          # 系统提示词</span></span>
+<span class="line"><span class="line-number">4</span><span>    ├── agent.ts                 # 配置 model</span></span>
+<span class="line"><span class="line-number">5</span><span>    ├── tools/</span></span>
+<span class="line"><span class="line-number">6</span><span>    │   ├── fetch_rss.ts         # 抓取 RSS 内容</span></span>
+<span class="line"><span class="line-number">7</span><span>    │   ├── generate_summary.ts  # 调用 AI 生成摘要</span></span>
+<span class="line"><span class="line-number">8</span><span>    │   └── post_to_csdn.ts      # 发布到 CSDN</span></span>
+<span class="line"><span class="line-number">9</span><span>    └── schedules/</span></span>
+<span class="line"><span class="line-number">10</span><span>        └── daily_publish.ts     # 每天早上 8 点执行</span></span></code></pre>
+<h3 id="核心工具实现">核心工具实现</h3>
+<p>RSS 抓取工具：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span class="line-number">1</span><span style="color:#6A737D;--shiki-dark:#6A737D">// agent/tools/fetch_rss.ts</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { defineTool } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eve/tools"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { z } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "zod"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">4</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> defineTool</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  description: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"从 RSS 链接抓取最新文章列表"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  inputSchema: z.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">object</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    rssUrl: z.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">string</span><span style="color:#24292E;--shiki-dark:#E1E4E8">().</span><span style="color:#6F42C1;--shiki-dark:#B392F0">url</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(),</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    limit: z.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">number</span><span style="color:#24292E;--shiki-dark:#E1E4E8">().</span><span style="color:#6F42C1;--shiki-dark:#B392F0">default</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">),</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  }),</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#D73A49;--shiki-dark:#F97583">  async</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> execute</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({ </span><span style="color:#E36209;--shiki-dark:#FFAB70">rssUrl</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#E36209;--shiki-dark:#FFAB70">limit</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }) {</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#D73A49;--shiki-dark:#F97583">    const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> response</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#D73A49;--shiki-dark:#F97583"> await</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> fetch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(rssUrl);</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#D73A49;--shiki-dark:#F97583">    const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> xml</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#D73A49;--shiki-dark:#F97583"> await</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> response.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">text</span><span style="color:#24292E;--shiki-dark:#E1E4E8">();</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#6A737D;--shiki-dark:#6A737D">    // 解析 XML 提取文章标题和链接</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#D73A49;--shiki-dark:#F97583">    const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> items</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> parseRSS</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(xml).</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, limit);</span></span>
+<span class="line"><span class="line-number">16</span><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> items;</span></span>
+<span class="line"><span class="line-number">17</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">18</span><span style="color:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre>
+<p>定时发布任务：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span class="line-number">1</span><span style="color:#6A737D;--shiki-dark:#6A737D">// agent/schedules/daily_publish.ts</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { defineSchedule } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "eve/schedules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#D73A49;--shiki-dark:#F97583"> default</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> defineSchedule</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  cron: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"0 8 * * *"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// 每天早上 8 点</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#D73A49;--shiki-dark:#F97583">  async</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> run</span><span style="color:#24292E;--shiki-dark:#E1E4E8">() {</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#D73A49;--shiki-dark:#F97583">    const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> posts</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#D73A49;--shiki-dark:#F97583"> await</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> this</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">callTool</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"fetch_rss"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, {</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      rssUrl: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"https://blog.example.com/rss"</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    });</span></span>
+<span class="line"><span class="line-number">10</span><span style="color:#D73A49;--shiki-dark:#F97583">    for</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> (</span><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> post</span><span style="color:#D73A49;--shiki-dark:#F97583"> of</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> posts) {</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#D73A49;--shiki-dark:#F97583">      const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> summary</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#D73A49;--shiki-dark:#F97583"> await</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> this</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">callTool</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"generate_summary"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, {</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        content: post.content,</span></span>
+<span class="line"><span class="line-number">13</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      });</span></span>
+<span class="line"><span class="line-number">14</span><span style="color:#D73A49;--shiki-dark:#F97583">      await</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> this</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">callTool</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"post_to_csdn"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, {</span></span>
+<span class="line"><span class="line-number">15</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        title: post.title,</span></span>
+<span class="line"><span class="line-number">16</span><span style="color:#24292E;--shiki-dark:#E1E4E8">        content: summary,</span></span>
+<span class="line"><span class="line-number">17</span><span style="color:#24292E;--shiki-dark:#E1E4E8">      });</span></span>
+<span class="line"><span class="line-number">18</span><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span class="line-number">19</span><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span class="line-number">20</span><span style="color:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre>
+<p>这个例子展示了 eve 的真正威力：用文件系统组织能力，用自然语言描述流程，用 TypeScript 实现工具。而这一切都遵循"约定优于配置"的原则。</p>
+<h2 id="如何部署-eve-agent">如何部署 eve Agent</h2>
+<p>eve 天然与 Vercel 平台集成。你可以一键部署到 Vercel：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span class="line-number">1</span><span style="color:#6F42C1;--shiki-dark:#B392F0">npx</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> eve</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> deploy</span></span></code></pre>
+<p>这会将你的 Agent 部署为 Vercel Functions，自动获得：</p>
+<ul>
+<li><strong>Serverless 弹性伸缩</strong> —— 零流量时不收费</li>
+<li><strong>边缘网络加速</strong> —— 全球访问低延迟</li>
+<li><strong>自带域名和 HTTPS</strong></li>
+<li><strong>持续集成</strong> —— 关联 Git 仓库，推送即部署</li>
+</ul>
+<p>如果你需要私有化部署，也可以打包成 Docker 镜像：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="dockerfile"><code><span class="line"><span class="line-number">1</span><span style="color:#D73A49;--shiki-dark:#F97583">FROM</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> node:20-alpine</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#D73A49;--shiki-dark:#F97583">WORKDIR</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> /app</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#D73A49;--shiki-dark:#F97583">COPY</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> . .</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#D73A49;--shiki-dark:#F97583">RUN</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> npm install</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#D73A49;--shiki-dark:#F97583">RUN</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> npx eve build</span></span>
+<span class="line"><span class="line-number">6</span><span style="color:#D73A49;--shiki-dark:#F97583">CMD</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"npx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eve"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"start"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre>
+<h2 id="总结与展望">总结与展望</h2>
+<p>Vercel eve 代表了一种新的 Agent 开发范式。它摒弃了传统框架中复杂的抽象层和配置逻辑，回归到开发者最熟悉的东西 —— 文件系统。</p>
+<p>这种设计带来的最直接好处是：<strong>门槛极低、结构清晰、易于运维</strong>。无论你是刚接触 AI Agent 的新手，还是在生产环境中管理大量 Agent 的团队，eve 都能提供简洁而强大的体验。</p>
+<p>如果你正在考虑构建 AI Agent 应用，强烈建议试试 eve。5 分钟上手，一个下午就能做出生产可用的 Agent。</p>
+<h2 id="更多资源">更多资源</h2>
+<ul>
+<li>🔗 <a href="https://github.com/vercel/eve">eve GitHub 仓库</a></li>
+<li>🔗 <a href="https://beta.eve.dev/docs">官方文档</a></li>
+</ul>
+</div><div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8" data-pagefind-ignore><div class="article-copyright-info-container"><ul><li><strong>标题:</strong> Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战</li><li><strong>作者:</strong> Jerome Xiong</li><li><strong>创建于:</strong> 2026-06-19 08:16:08</li><li><strong>更新于:</strong> 2026-06-22 18:00</li><li><strong>链接:</strong> https://jeromexiong.github.io/2026/06/19/AI模块/Vercel-eve-文件系统优先的AI-Agent框架/</li><li><strong>版权声明:</strong>本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。</li></ul></div></div><span class="article-tags article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-tags" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/tags/Vercel/" data-astro-cid-ssdmjifj>Vercel</a></li><li data-astro-cid-ssdmjifj><a href="/tags/eve/" data-astro-cid-ssdmjifj>eve</a></li><li data-astro-cid-ssdmjifj><a href="/tags/AI-Agent/" data-astro-cid-ssdmjifj>AI Agent</a></li><li data-astro-cid-ssdmjifj><a href="/tags/Agent框架/" data-astro-cid-ssdmjifj>Agent框架</a></li><li data-astro-cid-ssdmjifj><a href="/tags/TypeScript/" data-astro-cid-ssdmjifj>TypeScript</a></li><li data-astro-cid-ssdmjifj><a href="/tags/开源/" data-astro-cid-ssdmjifj>开源</a></li></ul></span><div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="prev" rel="prev" href="/2026/06/23/Web-前端/Prettier-ESLint-集成配置指南/" data-astro-cid-ssdmjifj><span class="left arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-left" data-astro-cid-ssdmjifj></i></span><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Prettier + ESLint 集成配置指南 — 以 Vue3 项目为例</span><span class="post-nav-item" data-astro-cid-ssdmjifj>上一篇</span></span></a></div><div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="next" rel="next" href="/2026/06/16/工具/Git-提交信息规范/" data-astro-cid-ssdmjifj><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Git 提交信息规范 — Emoji + Type 约定式提交</span><span class="post-nav-item" data-astro-cid-ssdmjifj>下一篇</span></span><span class="right arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-right" data-astro-cid-ssdmjifj></i></span></a></div></div><div class="comment-container px-2 sm:px-6 md:px-8 pb-8" id="comments" data-pagefind-ignore><div class="comments-container mt-10 w-full"><div id="comment-anchor" class="w-full h-2.5"></div><div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">评论</div><div id="utterances-container"></div></div></div><script>(function(){const repo = "jeromexiong/jeromexiong.github.io";
+
+  (function () {
+    var container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    var script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.async = true;
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('repo', repo);
+    // 硬约束：旧评论按标题建 issue，这里只能是 title。
+    script.setAttribute('issue-term', 'title');
+    script.setAttribute(
+      'theme',
+      document.documentElement.classList.contains('dark') ? 'github-dark' : 'github-light'
+    );
+    container.appendChild(script);
+  })();
+})();</script></div><div class="toc-content-container" data-astro-cid-ssdmjifj><div class="post-toc-wrap" data-astro-cid-ssdmjifj><div class="post-toc" data-astro-cid-ssdmjifj><div class="toc-title" data-astro-cid-ssdmjifj>目录</div><div class="page-title" data-astro-cid-ssdmjifj>Vercel eve：文件系统优先的 AI Agent 框架，5 分钟上手实战</div><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-vercel-eve"><span class="nav-text">什么是 Vercel eve</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eve-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-text">eve 的核心概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B5-%E5%88%86%E9%92%9F%E6%9E%84%E5%BB%BA%E7%AC%AC%E4%B8%80%E4%B8%AA-agent"><span class="nav-text">快速开始：5 分钟构建第一个 Agent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82"><span class="nav-text">环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="nav-text">第一步：初始化项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E7%BC%96%E5%86%99%E7%B3%BB%E7%BB%9F%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="nav-text">第二步：编写系统提示词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%E6%B7%BB%E5%8A%A0%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="nav-text">第三步：添加工具函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9E%8B"><span class="nav-text">第四步：配置模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%E8%BF%90%E8%A1%8C%E4%BD%A0%E7%9A%84-agent"><span class="nav-text">第五步：运行你的 Agent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95skill-%E7%B3%BB%E7%BB%9F%E5%92%8C-channel-%E7%B3%BB%E7%BB%9F"><span class="nav-text">进阶用法：Skill 系统和 Channel 系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#skill-%E7%B3%BB%E7%BB%9F%E6%8C%89%E9%9C%80%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%83%BD%E5%8A%9B"><span class="nav-text">Skill 系统：按需加载的能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#channel-%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%85%A5%E7%9C%9F%E5%AE%9E%E4%B8%9A%E5%8A%A1"><span class="nav-text">Channel 系统：接入真实业务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eve-%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%8D%B3%E6%8E%A5%E5%8F%A3"><span class="nav-text">eve 的设计哲学：为什么文件系统即接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E4%BC%A0%E7%BB%9F-agent-%E6%A1%86%E6%9E%B6%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">与传统 Agent 框架的对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E5%9C%BA%E6%99%AF%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E8%90%A5%E5%8A%A9%E6%89%8B"><span class="nav-text">实战场景：构建一个自动化运营助手</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E5%85%B7%E5%AE%9E%E7%8E%B0"><span class="nav-text">核心工具实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2-eve-agent"><span class="nav-text">如何部署 eve Agent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="nav-text">总结与展望</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E8%B5%84%E6%BA%90"><span class="nav-text">更多资源</span></a></li></ol></div></div><div class="post-sidebar-container" data-astro-cid-ssdmjifj><div class="sidebar-content sidebar-recommended" data-astro-cid-wv7whodv><div class="sidebar-recommended-title" data-astro-cid-wv7whodv>推荐阅读</div><ul class="sidebar-recommended-list" data-astro-cid-wv7whodv><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/15/工具/FVM-Flutter版本管理工具使用指南/" data-astro-cid-wv7whodv>FVM 使用指南：Flutter 多版本安装与切换</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-wv7whodv>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/04/AI-Agent学习系列/LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析/" data-astro-cid-wv7whodv>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/15/Web-前端/Oxc-配置指南-oxlint-oxfmt/" data-astro-cid-wv7whodv>Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/02/AI模块/Flutter-3-44-开发规范/" data-astro-cid-wv7whodv>Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a></li></ul></div></div></div></div></div></div><div class="main-content-footer"><footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color"><div class="info-container py-3 text-center"><div class="text-center">&copy;<span>2020</span>- 2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a></div><div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left"><span class="lg:block text-sm">由 <a target="_blank" rel="noopener" class="text-base" href="https://astro.build">Astro</a> 驱动</span><span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine</a></span></div><div>博客已运行 <span class="odometer" id="runtime" data-start="2020-01-01"></span></div></div></footer></div></div><!-- 右下角工具条（主题切换/RSS/返回顶部），fixed 定位不占布局。 --><div class="right-side-tools-container hide"><div class="side-tools-container"><!-- 齿轮展开后才显示：主题切换、RSS --><ul class="hidden-tools-list"><li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li><li class="right-bottom-tools rss flex justify-center items-center"><a class="flex justify-center items-center" href="/atom.xml" target="_blank" rel="noopener" aria-label="RSS"><i class="fa-regular fa-rss"></i></a></li></ul><!-- 常驻：齿轮、返回顶部（滚过 400px 才出现，见 scripts/scroll.js） --><ul class="visible-tools-list"><li class="right-bottom-tools toggle-tools-list flex justify-center items-center" role="button" tabindex="0" aria-label="更多工具"><i class="fa-regular fa-cog"></i></li><li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center" role="button" tabindex="0" aria-label="返回顶部"><i class="arrow-up fas fa-arrow-up"></i><span class="percent">0%</span></li></ul></div></div><!-- 站内搜索弹窗：fixed 遮罩，默认隐藏，交互见 scripts/search.js。 --><div id="search-modal" class="search-pop-overlay" role="dialog" aria-modal="true" aria-label="站内搜索" aria-hidden="true" data-site-title="Jerome Xiong"><div class="popup search-popup"><div class="search-header"><span class="search-input-field-pre" role="button" tabindex="0" aria-label="清空搜索"><i class="fa-solid fa-keyboard"></i></span><div class="search-input-container"><input id="search-input" class="search-input" type="search" placeholder="站内搜索您需要的内容..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="搜索关键词"></div><span class="popup-btn-close" role="button" tabindex="0" aria-label="关闭搜索"><i class="fa-solid fa-times"></i></span></div><div id="search-results" aria-live="polite" aria-label="搜索结果"></div></div></div></main><!-- 浏览端脚本：Astro 合并打包成一个模块，DOM 已解析完才执行（type=module 默认 defer）。
+         一律用副作用 import，模块内部自己找挂载点，页面没有对应 DOM 时静默跳过。 --><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CGH9Cwlc.js"></script></body></html>

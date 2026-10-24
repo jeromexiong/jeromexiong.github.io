@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FVM 使用指南：Flutter 多版本安装与切换 | Jerome Xiong</title><meta name="description" content="从 GitHub Releases 下载安装 FVM，到配置缓存目录、国内镜像环境变量与 Git 安全目录，一篇讲透 Windows 下用 FVM 管理 Flutter 多版本的完整流程。"><meta name="keywords" content="iOS, Swift, Flutter, 移动开发, 博客, hexo, Jerome Xiong, JX, 编程, 技术"><meta name="author" content="Jerome Xiong"><link rel="canonical" href="https://jeromexiong.github.io/2026/08/15/%E5%B7%A5%E5%85%B7/FVM-Flutter%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><!-- feed 自动发现：旧站在 head 里两条都挂了，浏览器/阅读器据此显示订阅按钮。 --><link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml"><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss2.xml"><meta property="og:title" content="FVM 使用指南：Flutter 多版本安装与切换 | Jerome Xiong"><meta property="og:description" content="从 GitHub Releases 下载安装 FVM，到配置缓存目录、国内镜像环境变量与 Git 安全目录，一篇讲透 Windows 下用 FVM 管理 Flutter 多版本的完整流程。"><meta property="og:type" content="article"><meta property="og:url" content="https://jeromexiong.github.io/2026/08/15/%E5%B7%A5%E5%85%B7/FVM-Flutter%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><meta property="og:image" content="https://jeromexiong.github.io/images/covers/%E5%B7%A5%E5%85%B7-FVM-Flutter%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.png"><meta property="og:site_name" content="Jerome Xiong"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="/images/avatar-192.png" sizes="192x192"><link rel="apple-touch-icon" sizes="180x180" href="/images/avatar-192.png"><meta name="theme-color" content="#7C3AED"><!-- 主题初始化必须在首次绘制前跑完，避免亮色闪一下再变暗。
+         localStorage 键与旧主题一致，老访客的暗色偏好不丢。
+         主题 CSS 分两档：`dark` / `light` 加在 <html>（Tailwind 的 dark: 变体），
+         `dark-mode` / `light-mode` 加在 <body>（code-theme.styl 的代码块配色按 body 选档）。
+         两者必须同时同步、并各自移除反向类，否则切换后暗色代码块会掉回亮色配色。 --><script>
+      (function () {
+        const KEY = 'REDEFINE-THEME-STATUS';
+        let theme = null;
+        try {
+          const saved = localStorage.getItem(KEY);
+          if (saved) theme = JSON.parse(saved).isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* 坏数据按未保存处理 */
+        }
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        const root = document.documentElement;
+        const apply = function (t) {
+          const other = t === 'dark' ? 'light' : 'dark';
+          /* <html> 只带裸档位（Tailwind dark: 变体），反向档位一并摘掉避免残留。 */
+          root.classList.remove(other);
+          root.classList.add(t);
+          /* 代码块配色认 <body> 上的 <theme>-mode，切换时两档互斥。 */
+          if (document.body) {
+            document.body.classList.remove(t + '-mode', other + '-mode');
+            document.body.classList.add(t + '-mode');
+          }
+          root.style.colorScheme = t;
+        };
+        apply(theme);
+        // 本脚本在 <head> 里执行时 document.body 还不存在，DOM 就绪后补一次。
+        document.addEventListener('DOMContentLoaded', function () {
+          apply(theme);
+        });
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BYNm7Ctz.css"><style>.post-sidebar-container[data-astro-cid-ssdmjifj]{margin-top:24px}.article-wordcount[data-astro-cid-ssdmjifj],.article-min2read[data-astro-cid-ssdmjifj]{white-space:nowrap}
+.sidebar-recommended[data-astro-cid-wv7whodv]{padding:20px;border-radius:18px;box-sizing:border-box;background:var(--background-color);box-shadow:var(--redefine-box-shadow);white-space:normal}.sidebar-recommended[data-astro-cid-wv7whodv]:hover{box-shadow:var(--redefine-box-shadow-hover)}.sidebar-content[data-astro-cid-wv7whodv]+.sidebar-content[data-astro-cid-wv7whodv]{margin-top:22.8px}.sidebar-recommended-title[data-astro-cid-wv7whodv]{font-size:1rem;font-weight:600;color:var(--second-text-color);margin-bottom:12px}.sidebar-recommended-list[data-astro-cid-wv7whodv]{list-style:none;margin:0;padding:0}.sidebar-recommended-item[data-astro-cid-wv7whodv]{margin:0 0 10px}.sidebar-recommended-item[data-astro-cid-wv7whodv]:last-child{margin-bottom:0}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;font-size:.85rem;line-height:1.5;color:var(--third-text-color);text-decoration:none;transition:color .2s}.sidebar-recommended-item[data-astro-cid-wv7whodv] a[data-astro-cid-wv7whodv]:hover{color:var(--primary-color)}
+</style></head><body><!-- 主题的阅读进度条：body 第一个子元素，固定在最顶端。数值由后续任务的 runtime.js 更新。 --><div class="progress-bar-container"><span class="scroll-progress-bar"></span></div><main class="page-container" id="swup"><div class="main-content-container flex flex-col justify-between min-h-dvh"><div class="main-content-header"><header class="navbar-container px-6 md:px-12"><div class="navbar-content transition-navbar"><div class="left"><a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/"><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" class="w-full h-full rounded-xs"></a><a class="logo-title" href="/"><h1>Jerome Xiong</h1></a></div><div class="right"><!-- PC --><div class="desktop"><ul class="navbar-list"><li class="navbar-item"><a href="/"><i class="fa-regular fa-house fa-fw"></i>首页</a></li><li class="navbar-item"><a href="https://github.com/jeromexiong" target="_blank" rel="noopener"><i class="fa-brands fa-github fa-fw"></i>GitHub</a></li><li class="navbar-item"><a href="/archives/"><i class="fa-regular fa-clock fa-fw"></i>归档</a></li><li class="navbar-item"><a href="/categories/"><i class="fa-regular fa-folder fa-fw"></i>分类</a></li><li class="navbar-item"><a href="/tags/"><i class="fa-regular fa-tag fa-fw"></i>标签</a></li><li class="navbar-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></li><li class="navbar-item theme-toggle"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li></ul></div><!-- Mobile --><div class="mobile"><button class="icon-item theme-toggle" type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button><div class="icon-item search search-popup-trigger" role="button" tabindex="0" aria-label="搜索" aria-haspopup="dialog" aria-controls="search-modal"><i class="fa-solid fa-magnifying-glass"></i></div><div class="icon-item navbar-bar" role="button" tabindex="0" aria-label="菜单"><div class="navbar-bar-middle"></div></div></div></div></div><!-- 移动端抽屉；展开状态由后续任务的 JS 加 navbar-drawer-show --><div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between"><ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start"><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/"><span>首页</span><i class="fa-regular fa-house fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="https://github.com/jeromexiong" target="_blank" rel="noopener"><span>GitHub</span><i class="fa-brands fa-github fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/archives/"><span>归档</span><i class="fa-regular fa-clock fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/categories/"><span>分类</span><i class="fa-regular fa-folder fa-fw"></i></a></li><li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full"><a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full" href="/tags/"><span>标签</span><i class="fa-regular fa-tag fa-fw"></i></a></li></ul></div></header></div><div class="main-content-body transition-fade-up"><div class="main-content has-toc"><div class="post-page-container show-toc flex relative justify-between box-border w-full h-full" data-astro-cid-ssdmjifj><div class="article-content-container" data-pagefind-body data-astro-cid-ssdmjifj><div class="article-title relative w-full" data-astro-cid-ssdmjifj><picture style="display: contents" data-astro-cid-ssdmjifj><source srcset="/images/covers/工具-FVM-Flutter版本管理工具使用指南.webp" type="image/webp" data-astro-cid-ssdmjifj><img src="/images/covers/工具-FVM-Flutter版本管理工具使用指南.png" alt="FVM 使用指南：Flutter 多版本安装与切换" width="800" height="420" loading="eager" fetchpriority="high" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" data-astro-cid-ssdmjifj></picture><div class="w-full flex items-center absolute bottom-0 justify-start" data-astro-cid-ssdmjifj><h1 data-pagefind-meta="title" class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color" data-astro-cid-ssdmjifj>FVM 使用指南：Flutter 多版本安装与切换</h1></div></div><div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px" data-astro-cid-ssdmjifj><img src="/images/avatar-96.webp" alt="Jerome Xiong" width="96" height="96" decoding="async" data-astro-cid-ssdmjifj></div><div class="info flex flex-col justify-between" data-astro-cid-ssdmjifj><div class="author flex items-center" data-astro-cid-ssdmjifj><span class="name text-default-text-color text-lg font-semibold" data-astro-cid-ssdmjifj>Jerome Xiong</span></div><div class="meta-info" data-astro-cid-ssdmjifj><div class="article-meta-info" data-astro-cid-ssdmjifj><span class="article-date article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-pen-fancy" data-astro-cid-ssdmjifj></i>&nbsp;<span class="desktop" data-astro-cid-ssdmjifj>2026-08-15 21:30</span><span class="mobile" data-astro-cid-ssdmjifj>2026-08-15 21:30</span><span class="hover-info" data-astro-cid-ssdmjifj>创建</span></span><span class="article-categories article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-folders" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/categories/工具/" data-astro-cid-ssdmjifj>工具</a></li><li data-astro-cid-ssdmjifj>&gt;</li><li data-astro-cid-ssdmjifj><a href="/categories/工具/Flutter/" data-astro-cid-ssdmjifj>Flutter</a></li></ul></span><span class="article-wordcount article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-typewriter" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>1.4k 字</span></span><span class="article-min2read article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-clock" data-astro-cid-ssdmjifj></i>&nbsp;<span data-astro-cid-ssdmjifj>5 分钟</span></span></div></div></div></div><div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8" data-astro-cid-ssdmjifj><blockquote>
+<p>手头多个 Flutter 项目版本不一？用 FVM 统一管理 Flutter SDK：下载安装、缓存目录、环境变量、权限问题一次讲清，从此 <code>fvm flutter run</code> 一套命令走天下。</p>
+</blockquote>
+<h2 id="背景">背景</h2>
+<p>Flutter 版本迭代很快，不同项目锁定的 Flutter 版本可能完全不同。如果全局只装一个 Flutter，切换项目时要么手动替换 SDK，要么反复重装，非常痛苦。</p>
+<p><a href="https://github.com/leoafarias/fvm">FVM</a>（Flutter Version Management）就是来解决这个问题的：它像 <code>nvm</code> 管理 Node 一样管理 Flutter 版本，可以同时安装多个版本并按项目切换，还能一键设置全局默认版本。</p>
+<p>本文以 <strong>Windows</strong> 环境为例，完整演示 FVM 的安装、配置与日常使用。</p>
+<hr>
+<h2 id="一安装前清理独立安装的-flutter">一、安装前：清理独立安装的 Flutter</h2>
+<blockquote>
+<p>⚠️ <strong>注意</strong>：如果你之前已经单独安装过 Flutter，并且配置过 Flutter 的环境变量，建议<strong>先卸载 Flutter、删除环境变量</strong>，再使用 FVM 安装。否则两套 Flutter 的环境变量会互相干扰，导致 <code>flutter</code> 命令指向混乱。</p>
+</blockquote>
+<p>清理步骤：</p>
+<ol>
+<li>卸载之前安装的 Flutter SDK（删除其安装目录）</li>
+<li>删除环境变量 <code>PATH</code> 中指向原 Flutter <code>bin</code> 目录的条目</li>
+<li>如有 <code>PUB_HOSTED_URL</code>、<code>FLUTTER_STORAGE_BASE_URL</code> 等用户变量，可一并清理（FVM 装好后会重新配置）</li>
+</ol>
+<hr>
+<h2 id="二安装-fvm">二、安装 FVM</h2>
+<h3 id="21-下载安装包">2.1 下载安装包</h3>
+<ol>
+<li>访问 <a href="https://github.com/leoafarias/fvm/releases">https://github.com/leoafarias/fvm/releases</a></li>
+<li>在 <strong>Assets</strong> 中点击"更多"，找到自己系统的安装包。比如 Windows 64 位就下载 <code>fvm-4.0.0-windows-x64.zip</code></li>
+<li>解压 zip 包到自己想要存放的目录，比如 <code>D:\workspace\Flutter\fvm-4.0.0-windows-x64</code></li>
+</ol>
+<h3 id="22-配置-path">2.2 配置 PATH</h3>
+<p>在环境变量的 <code>PATH</code> 中添加解压目录：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>D:\workspace\Flutter\fvm-4.0.0-windows-x64</span></span></code></pre>
+<h3 id="23-验证安装">2.3 验证安装</h3>
+<p>打开命令行，输入：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm --version</span></span></code></pre>
+<p>如果输出 <code>4.0.0</code> 则说明安装成功。</p>
+<hr>
+<h2 id="三配置-flutter-安装位置">三、配置 Flutter 安装位置</h2>
+<p>FVM 默认会把 Flutter 装到用户目录，可以提前指定缓存路径，把 SDK 集中放到自己习惯的目录：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm config --cache-path </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"D:\workspace\Flutter\fvm_versions"</span></span></code></pre>
+<p>设置之后，所有 Flutter 版本都会安装到 <code>D:\workspace\Flutter\fvm_versions\versions</code> 文件夹中。</p>
+<hr>
+<h2 id="四使用-fvm-安装-flutter">四、使用 FVM 安装 Flutter</h2>
+<blockquote>
+<p>💡 <strong>提示</strong>：使用 FVM 安装 Flutter 时，需要<strong>以管理员身份</strong>打开命令行，并且<strong>开着 VPN</strong>（需要访问 GitHub 下载 SDK）。</p>
+</blockquote>
+<h3 id="41-fvm-常用命令">4.1 FVM 常用命令</h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fvm releases</code></td>
+<td>查看所有可安装的 Flutter 版本</td>
+</tr>
+<tr>
+<td><code>fvm --version</code></td>
+<td>查看当前 FVM 版本</td>
+</tr>
+<tr>
+<td><code>fvm list</code></td>
+<td>查看已安装的 Flutter 版本</td>
+</tr>
+<tr>
+<td><code>fvm install stable</code></td>
+<td>安装 stable 版本</td>
+</tr>
+<tr>
+<td><code>fvm use stable</code></td>
+<td>切换 stable 版本（未安装会自动安装）</td>
+</tr>
+<tr>
+<td><code>fvm global stable</code></td>
+<td>设置 stable 为全局版本</td>
+</tr>
+<tr>
+<td><code>fvm uninstall stable</code></td>
+<td>删除 stable 版本</td>
+</tr>
+<tr>
+<td><code>fvm doctor</code></td>
+<td>检查 FVM 环境</td>
+</tr>
+<tr>
+<td><code>fvm flutter doctor</code></td>
+<td>检查 Flutter 环境</td>
+</tr>
+<tr>
+<td><code>fvm flutter --version</code></td>
+<td>查看当前 Flutter 版本</td>
+</tr>
+<tr>
+<td><code>fvm install 3.24.5</code></td>
+<td>安装指定版本 Flutter</td>
+</tr>
+<tr>
+<td><code>fvm use 3.24.5</code></td>
+<td>切换指定版本</td>
+</tr>
+<tr>
+<td><code>fvm global 3.24.5</code></td>
+<td>设置指定版本为全局版本</td>
+</tr>
+<tr>
+<td><code>fvm uninstall 3.24.5</code></td>
+<td>删除指定版本</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-安装与切换示例">4.2 安装与切换示例</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#6A737D;--shiki-dark:#6A737D">:: 安装最新 stable 版本</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm install stable</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span style="color:#6A737D;--shiki-dark:#6A737D">:: 安装指定版本</span></span>
+<span class="line"><span class="line-number">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm install 3.24.5</span></span>
+<span class="line"><span class="line-number">6</span></span>
+<span class="line"><span class="line-number">7</span><span style="color:#6A737D;--shiki-dark:#6A737D">:: 切换版本</span></span>
+<span class="line"><span class="line-number">8</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm use stable</span></span>
+<span class="line"><span class="line-number">9</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm use 3.24.5</span></span>
+<span class="line"><span class="line-number">10</span></span>
+<span class="line"><span class="line-number">11</span><span style="color:#6A737D;--shiki-dark:#6A737D">:: 设置全局默认版本</span></span>
+<span class="line"><span class="line-number">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm global stable</span></span></code></pre>
+<hr>
+<h2 id="五配置-flutter-环境变量">五、配置 Flutter 环境变量</h2>
+<p>使用 FVM 安装好所需 Flutter 版本后，还需要配置环境变量，让 <code>flutter</code> 命令可用。</p>
+<h3 id="51-path-中添加-flutter-bin-目录">5.1 PATH 中添加 Flutter bin 目录</h3>
+<p>在环境变量 <code>PATH</code> 中添加：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>D:\workspace\Flutter\fvm_versions\default\bin</span></span></code></pre>
+<blockquote>
+<p><code>default</code> 目录会指向 <code>fvm global</code> 设置的全局版本，切换全局版本时无需再改 PATH。</p>
+</blockquote>
+<h3 id="52-配置国内镜像加速-pub-get">5.2 配置国内镜像（加速 pub get）</h3>
+<p>另外还需要添加两个<strong>用户变量</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PUB_HOSTED_URL</code></td>
+<td><code>https://pub.flutter-io.cn</code></td>
+</tr>
+<tr>
+<td><code>FLUTTER_STORAGE_BASE_URL</code></td>
+<td><code>https://storage.flutter-io.cn</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>配置之后，<code>flutter pub get</code> 会在任何设置了这两个变量的终端中，从 flutter-io.cn 国内镜像获取 package，下载速度大幅提升。</p>
+</blockquote>
+<hr>
+<h2 id="六常见问题非管理员终端使用-flutter-报权限不足">六、常见问题：非管理员终端使用 flutter 报权限不足</h2>
+<p><strong>问题现象</strong>：FVM 安装 Flutter 时使用的是管理员身份打开的命令行，之后在非管理员身份打开的命令行中使用 <code>flutter</code> 命令，会报权限不够的错误。</p>
+<p><strong>原因</strong>：这是一个 Git 安全权限问题。FVM 使用 Git 来管理 Flutter SDK，而 Git 检测到目录的所有者与当前用户不匹配，出于安全考虑拒绝访问。</p>
+<p><strong>解决办法</strong>：信任 FVM 相关目录。</p>
+<p>信任整个 FVM 目录：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">git config --global --add safe.directory D:/workspace/Flutter/fvm_versions</span></span></code></pre>
+<p>信任单个版本：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">git config --global --add safe.directory D:/workspace/Flutter/fvm_versions/versions/stable</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">git config --global --add safe.directory D:/workspace/Flutter/fvm_versions/versions/3.24.5</span></span></code></pre>
+<blockquote>
+<p>💡 <strong>提示</strong>：如果之后又安装了新版本并报同样的错误，把对应版本目录也加入 <code>safe.directory</code> 即可。</p>
+</blockquote>
+<hr>
+<h2 id="七日常使用">七、日常使用</h2>
+<p>使用 FVM 安装的 Flutter 之后，<code>flutter</code> 命令需要在前面都加上 <code>fvm</code>，例如：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm flutter run</span></span>
+<span class="line"><span class="line-number">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm flutter pub get</span></span>
+<span class="line"><span class="line-number">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm flutter doctor</span></span></code></pre>
+<p>查看已安装的 Flutter 版本：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bat"><code><span class="line"><span class="line-number">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">fvm list</span></span></code></pre>
+<p>输出示例：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span class="line-number">1</span><span>C:\Windows\System32&gt;fvm list</span></span>
+<span class="line"><span class="line-number">2</span><span>Cache directory:  D:\workspace\Flutter\fvm_versions\versions</span></span>
+<span class="line"><span class="line-number">3</span><span>Directory Size: 2.46 GB</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Channel</th>
+<th>Flutter Version</th>
+<th>Dart Version</th>
+<th>Release Date</th>
+<th>Global</th>
+<th>Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stable</td>
+<td>stable</td>
+<td>3.35.7</td>
+<td>3.9.2</td>
+<td>Oct 23, 2025</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>3.24.5</td>
+<td>stable</td>
+<td>3.24.5</td>
+<td>3.5.4</td>
+<td>Nov 14, 2024</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>可以看到 <code>stable</code> 已被标记为 Global（全局版本），<code>3.24.5</code> 则作为指定版本备用。</p>
+<hr>
+<h2 id="总结">总结</h2>
+<p>FVM 的核心价值就是<strong>让多版本共存变得零负担</strong>：</p>
+<ol>
+<li><strong>安装</strong>：下载 zip → 解压 → 配 PATH → <code>fvm --version</code> 验证</li>
+<li><strong>配置</strong>：<code>fvm config --cache-path</code> 指定 SDK 安装位置</li>
+<li><strong>装版本</strong>：<code>fvm install &lt;版本&gt;</code> + <code>fvm global &lt;版本&gt;</code> 一键切换</li>
+<li><strong>配环境</strong>：PATH 指向 <code>default\bin</code>，加国内镜像变量加速下载</li>
+<li><strong>排错</strong>：权限不够时用 <code>git config --global --add safe.directory</code> 信任目录</li>
+<li><strong>日常</strong>：所有 flutter 命令前加 <code>fvm</code> 前缀</li>
+</ol>
+<p>配套的 macOS 环境搭建方案可以参考《<a href="/2026/06/29/%E5%B7%A5%E5%85%B7/Flutter%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-FlyEnv-Android-Studio-FVM/">Flutter 开发环境搭建：FlyEnv + Android Studio + FVM</a>》。</p>
+</div><div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8" data-pagefind-ignore><div class="article-copyright-info-container"><ul><li><strong>标题:</strong> FVM 使用指南：Flutter 多版本安装与切换</li><li><strong>作者:</strong> Jerome Xiong</li><li><strong>创建于:</strong> 2026-08-15 21:30</li><li><strong>链接:</strong> https://jeromexiong.github.io/2026/08/15/工具/FVM-Flutter版本管理工具使用指南/</li><li><strong>版权声明:</strong>本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。</li></ul></div></div><span class="article-tags article-meta-item" data-astro-cid-ssdmjifj><i class="fa-regular fa-tags" data-astro-cid-ssdmjifj></i>&nbsp;<ul data-astro-cid-ssdmjifj><li data-astro-cid-ssdmjifj><a href="/tags/Flutter/" data-astro-cid-ssdmjifj>Flutter</a></li><li data-astro-cid-ssdmjifj><a href="/tags/FVM/" data-astro-cid-ssdmjifj>FVM</a></li><li data-astro-cid-ssdmjifj><a href="/tags/版本管理/" data-astro-cid-ssdmjifj>版本管理</a></li><li data-astro-cid-ssdmjifj><a href="/tags/Windows/" data-astro-cid-ssdmjifj>Windows</a></li><li data-astro-cid-ssdmjifj><a href="/tags/环境搭建/" data-astro-cid-ssdmjifj>环境搭建</a></li></ul></span><div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8" data-pagefind-ignore data-astro-cid-ssdmjifj><div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj></div><div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2" data-astro-cid-ssdmjifj><a class="next" rel="next" href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-ssdmjifj><span class="title flex justify-center items-center" data-astro-cid-ssdmjifj><span class="post-nav-title-item truncate max-w-48" data-astro-cid-ssdmjifj>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</span><span class="post-nav-item" data-astro-cid-ssdmjifj>下一篇</span></span><span class="right arrow-icon flex justify-center items-center" data-astro-cid-ssdmjifj><i class="fa-solid fa-chevron-right" data-astro-cid-ssdmjifj></i></span></a></div></div><div class="comment-container px-2 sm:px-6 md:px-8 pb-8" id="comments" data-pagefind-ignore><div class="comments-container mt-10 w-full"><div id="comment-anchor" class="w-full h-2.5"></div><div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">评论</div><div id="utterances-container"></div></div></div><script>(function(){const repo = "jeromexiong/jeromexiong.github.io";
+
+  (function () {
+    var container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    var script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.async = true;
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('repo', repo);
+    // 硬约束：旧评论按标题建 issue，这里只能是 title。
+    script.setAttribute('issue-term', 'title');
+    script.setAttribute(
+      'theme',
+      document.documentElement.classList.contains('dark') ? 'github-dark' : 'github-light'
+    );
+    container.appendChild(script);
+  })();
+})();</script></div><div class="toc-content-container" data-astro-cid-ssdmjifj><div class="post-toc-wrap" data-astro-cid-ssdmjifj><div class="post-toc" data-astro-cid-ssdmjifj><div class="toc-title" data-astro-cid-ssdmjifj>目录</div><div class="page-title" data-astro-cid-ssdmjifj>FVM 使用指南：Flutter 多版本安装与切换</div><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%AE%89%E8%A3%85%E5%89%8D%E6%B8%85%E7%90%86%E7%8B%AC%E7%AB%8B%E5%AE%89%E8%A3%85%E7%9A%84-flutter"><span class="nav-text">一、安装前：清理独立安装的 Flutter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%AE%89%E8%A3%85-fvm"><span class="nav-text">二、安装 FVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-text">2.1 下载安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E9%85%8D%E7%BD%AE-path"><span class="nav-text">2.2 配置 PATH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85"><span class="nav-text">2.3 验证安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E9%85%8D%E7%BD%AE-flutter-%E5%AE%89%E8%A3%85%E4%BD%8D%E7%BD%AE"><span class="nav-text">三、配置 Flutter 安装位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E4%BD%BF%E7%94%A8-fvm-%E5%AE%89%E8%A3%85-flutter"><span class="nav-text">四、使用 FVM 安装 Flutter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#41-fvm-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">4.1 FVM 常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#42-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%88%87%E6%8D%A2%E7%A4%BA%E4%BE%8B"><span class="nav-text">4.2 安装与切换示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E9%85%8D%E7%BD%AE-flutter-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-text">五、配置 Flutter 环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#51-path-%E4%B8%AD%E6%B7%BB%E5%8A%A0-flutter-bin-%E7%9B%AE%E5%BD%95"><span class="nav-text">5.1 PATH 中添加 Flutter bin 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#52-%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F-pub-get"><span class="nav-text">5.2 配置国内镜像（加速 pub get）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E9%9D%9E%E7%AE%A1%E7%90%86%E5%91%98%E7%BB%88%E7%AB%AF%E4%BD%BF%E7%94%A8-flutter-%E6%8A%A5%E6%9D%83%E9%99%90%E4%B8%8D%E8%B6%B3"><span class="nav-text">六、常见问题：非管理员终端使用 flutter 报权限不足</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="nav-text">七、日常使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div></div><div class="post-sidebar-container" data-astro-cid-ssdmjifj><div class="sidebar-content sidebar-recommended" data-astro-cid-wv7whodv><div class="sidebar-recommended-title" data-astro-cid-wv7whodv>推荐阅读</div><ul class="sidebar-recommended-list" data-astro-cid-wv7whodv><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/05/工具/Flutter-iOS-构建报错-Unable-to-resolve-module-dependency-解决方案/" data-astro-cid-wv7whodv>Flutter iOS 构建报错：“Unable to resolve module dependency: &#39;Flutter&#39;” 完整解决方案</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/08/04/AI-Agent学习系列/LLM-后训练的统一视角-SFT与RL的终极和解与HPT算法解析/" data-astro-cid-wv7whodv>LLM 后训练的统一视角：SFT 与 RL 的&quot;终极和解&quot;与 HPT 算法解析</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/15/Web-前端/Oxc-配置指南-oxlint-oxfmt/" data-astro-cid-wv7whodv>Oxc 配置指南：用 oxlint + oxfmt 替代 ESLint + Prettier</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/02/AI模块/Flutter-3-44-开发规范/" data-astro-cid-wv7whodv>Flutter 3.44 开发规范 — 技能分级、架构约束与项目模板</a></li><li class="sidebar-recommended-item" data-astro-cid-wv7whodv><a href="/2026/07/01/AI模块/浏览器自动化测试方案对比-Midscene-vs-Playwright/" data-astro-cid-wv7whodv>浏览器自动化测试方案对比 — Midscene.js vs Playwright vs Playwright CLI vs agent-browser</a></li></ul></div></div></div></div></div></div><div class="main-content-footer"><footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color"><div class="info-container py-3 text-center"><div class="text-center">&copy;<span>2020</span>- 2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #7C3AED"></i>&nbsp;&nbsp;<a href="/">Jerome Xiong</a></div><div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left"><span class="lg:block text-sm">由 <a target="_blank" rel="noopener" class="text-base" href="https://astro.build">Astro</a> 驱动</span><span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine</a></span></div><div>博客已运行 <span class="odometer" id="runtime" data-start="2020-01-01"></span></div></div></footer></div></div><!-- 右下角工具条（主题切换/RSS/返回顶部），fixed 定位不占布局。 --><div class="right-side-tools-container hide"><div class="side-tools-container"><!-- 齿轮展开后才显示：主题切换、RSS --><ul class="hidden-tools-list"><li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center"><button type="button" data-theme-toggle aria-label="切换到暗色" aria-pressed="false"><i class="fa-regular fa-moon"></i></button></li><li class="right-bottom-tools rss flex justify-center items-center"><a class="flex justify-center items-center" href="/atom.xml" target="_blank" rel="noopener" aria-label="RSS"><i class="fa-regular fa-rss"></i></a></li></ul><!-- 常驻：齿轮、返回顶部（滚过 400px 才出现，见 scripts/scroll.js） --><ul class="visible-tools-list"><li class="right-bottom-tools toggle-tools-list flex justify-center items-center" role="button" tabindex="0" aria-label="更多工具"><i class="fa-regular fa-cog"></i></li><li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center" role="button" tabindex="0" aria-label="返回顶部"><i class="arrow-up fas fa-arrow-up"></i><span class="percent">0%</span></li></ul></div></div><!-- 站内搜索弹窗：fixed 遮罩，默认隐藏，交互见 scripts/search.js。 --><div id="search-modal" class="search-pop-overlay" role="dialog" aria-modal="true" aria-label="站内搜索" aria-hidden="true" data-site-title="Jerome Xiong"><div class="popup search-popup"><div class="search-header"><span class="search-input-field-pre" role="button" tabindex="0" aria-label="清空搜索"><i class="fa-solid fa-keyboard"></i></span><div class="search-input-container"><input id="search-input" class="search-input" type="search" placeholder="站内搜索您需要的内容..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="搜索关键词"></div><span class="popup-btn-close" role="button" tabindex="0" aria-label="关闭搜索"><i class="fa-solid fa-times"></i></span></div><div id="search-results" aria-live="polite" aria-label="搜索结果"></div></div></div></main><!-- 浏览端脚本：Astro 合并打包成一个模块，DOM 已解析完才执行（type=module 默认 defer）。
+         一律用副作用 import，模块内部自己找挂载点，页面没有对应 DOM 时静默跳过。 --><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CGH9Cwlc.js"></script></body></html>
